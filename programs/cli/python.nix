@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   environment.systemPackages = with pkgs; [
-    (python314.withPackages (ps: with ps; [pip ipykernel]))
+    (python3.withPackages (ps: with ps; [pip ipykernel]))
   ];
 
   environment.sessionVariables = {
