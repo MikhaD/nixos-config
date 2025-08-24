@@ -129,6 +129,7 @@
     #################### Desktop Applications ####################
     chromium
     # code-cursor
+    flameshot
     freecad
     # kdePackages.spectacle
     # kdePackages.xdg-desktop-portal-kde
