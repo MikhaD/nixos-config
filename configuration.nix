@@ -72,8 +72,8 @@
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
   # enable xdg-desktop-portal to allow spectacle to take screenshots in wayland
-  # xdg.portal.enable = true;
-  # xdg.portal.extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde ];
+  xdg.portal.enable = true;
+  xdg.portal.extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde ];
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -126,6 +126,8 @@
     quickemu # May not need, probably a dep of quickgui
     quickgui
     tree
+    kdePackages.spectacle
+    kdePackages.xdg-desktop-portal-kde
     #################### Desktop Applications ####################
     chromium
     # code-cursor
