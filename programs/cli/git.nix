@@ -2,11 +2,12 @@
 {
   programs.git = {
     enable = true;
-    config = {
-      user = {
-        name = "mikha";
-        email = "31388146+MikhaD@users.noreply.github.com";
-      };
+    userName = "mikha";
+    userEmail = "31388146+MikhaD@users.noreply.github.com";
+    aliases = {
+      logg = "log --oneline --graph --all --decorate";
+    };
+    extraConfig = {
       push.autoSetupRemote = true;
       fetch = {
         prune = true;

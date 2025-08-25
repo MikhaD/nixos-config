@@ -4,15 +4,7 @@
     [
       ./hardware-configuration.nix # Include the results of the hardware scan.
 
-      ./programs/cli/bash.nix
-      ./programs/cli/bat.nix
-      ./programs/cli/git.nix
-      ./programs/cli/neovim.nix
-      ./programs/cli/python.nix
       ./programs/cli/ssh.nix
-      ./programs/cli/wl-clipboard.nix
-
-      ./programs/gui/firefox.nix
 
       ./system/bluetooth.nix
       ./system/boot.nix
@@ -20,8 +12,6 @@
       ./system/nvidia.nix
 
       ./services/keyd.nix
-
-      ./programs/work.nix
     ];
   nix = {
     settings.experimental-features = ["nix-command" "flakes"];
@@ -75,6 +65,7 @@
   # enable xdg-desktop-portal to allow spectacle to take screenshots in wayland
   xdg.portal.enable = true;
   xdg.portal.extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde ];
+  # xdg.mime.defaultApplications = {};
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -95,6 +86,10 @@
     isNormalUser = true;
     description = "Mikha Davids";
     extraGroups = [ "networkmanager" "wheel" "podman" ];
+  };
+
+  environment.variables = {
+    GTK_USE_PORTAL = 1;
   };
 
   # Allow unfree packages

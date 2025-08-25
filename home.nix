@@ -1,5 +1,18 @@
 { pkgs, details, ... }:
 {
+  imports = [
+      ./programs/cli/bash.nix
+      ./programs/cli/bat.nix
+      ./programs/cli/git.nix
+      ./programs/cli/neovim.nix
+      ./programs/cli/python.nix
+      # ./programs/cli/ssh.nix
+      ./programs/cli/wl-clipboard.nix
+
+      ./programs/gui/firefox.nix
+
+      ./programs/work.nix
+  ];
   home.username = details.username;
   home.homeDirectory = "/home/${details.username}";
 

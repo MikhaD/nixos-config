@@ -2,7 +2,7 @@
 {
   programs.bash = {
     # Placed in /etc/bashrc
-    interactiveShellInit = ''
+    initExtra = ''
       shopt -s histappend   # append to the history file, don't overwrite it
       shopt -s checkwinsize # check the window size after each command and update LINES and COLUMNS if necessary
       # shopt -s globstar   # Make the pattern "**" match all files in pathname expansion and 0 or more dirs and subdirs.
@@ -15,14 +15,14 @@
       # bind "set show-all-if-ambiguous on"  # print out all mathing files/directories if there are multiple possibilities
     '';
     # Placed in /etc/profile
-    loginShellInit = ''
+    profileExtra = ''
       # Source .bashrc if it exists (tmux and login shells source .profile but not .bashrc)
       if [ -f "$HOME/.bashrc" ]; then
         source "$HOME/.bashrc"
       fi
     '';
     # My prompt is in .bashrc which is sourced above. If not set to empty default prompt overrides it in login shells
-    promptInit = "";
+    # promptInit = "";
     shellAliases = {
       cls = "clear";               # clear screen using cls like windows powershell
       reload = "source ~/.bashrc"; # reload the bashrc file
@@ -33,11 +33,7 @@
     };
   };
 
-  environment.variables = {
-    GTK_USE_PORTAL = 1;
-  };
-
-  environment.sessionVariables = rec {
+  home.sessionVariables = rec {
     # XDG Base directories: https://specifications.freedesktop.org/basedir-spec/latest
     XDG_DATA_HOME="$HOME/.local/share";  # User specific data files
     XDG_CONFIG_HOME="$HOME/.config";     # User specific configuration files

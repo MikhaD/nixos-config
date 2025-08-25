@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  environment.systemPackages = with pkgs; [
+  home.packages = with pkgs; [
     wl-clipboard
   ];
   programs.bash.shellAliases = {

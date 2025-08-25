@@ -2,8 +2,11 @@
 {
   programs.ssh = {
     startAgent = true;
-    # Contents of ssh config file would go here
     # extraConfig = ''
     # '';
   };
+#   programs.ssh = {
+#     enable = true;
+#   };
+#   services.ssh-agent.enable = true;
 }
