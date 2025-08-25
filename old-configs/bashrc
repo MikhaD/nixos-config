@@ -1,0 +1,276 @@
+# Exit if the shell is not running interactively.
+[[ $- != *i* ]] && return
+
+# Colorize man output
+# man() {
+#     # LESS_TERMCAP_md: The section headings and command line options
+#     # LESS_TERMCAP_us Command names and arguments
+#     # LESS_TERMCAP_so: The bar at the bottom with the page number and exit instructions
+#     LESS_TERMCAP_md=$'\e[01;96m' \
+#         LESS_TERMCAP_me=$'\e[0m' \
+#         LESS_TERMCAP_us=$'\e[01;32m' \
+#         LESS_TERMCAP_ue=$'\e[0m' \
+#         LESS_TERMCAP_so=$'\e[100m' \
+#         LESS_TERMCAP_se=$'\e[0m' \
+#         command man "$@"
+# }
+
+shopt -s histappend   # append to the history file, don't overwrite it
+shopt -s checkwinsize # check the window size after each command and update LINES and COLUMNS if necessary
+shopt -s extglob      # extended pattern matching features
+shopt -s globstar     # Make the pattern "**" match all files in pathname expansion and 0 or more dirs and subdirs.
+shopt -s checkjobs    # List the status of any stopped and running jobs before exiting the shell
+shopt -s dirspell     # Auto-correct directory names
+
+
+bind "TAB: menu-complete"              # Use TAB to auto-complete
+bind "set completion-ignore-case on"   # Do not differentiate between upper and lower case when completing
+bind '"\e[A": history-search-backward' # Use ↑ to search backwards through your history for the text in the prompt
+bind '"\e[B": history-search-forward'  # Use ↓ to search forwards through your history for the text in the prompt
+# bind "set editing-mode vi"           # Use vi keybindings in the terminal (seems to prevent the use of the up and down arrow keys)
+# bind "set show-all-if-ambiguous on"  # print out all matching files/directories if there are multiple possibilities
+
+# Add the ability to cd up several directories using additional dots after cd ..
+# For example, cd ... goes up two directories
+cd() {
+  case "$1" in
+    ..*)
+      # Length of the argument (which is all .s)
+      local n=${#1}
+      local ups=""
+      local i=1
+      # Build a string like ../, ../../, ../../../
+      while [ $i -lt $n ]; do
+        ups="../$ups"
+        i=$((i + 1))
+      done
+      builtin cd "$ups" # Use builtin to prevent infinite recursion
+      ;;
+    *)
+      builtin cd "$@"
+      ;;
+  esac
+}
+
+#  ▗▄▄▖  ▗▄▖  ▗▄▄▖▗▖ ▗▖    ▗▄▄▖ ▗▄▄▖  ▗▄▖ ▗▖  ▗▖▗▄▄▖▗▄▄▄▖
+#  ▐▌ ▐▌▐▌ ▐▌▐▌   ▐▌ ▐▌    ▐▌ ▐▌▐▌ ▐▌▐▌ ▐▌▐▛▚▞▜▌▐▌ ▐▌ █
+#  ▐▛▀▚▖▐▛▀▜▌ ▝▀▚▖▐▛▀▜▌    ▐▛▀▘ ▐▛▀▚▖▐▌ ▐▌▐▌  ▐▌▐▛▀▘  █
+#  ▐▙▄▞▘▐▌ ▐▌▗▄▄▞▘▐▌ ▐▌    ▐▌   ▐▌ ▐▌▝▚▄▞▘▐▌  ▐▌▐▌    █
+
+parse_git_branch() {
+    # Check if we are in a git repository (2> &1 redirects stderr to stdout, which is going to /dev/null)
+    if git rev-parse --git-dir >/dev/null 2>&1; then
+        # Get the current branch name or commit hash
+        local branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+
+        # Check if we are in a detached HEAD state
+        if [ "$branch" = "HEAD" ]; then
+            # Get the current commit hash
+            local commit_hash=$(git rev-parse --short HEAD 2>/dev/null)
+            if [ "$commit_hash" != "" ]; then
+                echo "⚠️ $commit_hash"
+            else
+                echo "  "
+            fi
+        else
+            # Get the ahead/behind status
+            local status=$(git status -sb 2>/dev/null)
+            local ahead_behind=""
+            if [[ $status =~ \[ahead\ [0-9]+ ]]; then
+                local ahead_count=$(echo $status | grep -oP '(?<=\[ahead )\d+')
+                ahead_behind="↑$ahead_count"
+            fi
+            if [[ $status =~ behind\ [0-9]+\] ]]; then
+                local behind_count=$(echo $status | grep -oP '(?<=behind )\d+(?=\])')
+                ahead_behind="$ahead_behind↓$behind_count"
+            fi
+            echo " $branch $ahead_behind"
+        fi
+    fi
+}
+
+# Find more icons here: https://www.nerdfonts.com/cheat-sheet
+declare -A DIR_ICONS=(
+    ["Desktop"]=" "
+    ["Downloads"]=" "
+    ["Documents"]="󱔗 "
+    ["Development"]="󰘦 "
+    ["Music"]=" "
+    ["Pictures"]=" "
+    ["Videos"]="󰨜 "
+    ["Public"]=" "
+    ["Android"]=" "
+    ["etc"]=" "
+    ["bin"]=" "
+    ["mnt"]=" "
+    ["usr"]="󰪋 "
+    ["nix"]=" "
+    ["opt"]=" "
+    ["tmp"]=" "
+    ["var"]=" "
+    ["proc"]=" "
+    ["media"]="󰕓 "
+    [".vscode"]="󰨞 "
+    [".config"]=" "
+    [".git"]="󰊢 "
+    [".github"]=" "
+    [".vim"]=""
+    [".docker"]=" "
+    [".cache"]="󱘿 "
+    [".mozilla"]="󰈹 "
+    [".npm"]=" "
+    [".java"]=" "
+    [".tmux"]=" "
+)
+
+# Alternative to \w that prints the current directory in a more concise way:
+# Print / or ~ if we are in the root or home directory
+# Print the exact path if we are in a subdirectory of root or home
+# Print /…/directory if we are in a subdirectory of a subdirectory of root
+# Print ~/…/directory if we are in a subdirectory of a subdirectory of home
+# Print ~/<icon>/directory if we are in a subdirectory of a subdirectory of home and the home subdirectory has an icon
+# Print ~/<icon>/…/directory if we are more than 2 subdirectories deep in home and the home subdirectory has an icon
+parse_directory() {
+    local directory=$(basename "$PWD")
+    local parent_dir=$(basename "$(dirname "$PWD")")
+    if [[ "$PWD" == "$HOME"* ]]; then # if we are in a subdirectory of a subdirectory of home
+        if [ "$PWD" = "$HOME" ]; then
+            echo "~"
+            return
+        elif [ "$PWD" = "$HOME/$directory" ]; then # if we are in a subdirectory of home
+            echo "~/$directory"
+            return
+        fi
+        local home_subdir=$(echo ${PWD#$HOME/} | cut -d "/" -f 1)
+        local icon="${DIR_ICONS[$home_subdir]}"
+        if [ -n "$icon" ]; then # if the parent directory has an icon
+            if [ "$PWD" = "$HOME/$parent_dir/$directory" ]; then
+                echo "~/$icon/$directory"
+            else
+                echo "~/$icon/…/$directory"
+            fi
+        else
+            echo "~/…/$directory"
+        fi
+    else # if we are in a subdirectory of root
+        if [ "$PWD" = "/" ] || [ "$PWD" = "/$directory" ]; then
+            echo "$PWD"
+            return
+        fi
+        local subdir=$(echo $PWD | cut -d "/" -f 2)
+        local icon="${DIR_ICONS[$subdir]}"
+        if [ -n "$icon" ]; then # if the parent directory has an icon
+            if [ "$PWD" = "/$parent_dir/$directory" ]; then
+                echo "/$icon/$directory"
+            else
+                echo "/$icon/…/$directory"
+            fi
+        else
+            echo "/…/$directory"
+        fi
+    fi
+}
+
+function distro_icon() {
+    if [ -e "/etc/os-release" ]; then
+        local distro=$(source /etc/os-release && echo $ID)
+    else
+        local distro="termux"
+    fi
+    declare -A distro_icons=(
+        ["debian"]=" "
+        ["ubuntu"]=" "
+        ["nixos"]=" "
+        ["termux"]=" "
+    )
+    declare -A distro_colors=(
+        ["debian"]="91"
+        ["ubuntu"]="93"
+        ["nixos"]="94"
+        ["termux"]="32"
+    )
+    local icon="${distro_icons[$distro]:- }"
+    local color="${distro_colors[$distro]:-33}"
+    unset distro_icons distro_colors
+    echo "\[\e[$1;${color}m\]${icon}"
+}
+
+# Function that displays  before the prompt if we are in a nix shell, or  󰌪 if we are in a pure nix shell (pure: no system software included)
+nix_shell() {
+    if [ -n "$IN_NIX_SHELL" ]; then
+        local pure=$(test "$IN_NIX_SHELL" = "pure" && echo "󰌪 ")
+        echo "\[\e[38;2;126;183;226m\] $pure\[\e[0m\]"
+    fi
+}
+
+# Timer for measuring the time it takes to run a command
+function timer_start {
+    [ -n "$COMP_LINE" ] && return # do nothing if completing
+    [ "$BASH_COMMAND" = "$PROMPT_COMMAND" ] && return
+    timer=$(date +%s%3N)
+}
+
+# Stop the timer and print the time it took to run the command in a human readable format
+function timer_stop() {
+    local end_time=$(date +%s%3N)
+    if [ -z "$timer" ]; then
+        echo "-"
+        return
+    fi
+    local T=$((end_time - timer))
+    local MS=$((T % 1000))
+    local S=$((T / 1000 % 60))
+    local M=$((T / 1000 / 60 % 60))
+    local H=$((T / 1000 / 60 / 60 % 24))
+    local D=$((T / 1000 / 60 / 60 / 24))
+    local result=""
+    ((D > 0)) && result+="${D}d "
+    ((H > 0)) && result+="${H}h "
+    ((M > 0)) && result+="${M}m "
+    ((S > 0)) && result+="${S}s "
+    result+="${MS}ms"
+    echo $result
+}
+
+# Function that runs just before the prompt is displayed
+function prompt_command() {
+    local exit_code=$?
+    duration=$(timer_stop)
+    unset timer
+    if [ $exit_code -eq 0 ]; then
+        exit_bg=42
+        exit_fg=30
+    else
+        exit_bg=41
+        exit_fg=37
+    fi
+    # Sync bash history between all open terminals
+    history -a   # Append this sessions bash history to the history file
+    history -n   # Read new lines other sessions have added to the bash history file
+}
+
+trap 'timer_start' DEBUG
+# PROMPT_COMMAND must be a single command so that it matches BASH_COMMAND in timer_start, otherwise the timer will be
+# reset just before it is stopped because the DEBUG trap is triggered by PROMPT_COMMAND
+PROMPT_COMMAND="prompt_command"
+
+bg1=100   # light grey
+fg1=30    # black
+usr_fg=32 # green
+dir_bg=47 # white
+git_bg=46 # cyan
+edge=""  # other options:          
+
+PS1="$(nix_shell)"
+PS1+="\[\e[$(($bg1 - 10))m\]$(distro_icon $bg1)\[\e[1;$usr_fg;${bg1}m\]\u \[\e[0;$(($bg1 - 10));${dir_bg}m\]$edge"
+PS1+="\[\e[${fg1}m\] \$(parse_directory) \[\e[$git_bg;$(($dir_bg - 10))m\]$edge"
+PS1+="\[\e[${fg1}m\] \$(parse_git_branch)\[\e[0;\${exit_bg};$(($git_bg - 10))m\]$edge"
+PS1+=" \[\e[\${exit_fg}m\] \${duration} \[\e[$bg1;\$((exit_bg - 10))m\]$edge"
+PS1+="\[\e[1;37m\]\$\[\e[0;$(($bg1 - 10))m\]$edge\[\e[0m\] "
+
+unset distro_icon bg1 fg1 usr_fg dir_bg git_bg edge
+
+# This config file is made to be portable across all my different systems. Anything specific to a system should be in ~/.system_specific_bashrc
+if [ -f ~/.system_specific_bashrc ]; then
+    . ~/.system_specific_bashrc
+fi
