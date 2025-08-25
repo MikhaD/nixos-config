@@ -4,13 +4,13 @@
     enable = true;
     # Placed in ~/.bashrc
     initExtra = builtins.readFile ./../../old-configs/bashrc;
-    # Placed in ~/.profile
-    profileExtra = ''
-      # Source .bashrc if it exists (tmux and login shells source .profile but not .bashrc)
-      if [ -f "$HOME/.bashrc" ]; then
-        source "$HOME/.bashrc"
-      fi
-    '';
+    # Placed in ~/.profile (not needed as home manager automatically create a .bash_profile that sources .bashrc)
+    # profileExtra = ''
+    #   # Source .bashrc if it exists (tmux and login shells source .profile but not .bashrc)
+    #   if [ -f "$HOME/.bashrc" ]; then
+    #     source "$HOME/.bashrc"
+    #   fi
+    # '';
     shellAliases = {
       cls = "clear";                            # clear screen using cls like windows powershell
       reload = "source ~/.bashrc";              # reload the bashrc file

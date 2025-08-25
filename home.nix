@@ -7,6 +7,7 @@
       ./programs/cli/neovim.nix
       ./programs/cli/python.nix
       # ./programs/cli/ssh.nix
+      ./programs/cli/tmux.nix
       ./programs/cli/wl-clipboard.nix
 
       ./programs/gui/firefox.nix
