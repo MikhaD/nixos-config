@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, details, ... }:
 {
   imports =
     [
@@ -24,6 +24,7 @@
       ./programs/work.nix
     ];
   nix = {
+    settings.experimental-features = ["nix-command" "flakes"];
     settings.auto-optimise-store = true; # Automatically hard link identical files in the Nix store to save space
     # Automatically run nix store garbage collection once a week
     gc = {
@@ -41,7 +42,7 @@
     };
   };
 
-  networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = details.hostname; # Define your hostname.
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -90,11 +91,10 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  users.users.mikha = {
+  users.users.${details.username} = {
     isNormalUser = true;
     description = "Mikha Davids";
     extraGroups = [ "networkmanager" "wheel" "podman" ];
-    packages = with pkgs; [];
   };
 
   # Allow unfree packages
@@ -129,7 +129,6 @@
     kdePackages.spectacle
     kdePackages.xdg-desktop-portal-kde
     #################### Desktop Applications ####################
-    chromium
     # code-cursor
     flameshot
     freecad
