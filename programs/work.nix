@@ -10,9 +10,9 @@ in
   ];
 
   home.sessionVariables = {
-    # TODO: Should be in a nix-env for the thing that needs it (here at the moment to get nix shell created poetry installs to work in pycharm)
+    # TODO: Bad practice, Should be in a nix-env for the thing that needs it (here at the moment to get nix shell created poetry installs to work in pycharm)
     # https://discourse.nixos.org/t/what-package-provides-libstdc-so-6/18707/2
-    LD_LIBRARY_PATH = "/run/current-system/sw/lib:$LD_LIBRARY_PATH";
+    LD_LIBRARY_PATH = "${pkgs.stdenv.cc.cc.lib}/lib";
   };
 
   home.packages = with pkgs; [
