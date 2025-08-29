@@ -27,7 +27,7 @@
   in {
     nixosConfigurations = {
       laptop = mkNixOSConfig ./hosts/laptop/configuration.nix;
-      server = mkNixOSConfig ./hosts/server/configuration.nix;
+      homelab = mkNixOSConfig ./hosts/homelab/configuration.nix;
     };
   };
 }

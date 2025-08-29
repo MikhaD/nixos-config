@@ -13,10 +13,16 @@
     ./../../modules/nixos/system/bluetooth.nix
     ./../../modules/nixos/system/boot.nix
     ./../../modules/nixos/system/fonts.nix
+    ./../../modules/nixos/system/gc.nix
     ./../../modules/nixos/system/nvidia.nix
 
     ./../../modules/nixos/services/keyd.nix
   ];
+
+  networking = {
+    hostName = "laptop";
+    networkmanager.enable = true;
+  };
 
   home-manager = {
     useUserPackages = true;
@@ -26,12 +32,16 @@
       imports = [
         ./../../modules/home-manager/bash
         ./../../modules/home-manager/bat.nix
+        ./../../modules/home-manager/fastfetch.nix
         ./../../modules/home-manager/git.nix
         ./../../modules/home-manager/neovim.nix
+        ./../../modules/home-manager/nodejs.nix
         ./../../modules/home-manager/python.nix
         # ./programs/cli/ssh.nix
+        ./../../modules/home-manager/lsd.nix
         ./../../modules/home-manager/tmux
         ./../../modules/home-manager/wl-clipboard.nix
+        ./../../modules/home-manager/xdg.nix
 
         ./../../modules/home-manager/firefox.nix
 
@@ -42,30 +52,15 @@
         username = details.username;
         homeDirectory = "/home/${details.username}";
 
-        sessionVariables = rec {
-          # XDG Base directories: https://specifications.freedesktop.org/basedir-spec/latest
-          XDG_DATA_HOME = "$HOME/.local/share"; # User specific data files
-          XDG_CONFIG_HOME = "$HOME/.config"; # User specific configuration files
-          XDG_STATE_HOME = "$HOME/.local/state"; # User specific state files
-          XDG_CACHE_HOME = "$HOME/.cache"; # User specific non-essential data files
-
-          # Bash history options. See bash man page for details
-          HISTSIZE = 2000; # Number of commands saved per session
-          HISTFILESIZE = 8000; # Number of lines stored in the history file
-          HISTCONTROL = "ignorespace:erasedups"; # ignore commands with leading whitespace; add each line only once, erasing prev occurrences
-
+        sessionVariables = {
           # Home directory cleanup
-          HISTFILE = "${XDG_STATE_HOME}/bash_history"; # Removes .bash_history from ~
-
-          NPM_CONFIG_USERCONFIG = "${XDG_CONFIG_HOME}/npmrc"; # Removes .npmrc from ~
-          NPM_CONFIG_CACHE = "${XDG_CACHE_HOME}/npm"; # Removes .npm/ from ~
-          BOTO_CONFIG = "${XDG_CONFIG_HOME}/botorc"; # Removes .boto from ~
-          ANDROID_USER_HOME = "${XDG_DATA_HOME}/android"; # Removes .android/ from ~
-          MAVEN_OPTS = "-Duser.home=${XDG_DATA_HOME}/maven"; # Removes .m2/ from ~
-          JAVA_USER_HOME = "${XDG_DATA_HOME}/java"; # Removes .java/ from ~
-          GOPATH = "${XDG_DATA_HOME}/go"; # Removes go/ from ~
-          LESSHISTFILE = "${XDG_STATE_HOME}/lesshst"; # Removes .lesshst from ~
-          WGETRC = "${XDG_DATA_HOME}/wget-hsts"; # Removes .wget-hsts from ~
+          BOTO_CONFIG = "$XDG_CONFIG_HOME/botorc"; # Removes .boto from ~
+          ANDROID_USER_HOME = "$XDG_DATA_HOME/android"; # Removes .android/ from ~
+          MAVEN_OPTS = "-Duser.home=$XDG_DATA_HOME/maven"; # Removes .m2/ from ~
+          JAVA_USER_HOME = "$XDG_DATA_HOME/java"; # Removes .java/ from ~
+          GOPATH = "$XDG_DATA_HOME/go"; # Removes go/ from ~
+          LESSHISTFILE = "$XDG_STATE_HOME/lesshst"; # Removes .lesshst from ~
+          WGETRC = "$XDG_DATA_HOME/wget-hsts"; # Removes .wget-hsts from ~
         };
         # You can update Home Manager without changing this value. See
         # the Home Manager release notes for a list of state version
@@ -81,12 +76,6 @@
       dockerCompat = true; # creates "docker" alias for podman
       defaultNetwork.settings.dns_enabled = true;
     };
-  };
-
-  networking = {
-    hostName = "laptop"; # Define your hostname.
-    networkmanager.enable = true;
-    firewall.enable = true;
   };
 
   # Set your time zone.
@@ -154,7 +143,6 @@
   programs.kdeconnect.enable = true;
   programs.partition-manager.enable = true;
   programs.steam.enable = true;
-  programs.tmux.enable = true;
   programs.obs-studio.enable = true;
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -163,11 +151,6 @@
     alejandra
     curl
     exfat # Allow me to format drives as exfat (broad OS compatibility)
-    fastfetch
-    fzf
-    lsd
-    nodejs
-    podman
     quickemu # May not need, probably a dep of quickgui
     quickgui
     tree
@@ -175,14 +158,10 @@
     kdePackages.xdg-desktop-portal-kde
     #################### Desktop Applications ####################
     # code-cursor
-    flameshot
     freecad
-    # kdePackages.spectacle
-    # kdePackages.xdg-desktop-portal-kde
     libreoffice-qt
     obsidian
     pinta
-    peek
     rofi-wayland
     stremio
     vscode
