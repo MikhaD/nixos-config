@@ -1,5 +1,4 @@
-{ ... }:
-{
+{...}: {
   services.xserver.videoDrivers = ["nvidia"];
   hardware.nvidia = {
     open = true;
@@ -16,7 +15,7 @@
       };
       # Bus IDs determined by running lspci | grep " VGA "
       # Integrated GPU
-      intelBusId =  "PCI:0@0:2:0";
+      intelBusId = "PCI:0@0:2:0";
       # Discrete GPU
       nvidiaBusId = "PCI:1@0:0:0";
     };

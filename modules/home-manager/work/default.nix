@@ -1,10 +1,8 @@
-{ pkgs, ... }:
-let
-    gdk = pkgs.google-cloud-sdk.withExtraComponents (with pkgs.google-cloud-sdk.components; [
-        cloud-datastore-emulator
-    ]);
-in
-{
+{pkgs, ...}: let
+  gdk = pkgs.google-cloud-sdk.withExtraComponents (with pkgs.google-cloud-sdk.components; [
+    cloud-datastore-emulator
+  ]);
+in {
   imports = [
     ./../terraform.nix
   ];

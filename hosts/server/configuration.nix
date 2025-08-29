@@ -1,13 +1,16 @@
-{ pkgs, details, ... }:
 {
+  pkgs,
+  details,
+  ...
+}: {
   imports = [
     ./hardware-configuration.nix
   ];
 
-    home-manager = {
+  home-manager = {
     useUserPackages = true;
     useGlobalPkgs = true;
-    extraSpecialArgs = { inherit details; };
+    extraSpecialArgs = {inherit details;};
     users.${details.username} = {
       imports = [
         ./../../modules/home-manager/bash

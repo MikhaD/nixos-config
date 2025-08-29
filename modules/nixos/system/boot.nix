@@ -1,8 +1,12 @@
-{ lib, ... }:
 {
+  lib,
+  pkgs,
+  ...
+}: {
   # Bootloader
   boot = {
-    kernelParams = [ "quiet" ];
+    kernelParams = ["quiet"];
+    kernelPackages = pkgs.linuxPackages_latest;
     loader = {
       systemd-boot = {
         enable = true;

@@ -1,5 +1,4 @@
-{ details, ... }:
-{
+{details, ...}: {
   programs.git = {
     enable = true;
     userName = details.username;

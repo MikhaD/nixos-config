@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   programs.tmux = {
     enable = true;
     # Start window & pane indexing at 1 (because 0 is further away on the keyboard)

@@ -1,5 +1,9 @@
-{ pkgs, inputs, details, ... }:
 {
+  pkgs,
+  inputs,
+  details,
+  ...
+}: {
   imports = [
     inputs.home-manager.nixosModules.home-manager
     ./hardware-configuration.nix # Include the results of the hardware scan.
@@ -17,7 +21,7 @@
   home-manager = {
     useUserPackages = true;
     useGlobalPkgs = true;
-    extraSpecialArgs = { inherit details; };
+    extraSpecialArgs = {inherit details;};
     users.${details.username} = {
       imports = [
         ./../../modules/home-manager/bash
@@ -40,28 +44,28 @@
 
         sessionVariables = rec {
           # XDG Base directories: https://specifications.freedesktop.org/basedir-spec/latest
-          XDG_DATA_HOME="$HOME/.local/share";  # User specific data files
-          XDG_CONFIG_HOME="$HOME/.config";     # User specific configuration files
-          XDG_STATE_HOME="$HOME/.local/state"; # User specific state files
-          XDG_CACHE_HOME="$HOME/.cache";       # User specific non-essential data files
+          XDG_DATA_HOME = "$HOME/.local/share"; # User specific data files
+          XDG_CONFIG_HOME = "$HOME/.config"; # User specific configuration files
+          XDG_STATE_HOME = "$HOME/.local/state"; # User specific state files
+          XDG_CACHE_HOME = "$HOME/.cache"; # User specific non-essential data files
 
           # Bash history options. See bash man page for details
-          HISTSIZE=2000;                       # Number of commands saved per session
-          HISTFILESIZE=8000;                   # Number of lines stored in the history file
-          HISTCONTROL="ignorespace:erasedups"; # ignore commands with leading whitespace; add each line only once, erasing prev occurrences
+          HISTSIZE = 2000; # Number of commands saved per session
+          HISTFILESIZE = 8000; # Number of lines stored in the history file
+          HISTCONTROL = "ignorespace:erasedups"; # ignore commands with leading whitespace; add each line only once, erasing prev occurrences
 
           # Home directory cleanup
-          HISTFILE="${XDG_STATE_HOME}/bash_history"; # Removes .bash_history from ~
+          HISTFILE = "${XDG_STATE_HOME}/bash_history"; # Removes .bash_history from ~
 
-          NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npmrc";  # Removes .npmrc from ~
-          NPM_CONFIG_CACHE="${XDG_CACHE_HOME}/npm";          # Removes .npm/ from ~
-          BOTO_CONFIG="${XDG_CONFIG_HOME}/botorc";           # Removes .boto from ~
-          ANDROID_USER_HOME="${XDG_DATA_HOME}/android";      # Removes .android/ from ~
-          MAVEN_OPTS="-Duser.home=${XDG_DATA_HOME}/maven";   # Removes .m2/ from ~
-          JAVA_USER_HOME="${XDG_DATA_HOME}/java";            # Removes .java/ from ~
-          GOPATH="${XDG_DATA_HOME}/go";                      # Removes go/ from ~
-          LESSHISTFILE="${XDG_STATE_HOME}/lesshst";          # Removes .lesshst from ~
-          WGETRC="${XDG_DATA_HOME}/wget-hsts";               # Removes .wget-hsts from ~
+          NPM_CONFIG_USERCONFIG = "${XDG_CONFIG_HOME}/npmrc"; # Removes .npmrc from ~
+          NPM_CONFIG_CACHE = "${XDG_CACHE_HOME}/npm"; # Removes .npm/ from ~
+          BOTO_CONFIG = "${XDG_CONFIG_HOME}/botorc"; # Removes .boto from ~
+          ANDROID_USER_HOME = "${XDG_DATA_HOME}/android"; # Removes .android/ from ~
+          MAVEN_OPTS = "-Duser.home=${XDG_DATA_HOME}/maven"; # Removes .m2/ from ~
+          JAVA_USER_HOME = "${XDG_DATA_HOME}/java"; # Removes .java/ from ~
+          GOPATH = "${XDG_DATA_HOME}/go"; # Removes go/ from ~
+          LESSHISTFILE = "${XDG_STATE_HOME}/lesshst"; # Removes .lesshst from ~
+          WGETRC = "${XDG_DATA_HOME}/wget-hsts"; # Removes .wget-hsts from ~
         };
         # You can update Home Manager without changing this value. See
         # the Home Manager release notes for a list of state version
@@ -112,7 +116,7 @@
   services.desktopManager.plasma6.enable = true;
   # enable xdg-desktop-portal to allow spectacle to take screenshots in wayland
   xdg.portal.enable = true;
-  xdg.portal.extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde ];
+  xdg.portal.extraPortals = [pkgs.kdePackages.xdg-desktop-portal-kde];
   # xdg.mime.defaultApplications = {};
 
   # Enable CUPS to print documents.
@@ -133,15 +137,12 @@
   users.users.${details.username} = {
     isNormalUser = true;
     description = details.fullName;
-    extraGroups = [ "networkmanager" "wheel" "podman" ];
+    extraGroups = ["networkmanager" "wheel" "podman"];
   };
 
   environment.variables = {
     GTK_USE_PORTAL = 1;
   };
-
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
 
   # https://blog.thalheim.io/2022/12/31/nix-ld-a-clean-solution-for-issues-with-pre-compiled-executables-on-nixos/
   programs.nix-ld = {
@@ -196,7 +197,6 @@
     ripgrep
     unzip
   ];
-
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

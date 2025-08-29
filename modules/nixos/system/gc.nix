@@ -1,5 +1,4 @@
-{ ... }:
-{
+{...}: {
   nix = {
     settings.auto-optimise-store = true; # Automatically hard link identical files in the Nix store to save space
     # Automatically run nix store garbage collection once a week

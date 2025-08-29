@@ -7,20 +7,23 @@
     };
   };
 
-  outputs = inputs:
-  let
+  outputs = inputs: let
     details = {
       username = "mikha";
       fullName = "Mikha Davids";
       email = "31388146+MikhaD@users.noreply.github.com";
     };
-    mkNixOSConfig = path: inputs.nixpkgs.lib.nixosSystem {
-      specialArgs = { inherit details inputs; };
-      modules = [
-          { nix.settings.experimental-features = [ "nix-command" "flakes" ]; }
+    mkNixOSConfig = path:
+      inputs.nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit details inputs;};
+        modules = [
+          {
+            nix.settings.experimental-features = ["nix-command" "flakes"];
+            nixpkgs.config.allowUnfree = true;
+          }
           path
         ];
-    };
+      };
   in {
     nixosConfigurations = {
       laptop = mkNixOSConfig ./hosts/laptop/configuration.nix;
