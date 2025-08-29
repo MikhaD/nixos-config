@@ -11,24 +11,20 @@
   let
     details = {
       username = "mikha";
-      hostname = "nixos";
+      fullName = "Mikha Davids";
+      email = "31388146+MikhaD@users.noreply.github.com";
+    };
+    mkNixOSConfig = path: inputs.nixpkgs.lib.nixosSystem {
+      specialArgs = { inherit details inputs; };
+      modules = [
+          { nix.settings.experimental-features = [ "nix-command" "flakes" ]; }
+          path
+        ];
     };
   in {
-    nixosConfigurations.${details.hostname} = inputs.nixpkgs.lib.nixosSystem {
-      specialArgs = { inherit details; };
-      modules = [
-        # { nix.settings.experimental-features = ["nix-command" "flakes"]; }
-        ./configuration.nix
-        inputs.home-manager.nixosModules.default {
-          # Use the packages from the NixOS system configuration.
-          home-manager.useGlobalPkgs = true;
-          # By default packages will be installed to $HOME/.nix-profile. This installs them to /etc/profiles instead.
-          home-manager.useUserPackages = true;
-
-          home-manager.extraSpecialArgs = { inherit details; }; # Pass details to home.nix
-          home-manager.users.${details.username} = import ./home.nix;
-        }
-      ];
+    nixosConfigurations = {
+      laptop = mkNixOSConfig ./hosts/laptop/configuration.nix;
+      server = mkNixOSConfig ./hosts/server/configuration.nix;
     };
   };
 }

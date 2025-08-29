@@ -3,7 +3,7 @@
   programs.bash = {
     enable = true;
     # Placed in ~/.bashrc
-    initExtra = builtins.readFile ./../../old-configs/bashrc;
+    initExtra = builtins.readFile ./bashrc;
     # Placed in ~/.profile (not needed as home manager automatically create a .bash_profile that sources .bashrc)
     # profileExtra = ''
     #   # Source .bashrc if it exists (tmux and login shells source .profile but not .bashrc)

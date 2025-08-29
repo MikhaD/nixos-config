@@ -4,7 +4,11 @@
   boot = {
     kernelParams = [ "quiet" ];
     loader = {
-      systemd-boot.enable = true;
+      systemd-boot = {
+        enable = true;
+        configurationLimit = 8; # Keep last 8 nixos generations in bootloader menu
+        editor = false;
+      };
       efi.canTouchEfiVariables = true;
       timeout = 1; # Only show nix derivation selector for 1 second
     };

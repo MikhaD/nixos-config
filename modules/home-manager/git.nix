@@ -1,9 +1,9 @@
-{ ... }:
+{ details, ... }:
 {
   programs.git = {
     enable = true;
-    userName = "mikha";
-    userEmail = "31388146+MikhaD@users.noreply.github.com";
+    userName = details.username;
+    userEmail = details.email;
     aliases = {
       logg = "log --oneline --graph --all --decorate";
     };

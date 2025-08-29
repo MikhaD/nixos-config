@@ -6,7 +6,7 @@ let
 in
 {
   imports = [
-    ./cli/terraform.nix
+    ./../terraform.nix
   ];
 
   home.sessionVariables = {
@@ -26,5 +26,6 @@ in
     pgloader
     poetry
     stdenv.cc.cc.lib
+    (pkgs.writeShellScriptBin "emulators" (builtins.readFile ./emulators.sh))
   ];
 }

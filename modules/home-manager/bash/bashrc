@@ -1,20 +1,6 @@
 # Exit if the shell is not running interactively.
 [[ $- != *i* ]] && return
 
-# Colorize man output
-# man() {
-#     # LESS_TERMCAP_md: The section headings and command line options
-#     # LESS_TERMCAP_us Command names and arguments
-#     # LESS_TERMCAP_so: The bar at the bottom with the page number and exit instructions
-#     LESS_TERMCAP_md=$'\e[01;96m' \
-#         LESS_TERMCAP_me=$'\e[0m' \
-#         LESS_TERMCAP_us=$'\e[01;32m' \
-#         LESS_TERMCAP_ue=$'\e[0m' \
-#         LESS_TERMCAP_so=$'\e[100m' \
-#         LESS_TERMCAP_se=$'\e[0m' \
-#         command man "$@"
-# }
-
 shopt -s histappend   # append to the history file, don't overwrite it
 shopt -s checkwinsize # check the window size after each command and update LINES and COLUMNS if necessary
 shopt -s extglob      # extended pattern matching features
@@ -33,23 +19,20 @@ bind '"\e[B": history-search-forward'  # Use ↓ to search forwards through your
 # Add the ability to cd up several directories using additional dots after cd ..
 # For example, cd ... goes up two directories
 cd() {
-  case "$1" in
-    ..*)
-      # Length of the argument (which is all .s)
-      local n=${#1}
-      local ups=""
-      local i=1
-      # Build a string like ../, ../../, ../../../
-      while [ $i -lt $n ]; do
-        ups="../$ups"
-        i=$((i + 1))
-      done
-      builtin cd "$ups" # Use builtin to prevent infinite recursion
-      ;;
-    *)
-      builtin cd "$@"
-      ;;
-  esac
+    if [[ "$1" == ..+(.) ]]; then # requires extglob to be enabled
+        # Length of the argument (which is all .s)
+        local n=${#1}
+        local ups=""
+        local i=1
+        # Build a string like ../, ../../, ../../../
+        while [ $i -lt $n ]; do
+            ups="../$ups"
+            i=$((i + 1))
+        done
+        builtin cd "$ups" # Use builtin to prevent infinite recursion
+    else
+        builtin cd "$@"
+    fi
 }
 
 #  ▗▄▄▖  ▗▄▖  ▗▄▄▖▗▖ ▗▖    ▗▄▄▖ ▗▄▄▖  ▗▄▖ ▗▖  ▗▖▗▄▄▖▗▄▄▄▖
@@ -171,7 +154,7 @@ parse_directory() {
     fi
 }
 
-function distro_icon() {
+distro_icon() {
     if [ -e "/etc/os-release" ]; then
         local distro=$(source /etc/os-release && echo $ID)
     else
@@ -195,6 +178,13 @@ function distro_icon() {
     echo "\[\e[$1;${color}m\]${icon}"
 }
 
+# Function that displays 󰢹 before the prompt if the terminal is being accessed via SSH
+ssh_session() {
+    if [ -n "$SSH_CLIENT" ]; then
+        echo "\[\e[94m\]󰢹 \[\e[0m\]";
+    fi
+}
+
 # Function that displays  before the prompt if we are in a nix shell, or  󰌪 if we are in a pure nix shell (pure: no system software included)
 nix_shell() {
     if [ -n "$IN_NIX_SHELL" ]; then
@@ -204,14 +194,14 @@ nix_shell() {
 }
 
 # Timer for measuring the time it takes to run a command
-function timer_start {
+timer_start() {
     [ -n "$COMP_LINE" ] && return # do nothing if completing
     [ "$BASH_COMMAND" = "$PROMPT_COMMAND" ] && return
     timer=$(date +%s%3N)
 }
 
 # Stop the timer and print the time it took to run the command in a human readable format
-function timer_stop() {
+timer_stop() {
     local end_time=$(date +%s%3N)
     if [ -z "$timer" ]; then
         echo "-"
@@ -233,7 +223,7 @@ function timer_stop() {
 }
 
 # Function that runs just before the prompt is displayed
-function prompt_command() {
+prompt_command() {
     local exit_code=$?
     duration=$(timer_stop)
     unset timer
@@ -261,16 +251,11 @@ dir_bg=47 # white
 git_bg=46 # cyan
 edge=""  # other options:          
 
-PS1="$(nix_shell)"
+PS1="$(ssh_session)$(nix_shell)"
 PS1+="\[\e[$(($bg1 - 10))m\]$(distro_icon $bg1)\[\e[1;$usr_fg;${bg1}m\]\u \[\e[0;$(($bg1 - 10));${dir_bg}m\]$edge"
 PS1+="\[\e[${fg1}m\] \$(parse_directory) \[\e[$git_bg;$(($dir_bg - 10))m\]$edge"
 PS1+="\[\e[${fg1}m\] \$(parse_git_branch)\[\e[0;\${exit_bg};$(($git_bg - 10))m\]$edge"
 PS1+=" \[\e[\${exit_fg}m\] \${duration} \[\e[$bg1;\$((exit_bg - 10))m\]$edge"
 PS1+="\[\e[1;37m\]\$\[\e[0;$(($bg1 - 10))m\]$edge\[\e[0m\] "
 
-unset distro_icon bg1 fg1 usr_fg dir_bg git_bg edge
-
-# This config file is made to be portable across all my different systems. Anything specific to a system should be in ~/.system_specific_bashrc
-if [ -f ~/.system_specific_bashrc ]; then
-    . ~/.system_specific_bashrc
-fi
+unset distro_icon ssh_session nix_shell bg1 fg1 usr_fg dir_bg git_bg edge

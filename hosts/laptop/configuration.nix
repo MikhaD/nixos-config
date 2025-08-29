@@ -1,26 +1,73 @@
-{ pkgs, details, ... }:
+{ pkgs, inputs, details, ... }:
 {
-  imports =
-    [
-      ./hardware-configuration.nix # Include the results of the hardware scan.
+  imports = [
+    inputs.home-manager.nixosModules.home-manager
+    ./hardware-configuration.nix # Include the results of the hardware scan.
 
-      ./programs/cli/ssh.nix
+    ./../../modules/nixos/programs/ssh.nix
 
-      ./system/bluetooth.nix
-      ./system/boot.nix
-      ./system/fonts.nix
-      ./system/nvidia.nix
+    ./../../modules/nixos/system/bluetooth.nix
+    ./../../modules/nixos/system/boot.nix
+    ./../../modules/nixos/system/fonts.nix
+    ./../../modules/nixos/system/nvidia.nix
 
-      ./services/keyd.nix
-    ];
-  nix = {
-    settings.experimental-features = ["nix-command" "flakes"];
-    settings.auto-optimise-store = true; # Automatically hard link identical files in the Nix store to save space
-    # Automatically run nix store garbage collection once a week
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 30d"; # Remove old generations older than 30 days
+    ./../../modules/nixos/services/keyd.nix
+  ];
+
+  home-manager = {
+    useUserPackages = true;
+    useGlobalPkgs = true;
+    extraSpecialArgs = { inherit details; };
+    users.${details.username} = {
+      imports = [
+        ./../../modules/home-manager/bash
+        ./../../modules/home-manager/bat.nix
+        ./../../modules/home-manager/git.nix
+        ./../../modules/home-manager/neovim.nix
+        ./../../modules/home-manager/python.nix
+        # ./programs/cli/ssh.nix
+        ./../../modules/home-manager/tmux
+        ./../../modules/home-manager/wl-clipboard.nix
+
+        ./../../modules/home-manager/firefox.nix
+
+        ./../../modules/home-manager/work
+      ];
+      programs.chromium.enable = true;
+      home = {
+        username = details.username;
+        homeDirectory = "/home/${details.username}";
+
+        sessionVariables = rec {
+          # XDG Base directories: https://specifications.freedesktop.org/basedir-spec/latest
+          XDG_DATA_HOME="$HOME/.local/share";  # User specific data files
+          XDG_CONFIG_HOME="$HOME/.config";     # User specific configuration files
+          XDG_STATE_HOME="$HOME/.local/state"; # User specific state files
+          XDG_CACHE_HOME="$HOME/.cache";       # User specific non-essential data files
+
+          # Bash history options. See bash man page for details
+          HISTSIZE=2000;                       # Number of commands saved per session
+          HISTFILESIZE=8000;                   # Number of lines stored in the history file
+          HISTCONTROL="ignorespace:erasedups"; # ignore commands with leading whitespace; add each line only once, erasing prev occurrences
+
+          # Home directory cleanup
+          HISTFILE="${XDG_STATE_HOME}/bash_history"; # Removes .bash_history from ~
+
+          NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npmrc";  # Removes .npmrc from ~
+          NPM_CONFIG_CACHE="${XDG_CACHE_HOME}/npm";          # Removes .npm/ from ~
+          BOTO_CONFIG="${XDG_CONFIG_HOME}/botorc";           # Removes .boto from ~
+          ANDROID_USER_HOME="${XDG_DATA_HOME}/android";      # Removes .android/ from ~
+          MAVEN_OPTS="-Duser.home=${XDG_DATA_HOME}/maven";   # Removes .m2/ from ~
+          JAVA_USER_HOME="${XDG_DATA_HOME}/java";            # Removes .java/ from ~
+          GOPATH="${XDG_DATA_HOME}/go";                      # Removes go/ from ~
+          LESSHISTFILE="${XDG_STATE_HOME}/lesshst";          # Removes .lesshst from ~
+          WGETRC="${XDG_DATA_HOME}/wget-hsts";               # Removes .wget-hsts from ~
+        };
+        # You can update Home Manager without changing this value. See
+        # the Home Manager release notes for a list of state version
+        # changes in each release.
+        stateVersion = "25.05";
+      };
     };
   };
   virtualisation = {
@@ -32,10 +79,11 @@
     };
   };
 
-  networking.hostName = details.hostname; # Define your hostname.
-
-  # Enable networking
-  networking.networkmanager.enable = true;
+  networking = {
+    hostName = "laptop"; # Define your hostname.
+    networkmanager.enable = true;
+    firewall.enable = true;
+  };
 
   # Set your time zone.
   time.timeZone = "Africa/Johannesburg";
@@ -84,7 +132,7 @@
 
   users.users.${details.username} = {
     isNormalUser = true;
-    description = "Mikha Davids";
+    description = details.fullName;
     extraGroups = [ "networkmanager" "wheel" "podman" ];
   };
 
@@ -111,6 +159,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     ########################## CLI Tools #########################
+    alejandra
     curl
     exfat # Allow me to format drives as exfat (broad OS compatibility)
     fastfetch
@@ -156,6 +205,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.05"; # Did you read the comment?
-  system.autoUpgrade.enable = false;
-  system.autoUpgrade.allowReboot = false;
 }
