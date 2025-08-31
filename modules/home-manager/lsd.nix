@@ -4,31 +4,31 @@
     enableBashIntegration = true;
     icons = {
       extension = {
-        dockerignore = "";
-        gcloudignore = "󱇶";
         markdown = "";
         md = "";
         yaml = "";
         yml = "";
       };
-      # Folders match my .bashrc icons
+      # Folders match my .bashrc icons (Names must be in lower case)
       # Icons from https://www.nerdfonts.com/cheat-sheet
+      # defaults: https://github.com/lsd-rs/lsd/blob/master/src/theme/icon.rs
       name = {
         "android" = "";
-        "Android" = "";
         ".bash_profile" = "";
         ".bashrc" = "";
         "bashrc" = "";
         "bin" = "";
         ".cache" = "󱘿";
         ".config" = "";
-        "Desktop" = "";
-        "Development" = "󰘦";
+        "desktop" = "";
+        "development" = "󰘦";
         ".docker" = "";
-        "Documents" = "󱔗";
-        "Downloads" = "󰉍";
+        ".dockerignore" = "";
+        "documents" = "󱔗";
+        "downloads" = "󰉍";
         "etc" = "";
         ".gcs" = "󰆼";
+        ".gcloudignore" = "󱇶";
         ".git" = "";
         ".github" = "";
         ".idea" = "";
@@ -38,12 +38,12 @@
         "media" = "󰕓";
         "mnt" = "";
         ".mozilla" = "󰈹";
-        "Music" = "";
+        "music" = "󱍙";
         "nix" = "";
         "nixos" = "";
         ".npm" = "";
         "opt" = "";
-        "Pictures" = "";
+        "pictures" = "󰉏";
         "proc" = "";
         ".profile" = "";
         "Public" = "";
@@ -53,7 +53,7 @@
         "tmux.conf" = "";
         "usr" = "󰪋";
         "var" = "";
-        "Videos" = "󰨜";
+        "videos" = "󰨜";
         ".vim" = "";
         ".vscode" = "";
       };

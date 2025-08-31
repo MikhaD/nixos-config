@@ -12,6 +12,8 @@
       username = "mikha";
       fullName = "Mikha Davids";
       email = "31388146+MikhaD@users.noreply.github.com";
+      timeZone = "Africa/Johannesburg";
+      locale = "en_ZA.UTF-8";
     };
     mkNixOSConfig = path:
       inputs.nixpkgs.lib.nixosSystem {
@@ -20,6 +22,8 @@
           {
             nix.settings.experimental-features = ["nix-command" "flakes"];
             nixpkgs.config.allowUnfree = true;
+            time.timeZone = details.timeZone;
+            i18n.defaultLocale = details.locale;
           }
           path
         ];
