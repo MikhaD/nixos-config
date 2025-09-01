@@ -5,7 +5,7 @@
     # portal.extraPortals = [pkgs.kdePackages.xdg-desktop-portal-kde];
     mime.enable = true;
     mimeApps = {
-      enable = true;
+      # enable = true;
       # specify default applications for a given mime type
       # defaultApplications = {
 

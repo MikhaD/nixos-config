@@ -1,4 +1,4 @@
-{details, ...}: {
+{config, ...}: {
   imports = [
     ./hardware-configuration.nix
 
@@ -7,14 +7,11 @@
     ./../../modules/nixos/services/tlp.nix
     ./../../modules/nixos/system/boot.nix
     ./../../modules/nixos/system/gc.nix
+    ./../../modules/nixos/programs/nix-ld.nix
     ./../../modules/nixos/system/user.nix
   ];
 
-  networking = {
-    hostName = "homelab";
-    networkmanager.enable = true;
-    # firewall.allowedTCPPorts = [80 443];
-  };
+  # networking.firewall.allowedTCPPorts = [80 443];
 
   default-user.enable = true;
   default-user.autoLogin = true;
@@ -33,7 +30,7 @@
       ./../../modules/home-manager/tree.nix
     ];
     sessionVariables = {
-      LESSHISTFILE = "$XDG_STATE_HOME/lesshst";
+      LESSHISTFILE = "${config.xdg.stateHome}/lesshst";
     };
     extra = {
       programs.bash.profileExtra = ''

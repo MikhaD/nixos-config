@@ -1,9 +1,9 @@
-{...}: {
+{config, ...}: {
   programs.bash = {
     enable = true;
     # Placed in ~/.bashrc
     initExtra = builtins.readFile ./bashrc;
-    historyFile = "$XDG_STATE_HOME/bash_history";
+    historyFile = "${config.xdg.stateHome}/bash_history";
     historyControl = ["ignorespace" "erasedups"]; # ignore commands with leading whitespace; add each line only once, erasing prev occurrences
     historySize = 2000; # Number of commands saved per session
     historyFileSize = 8000; # Number of lines stored in the history file

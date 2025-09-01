@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  config,
+  ...
+}: {
   imports = [
     ./hardware-configuration.nix # Include the results of the hardware scan.
 
@@ -11,6 +15,7 @@
     ./../../modules/nixos/system/gc.nix
     ./../../modules/nixos/system/nvidia.nix
     ./../../modules/nixos/services/pipewire.nix
+    ./../../modules/nixos/programs/nix-ld.nix
     ./../../modules/nixos/programs/podman.nix
 
     ./../../modules/nixos/services/keyd.nix
@@ -18,11 +23,6 @@
     ./../../modules/home-manager
     ./../../modules/nixos/system/user.nix
   ];
-
-  networking = {
-    hostName = "laptop";
-    networkmanager.enable = true;
-  };
 
   default-user.enable = true;
 
@@ -50,13 +50,13 @@
     ];
     sessionVariables = {
       # Home directory cleanup
-      BOTO_CONFIG = "$XDG_CONFIG_HOME/botorc"; # Removes .boto from ~
-      ANDROID_USER_HOME = "$XDG_DATA_HOME/android"; # Removes .android/ from ~
-      MAVEN_OPTS = "-Duser.home=$XDG_DATA_HOME/maven"; # Removes .m2/ from ~
-      JAVA_USER_HOME = "$XDG_DATA_HOME/java"; # Removes .java/ from ~
-      GOPATH = "$XDG_DATA_HOME/go"; # Removes go/ from ~
-      LESSHISTFILE = "$XDG_STATE_HOME/lesshst"; # Removes .lesshst from ~
-      WGETRC = "$XDG_DATA_HOME/wget-hsts"; # Removes .wget-hsts from ~
+      BOTO_CONFIG = "${config.xdg.configHome}/botorc"; # Removes .boto from ~
+      ANDROID_USER_HOME = "${config.xdg.dataHome}/android"; # Removes .android/ from ~
+      MAVEN_OPTS = "-Duser.home=${config.xdg.dataHome}/maven"; # Removes .m2/ from ~
+      JAVA_USER_HOME = "${config.xdg.dataHome}/java"; # Removes .java/ from ~
+      GOPATH = "${config.xdg.dataHome}/go"; # Removes go/ from ~
+      LESSHISTFILE = "${config.xdg.stateHome}/lesshst"; # Removes .lesshst from ~
+      WGETRC = "${config.xdg.dataHome}/wget-hsts"; # Removes .wget-hsts from ~
     };
   };
 
@@ -74,14 +74,6 @@
 
   environment.variables = {
     GTK_USE_PORTAL = 1;
-  };
-
-  # https://blog.thalheim.io/2022/12/31/nix-ld-a-clean-solution-for-issues-with-pre-compiled-executables-on-nixos/
-  programs.nix-ld = {
-    enable = true;
-    # libraries = with pkgs; [ # Add missing dynamic libraries here, not in environment.systemPackages
-    #   stdenv.cc.cc.lib
-    # ];
   };
 
   programs.steam.enable = true;
