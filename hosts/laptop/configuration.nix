@@ -50,13 +50,8 @@
     ];
     sessionVariables = {
       # Home directory cleanup
-      BOTO_CONFIG = "${config.xdg.configHome}/botorc"; # Removes .boto from ~
-      ANDROID_USER_HOME = "${config.xdg.dataHome}/android"; # Removes .android/ from ~
-      MAVEN_OPTS = "-Duser.home=${config.xdg.dataHome}/maven"; # Removes .m2/ from ~
-      JAVA_USER_HOME = "${config.xdg.dataHome}/java"; # Removes .java/ from ~
-      GOPATH = "${config.xdg.dataHome}/go"; # Removes go/ from ~
-      LESSHISTFILE = "${config.xdg.stateHome}/lesshst"; # Removes .lesshst from ~
-      WGETRC = "${config.xdg.dataHome}/wget-hsts"; # Removes .wget-hsts from ~
+      # BOTO_CONFIG = "${config.xdg.configHome}/botorc"; # Removes .boto from ~
+      # ANDROID_USER_HOME = "${config.xdg.dataHome}/android"; # Removes .android/ from ~
     };
   };
 

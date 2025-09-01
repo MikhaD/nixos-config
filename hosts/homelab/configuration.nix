@@ -29,9 +29,6 @@
       ./../../modules/home-manager/tmux
       ./../../modules/home-manager/tree.nix
     ];
-    sessionVariables = {
-      LESSHISTFILE = "${config.xdg.stateHome}/lesshst";
-    };
     extra = {
       programs.bash.profileExtra = ''
         SNAME="homelab"

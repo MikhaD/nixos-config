@@ -1,4 +1,8 @@
-{pkgs, ...}: let
+{
+  pkgs,
+  config,
+  ...
+}: let
   gdk = pkgs.google-cloud-sdk.withExtraComponents (with pkgs.google-cloud-sdk.components; [
     cloud-datastore-emulator
   ]);
@@ -8,6 +12,9 @@ in {
   ];
 
   home.sessionVariables = {
+    MAVEN_OPTS = "-Duser.home=${config.xdg.dataHome}/maven"; # Removes .m2/ from ~
+    JAVA_USER_HOME = "${config.xdg.dataHome}/java"; # Removes .java/ from ~
+    GOPATH = "${config.xdg.dataHome}/go"; # Removes go/ from ~
     # TODO: Bad practice, Should be in a nix-env for the thing that needs it (here at the moment to get nix shell created poetry installs to work in pycharm)
     # https://discourse.nixos.org/t/what-package-provides-libstdc-so-6/18707/2
     LD_LIBRARY_PATH = "${pkgs.stdenv.cc.cc.lib}/lib";

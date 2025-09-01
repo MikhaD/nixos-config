@@ -41,7 +41,11 @@ in {
             username = details.username;
             homeDirectory = "/home/${details.username}";
 
-            sessionVariables = cfg.sessionVariables;
+            sessionVariables =
+              {
+                LESSHISTFILE = "${config.home-manager.users.${details.username}.xdg.stateHome}/lesshst"; # Removes .lesshst from ~
+              }
+              // cfg.sessionVariables;
 
             # You can update Home Manager without changing this value. See
             # the Home Manager release notes for a list of state version
