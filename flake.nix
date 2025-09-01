@@ -15,23 +15,20 @@
       timeZone = "Africa/Johannesburg";
       locale = "en_ZA.UTF-8";
     };
-    mkNixOSConfig = path:
-      inputs.nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit details inputs;};
+    mkNixOSConfig = hostname: path: {
+      name = hostname;
+      value = inputs.nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit details inputs hostname;};
         modules = [
-          {
-            nix.settings.experimental-features = ["nix-command" "flakes"];
-            nixpkgs.config.allowUnfree = true;
-            time.timeZone = details.timeZone;
-            i18n.defaultLocale = details.locale;
-          }
+          ./modules/base.nix
           path
         ];
       };
-  in {
-    nixosConfigurations = {
-      laptop = mkNixOSConfig ./hosts/laptop/configuration.nix;
-      homelab = mkNixOSConfig ./hosts/homelab/configuration.nix;
     };
+  in {
+    nixosConfigurations = builtins.listToAttrs [
+      (mkNixOSConfig "laptop" ./hosts/laptop/configuration.nix)
+      (mkNixOSConfig "homelab" ./hosts/homelab/configuration.nix)
+    ];
   };
 }
