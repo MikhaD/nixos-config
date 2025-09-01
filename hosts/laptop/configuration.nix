@@ -1,8 +1,4 @@
-{
-  pkgs,
-  config,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix # Include the results of the hardware scan.
 
@@ -14,11 +10,13 @@
     ./../../modules/nixos/system/fonts.nix
     ./../../modules/nixos/system/gc.nix
     ./../../modules/nixos/system/nvidia.nix
-    ./../../modules/nixos/services/pipewire.nix
     ./../../modules/nixos/programs/nix-ld.nix
     ./../../modules/nixos/programs/podman.nix
+    ./../../modules/nixos/programs/steam.nix
 
     ./../../modules/nixos/services/keyd.nix
+    ./../../modules/nixos/services/pipewire.nix
+    ./../../modules/nixos/services/thermald.nix
 
     ./../../modules/home-manager
     ./../../modules/nixos/system/user.nix
@@ -59,8 +57,6 @@
     LC_NUMERIC = "en_US.UTF-8";
   };
 
-  # Temperature management daemon that prevents CPU overheating
-  services.thermald.enable = true;
   # https://github.com/Mic92/envfs
   # services.envfs.enable = true;
 
@@ -71,7 +67,6 @@
     GTK_USE_PORTAL = 1;
   };
 
-  programs.steam.enable = true;
   programs.obs-studio.enable = true;
   # List packages installed in system profile. To search, run:
   # $ nix search wget
