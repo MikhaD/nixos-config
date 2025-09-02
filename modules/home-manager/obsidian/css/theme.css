@@ -1,0 +1,14 @@
+.theme-dark {
+	--color-base-00: #202020;
+	--color-base-10: #1a1a1a;
+	--color-base-20: #161616;
+
+	--color-base-25: #2a2a2a;
+	--color-base-30: #363636;
+	--color-base-35: #3f3f3f;
+	--color-base-40: #555;
+	--color-base-50: #666;
+	--color-base-60: #999;
+	--color-base-70: #bababa;
+	--color-base-100: #dadada;
+}

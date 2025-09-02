@@ -1,0 +1,8 @@
+body {
+	--tab-width: 150px;
+	--pinned-tab-width: 80px;
+}
+
+.workspace-tab-header:has(.workspace-tab-header-inner .mod-pinned) {
+	max-width: var(--pinned-tab-width);
+}

@@ -34,6 +34,8 @@
       ./../../modules/home-manager/git.nix
       ./../../modules/home-manager/neovim.nix
       ./../../modules/home-manager/nodejs.nix
+      ./../../modules/home-manager/obs.nix
+      ./../../modules/home-manager/obsidian
       ./../../modules/home-manager/python.nix
       ./../../modules/home-manager/tree.nix
       # ./programs/cli/ssh.nix
@@ -47,7 +49,6 @@
       ./../../modules/home-manager/work
     ];
     sessionVariables = {
-      # Home directory cleanup
       # BOTO_CONFIG = "${config.xdg.configHome}/botorc"; # Removes .boto from ~
       # ANDROID_USER_HOME = "${config.xdg.dataHome}/android"; # Removes .android/ from ~
     };
@@ -67,9 +68,6 @@
     GTK_USE_PORTAL = 1;
   };
 
-  programs.obs-studio.enable = true;
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with pkgs; [
     ########################## CLI Tools #########################
     alejandra
@@ -81,7 +79,6 @@
     # code-cursor
     freecad
     libreoffice-qt
-    obsidian
     pinta
     rofi-wayland
     stremio

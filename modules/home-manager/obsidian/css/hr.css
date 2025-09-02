@@ -1,0 +1,14 @@
+/* Reduce top and bottom margin on hr */
+hr {
+	margin: 2px 0 1em 0;
+}
+.hr.cm-line {
+	height: calc(2px + 2px + 1em);
+	position: relative;
+}
+.hr.cm-line hr {
+	position: absolute;
+	width: 100%;
+	top: 2px;
+	border-top-width: 2px;
+}

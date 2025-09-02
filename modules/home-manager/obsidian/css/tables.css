@@ -1,0 +1,9 @@
+/* Make all tables take up 100% width */
+.markdown-preview-view table,
+.markdown-source-view table {
+	width: 100%;
+}
+
+.markdown-source-view.mod-cm6 .cm-table-widget {
+	margin: 0 !important;
+}

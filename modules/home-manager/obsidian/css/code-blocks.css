@@ -1,0 +1,14 @@
+/* langage display */
+.markdown-source-view.mod-cm6 .code-block-flair {
+	padding: 0;
+	color: var(--text-faint);
+}
+
+.markdown-source-view.mod-cm6 .cm-embed-block {
+	padding: 0;
+}
+
+/* HTML Preview */
+.markdown-source-view.mod-cm6 .cm-embed-block {
+	border-radius: 0;
+}
