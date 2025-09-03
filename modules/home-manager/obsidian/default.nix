@@ -1,9 +1,10 @@
 {...}: {
   programs.obsidian = {
     enable = true;
-    vaults.notes = {
-      target = "Documents/notes";
-    };
+    # vaults.Notes = {
+    #   target = "Documents/notes";
+    #   settings.communityPlugins = []; # Throws error if not set
+    # };
     defaultSettings = {
       app = {
         promptDelete = false;

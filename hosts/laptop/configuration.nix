@@ -81,7 +81,7 @@
     libreoffice-qt
     pinta
     rofi-wayland
-    stremio
+    # stremio # depends on insecure library
     vscode
 
     # keyd # I think this is installed if the service is enabled above
