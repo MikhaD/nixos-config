@@ -1,14 +1,19 @@
 {...}: {
   imports = [
     ./hardware-configuration.nix
-
     ./../../modules/home-manager
+
+    ./../../modules/nixos/services/adguardhome.nix
     ./../../modules/nixos/services/sshd
     ./../../modules/nixos/services/tlp.nix
+    ./../../modules/nixos/services/vaultwarden.nix
+    ./../../modules/nixos/services/nextcloud.nix
+
     ./../../modules/nixos/system/boot.nix
     ./../../modules/nixos/system/gc.nix
-    ./../../modules/nixos/programs/nix-ld.nix
     ./../../modules/nixos/system/user.nix
+
+    ./../../modules/nixos/programs/nix-ld.nix
   ];
 
   # networking.firewall.allowedTCPPorts = [80 443];
