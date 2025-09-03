@@ -54,10 +54,6 @@
     };
   };
 
-  i18n.extraLocaleSettings = {
-    LC_NUMERIC = "en_US.UTF-8";
-  };
-
   # https://github.com/Mic92/envfs
   # services.envfs.enable = true;
 

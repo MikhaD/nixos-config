@@ -13,7 +13,6 @@
       fullName = "Mikha Davids";
       email = "31388146+MikhaD@users.noreply.github.com";
       timeZone = "Africa/Johannesburg";
-      locale = "en_ZA.UTF-8";
     };
     mkNixOSConfig = hostname: path: {
       name = hostname;
