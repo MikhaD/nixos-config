@@ -3,8 +3,8 @@
   hardware.nvidia = {
     open = true;
     # https://download.nvidia.com/XFree86/Linux-x86_64/435.17/README/powermanagement.html
-    powerManagement.enable = true;
-    powerManagement.finegrained = true;
+    powerManagement.enable = false;
+    powerManagement.finegrained = false;
     prime = {
       # Keep discrete GPU running at all times. Improves performance, reduces battery life
       sync.enable = false;

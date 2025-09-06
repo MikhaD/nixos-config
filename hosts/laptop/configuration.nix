@@ -69,7 +69,6 @@
     alejandra
     curl
     exfat # Allow me to format drives as exfat (broad OS compatibility)
-    # quickemu # May not need, probably a dep of quickgui
     quickgui
     #################### Desktop Applications ####################
     # code-cursor
