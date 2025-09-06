@@ -235,6 +235,9 @@ prompt_command() {
     if [ $exit_code -eq 0 ]; then
         exit_bg=42
         exit_fg=30
+    elif [ $exit_code -eq 127 ]; then
+        exit_bg=43
+        exit_fg=30
     else
         exit_bg=41
         exit_fg=37
@@ -261,6 +264,6 @@ PS1+="\[\e[$(($bg1 - 10))m\]$(distro_icon $bg1)\[\e[1;$usr_fg;${bg1}m\]\u \[\
 PS1+="\[\e[${fg1}m\] \$(parse_directory) \[\e[$git_bg;$(($dir_bg - 10))m\]$edge"
 PS1+="\[\e[${fg1}m\] \$(parse_git_branch)\[\e[0;\${exit_bg};$(($git_bg - 10))m\]$edge"
 PS1+=" \[\e[\${exit_fg}m\] \${duration} \[\e[$bg1;\$((exit_bg - 10))m\]$edge"
-PS1+="\[\e[1;37m\]\$\[\e[0;$(($bg1 - 10))m\]$edge\[\e[0m\] "
+PS1+="\[\e[1;37m\]\\$\[\e[0;$(($bg1 - 10))m\]$edge\[\e[0m\] "
 
 unset distro_icon ssh_session nix_shell bg1 fg1 usr_fg dir_bg git_bg edge

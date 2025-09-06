@@ -1,9 +1,9 @@
+# Default config applied to all machines, imported in flake
 {
   details,
   hostname,
   ...
 }: {
-  # Default config applied to all machines
   nix.settings.experimental-features = ["nix-command" "flakes"];
   nixpkgs.config.allowUnfree = true;
   time.timeZone = details.timeZone;
