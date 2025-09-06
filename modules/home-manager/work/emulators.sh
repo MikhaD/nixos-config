@@ -44,7 +44,7 @@ start_emulators() {
 		'" # Run podman stop redis_server when this window is closed
 		new_window_if_not_exists "$2" "datastore" "gcloud beta emulators datastore start --use-firestore-in-datastore-mode"
 		new_window_if_not_exists "$2" "vite" "cd ~/Documents/work/quicklysign-python3/quicklysign/statics && npm run dev"
-		new_window_if_not_exists "$2" "tasks" "cd ~/Documents/work/cloud-tasks-emulator && ./cloud-tasks-emulator -host localhost -port 8123"
+		new_window_if_not_exists "$2" "tasks" "cloud-tasks-emulator -host localhost -port 8123"
 	fi
 }
 
