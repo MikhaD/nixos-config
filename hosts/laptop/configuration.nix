@@ -68,6 +68,7 @@
   environment.systemPackages = with pkgs; [
     ########################## CLI Tools #########################
     alejandra
+    bruno
     curl
     exfat # Allow me to format drives as exfat (broad OS compatibility)
     quickgui

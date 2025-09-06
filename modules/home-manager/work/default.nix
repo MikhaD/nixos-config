@@ -23,7 +23,6 @@ in {
   };
 
   home.packages = with pkgs; [
-    bruno
     gdk
     google-cloud-sql-proxy
     jdk
@@ -31,8 +30,9 @@ in {
     jetbrains.pycharm-professional
     ngrok
     pgloader
-    poetry
     stdenv.cc.cc.lib
     (pkgs.writeShellScriptBin "emulators" (builtins.readFile ./emulators.sh))
   ];
+
+  xdg.dataFile."bash-completion/completions/emulators".source = ./emulators-completions.sh;
 }

@@ -27,15 +27,21 @@ new_window_if_not_exists() {
 # @param $1 - The argument to pass to this script, either "test" or "postgres"
 # @param $2 - The name of the tmux session to add windows to
 start_emulators() {
-	start_or_create_container "redis_server" "redis:latest" "-p 6379:6379"
-	new_window_if_not_exists "$2" "redis" "podman logs -f redis_server"
 	if [ "$1" == "postgres" ]; then
 		start_or_create_container "pg_quicklysign" "postgres:latest" "-p 5432:5432 -e POSTGRES_PASSWORD=testpassword -e POSTGRES_USER=test -e POSTGRES_DB=quicklysign"
-		new_window_if_not_exists "$2" "postgres" "podman logs -f pg_quicklysign"
+		new_window_if_not_exists "$2" "postgres" "bash -c '
+			trap \"podman stop pg_quicklysign\" EXIT
+			podman logs -f pg_quicklysign
+		'" # Run podman stop pg_quicklysign when this window is closed
 	fi
-	if [ "$1" == "test" ]; then
+	if [ "$1" == "testing" ]; then
 		new_window_if_not_exists "$2" "datastore" "gcloud beta emulators datastore start --use-firestore-in-datastore-mode --no-store-on-disk"
 	else
+		start_or_create_container "redis_server" "redis:latest" "-p 6379:6379"
+		new_window_if_not_exists "$2" "redis" "bash -c '
+			trap \"podman stop redis_server\" EXIT
+			podman logs -f redis_server
+		'" # Run podman stop redis_server when this window is closed
 		new_window_if_not_exists "$2" "datastore" "gcloud beta emulators datastore start --use-firestore-in-datastore-mode"
 		new_window_if_not_exists "$2" "vite" "cd ~/Documents/work/quicklysign-python3/quicklysign/statics && npm run dev"
 		new_window_if_not_exists "$2" "tasks" "cd ~/Documents/work/cloud-tasks-emulator && ./cloud-tasks-emulator -host localhost -port 8123"
