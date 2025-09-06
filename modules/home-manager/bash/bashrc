@@ -1,14 +1,6 @@
 # Exit if the shell is not running interactively.
 [[ $- != *i* ]] && return
 
-shopt -s histappend   # append to the history file, don't overwrite it
-shopt -s checkwinsize # check the window size after each command and update LINES and COLUMNS if necessary
-shopt -s extglob      # extended pattern matching features
-shopt -s globstar     # Make the pattern "**" match all files in pathname expansion and 0 or more dirs and subdirs.
-shopt -s checkjobs    # List the status of any stopped and running jobs before exiting the shell
-shopt -s dirspell     # Auto-correct directory names
-# shopt -s autocd       # Change to a directory just by typing its name
-
 #    ▗▄▄▖ ▗▄▄▄▖ ▗▄▖ ▗▄▄▄ ▗▖   ▗▄▄▄▖▗▖  ▗▖▗▄▄▄▖
 #    ▐▌ ▐▌▐▌   ▐▌ ▐▌▐▌  █▐▌     █  ▐▛▚▖▐▌▐▌
 #    ▐▛▀▚▖▐▛▀▀▘▐▛▀▜▌▐▌  █▐▌     █  ▐▌ ▝▜▌▐▛▀▀▘

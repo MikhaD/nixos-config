@@ -23,7 +23,6 @@ buildGoModule rec {
     description = "Google cloud tasks emulator";
     homepage = "https://github.com/aertje/cloud-tasks-emulator";
     license = lib.licenses.mit;
-    maintainers = with lib.maintainers; [];
     mainProgram = "cloud-tasks-emulator";
   };
 }

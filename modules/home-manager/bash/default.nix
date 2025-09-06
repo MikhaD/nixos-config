@@ -19,5 +19,17 @@
       grep = "grep --color=auto"; # Use grep with color by default
       wifi = "nmcli device wifi show-password"; # Print the wifi password & QR code to join
     };
+    # All options: https://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html
+    shellOptions = [
+      "histappend" #              Append to the history file, don't overwrite it
+      "checkwinsize" #            Check the window size after each command and update LINES and COLUMNS if necessary
+      "extglob" #                 Extended pattern matching features
+      "globstar" #                Make the pattern "**" match all files in pathname expansion and 0 or more dirs and subdirs.
+      "checkjobs" #               List the status of any stopped and running jobs before exiting the shell
+      "dirspell" #                Auto-correct directory names
+      "cdspell" #                 Auto-correct minor spelling errors in the argument to the cd builtin
+      "no_empty_cmd_completion" # Do not perform command completion on an empty command line
+      "autocd" #                  Change to a directory just by typing its name
+    ];
   };
 }
