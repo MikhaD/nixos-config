@@ -31,6 +31,7 @@
       ./../../modules/home-manager/bat.nix
       ./../../modules/home-manager/chromium.nix
       ./../../modules/home-manager/fastfetch.nix
+      ./../../modules/home-manager/fzf.nix
       ./../../modules/home-manager/git.nix
       ./../../modules/home-manager/neovim.nix
       ./../../modules/home-manager/nodejs.nix

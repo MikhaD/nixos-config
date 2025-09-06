@@ -1,6 +1,8 @@
 # Mikha's NIXOS Configs
 This repository contains my nixos configuration files for my laptop and server.
 
+Several modules, like bash, have their own readme files with more information.
+
 ⚠️ This is a work in progress. There are many aspects of my system that are still configured imperatively.
 
 

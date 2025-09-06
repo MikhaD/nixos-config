@@ -16,9 +16,7 @@
     # '';
     shellAliases = {
       cls = "clear"; # clear screen using cls like windows powershell
-      reload = "source ~/.bashrc"; # reload the bashrc file
       grep = "grep --color=auto"; # Use grep with color by default
-      ".." = "cd .."; # Go up one directory
       wifi = "nmcli device wifi show-password"; # Print the wifi password & QR code to join
     };
   };

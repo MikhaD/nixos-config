@@ -27,6 +27,7 @@
       ./../../modules/home-manager/bash
       ./../../modules/home-manager/bat.nix
       ./../../modules/home-manager/fastfetch.nix
+      ./../../modules/home-manager/fzf.nix
       ./../../modules/home-manager/git.nix
       ./../../modules/home-manager/lsd.nix
       ./../../modules/home-manager/neovim.nix

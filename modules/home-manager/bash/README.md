@@ -2,11 +2,20 @@
 This module configures bash. Importing it into home manager will enable bash with the following options and additional functionality.
 > Be aware that a nerd font is required to see all icons in the prompt. JetBrains Mono Nerd Font can be included by importing `modules/nixos/system/fonts.nix` in your system configuration.
 
-## Shell options
-- Press Tab to autocomplete file names and commands
+## Readline & shell configuration
+- Press Tab to autocomplete file names and commands, and cycle through options with repeated presses
 - Ignore case when autocompleting
 - Use ↑ to search backwards through your history for the text in the prompt
 - Use ↓ to search forwards through your history for the text in the prompt
+- Do not print out control characters in a visible format (e.g. ^C)
+- Sync bash history across all open terminals on each command
+- Don't store duplicate entries in bash history
+- When tab completing in the middle of a word, move the cursor past the completed text instead of inserting the completed text at the cursor position (pressing tab with your cursor after the `u` in `cd modules` will move your cursor to the end instead of changing it to `cd modulesles`)
+- Bind <kbd>Ctrl + Backspace</kbd> to delete the last word in the prompt
+- Bind <kbd>Ctrl + B</kbd> to go up one directory (`cd ..`)
+- Bind <kbd>Alt + S</kbd> to prepend `sudo` to the current command
+- Bind <kbd>Ctrl + R</kbd> to reload the bashrc file
+- Set the terminal cursor to a blinking bar
 
 ## Extra Functionality
 - cd accepts any number of `.`s after `..` to go up additional directories (e.g. `cd ...` goes up 2 directories, `cd ....` goes up 3, etc).
@@ -45,7 +54,7 @@ This section shows the current git branch and status if you are in a git reposit
 #### 4: Command Duration & Exit Status
 This section shows the duration of the last command down to the millisecond. The units go up to days. The color of this section changes based on the exit status of the previous command:
 - green for 0 (success)
-- yellow for 127 (command not found)
+- yellow for 130 (Ctrl + C)
 - red for everything else.
 
 #### 5: Prompt Symbol
@@ -56,10 +65,17 @@ The following aliases are included by default:
 | Alias | Command | Description |
 |-------|---------|-------------|
 | `cls` | `clear` | Clear the terminal |
-| `reload` | `source ~/.bashrc` | Reload the bash configuration |
 | `grep` | `grep --color=auto` | Enable colored grep output |
-| `..` | `cd ..` | Go up one directory |
 | `wifi` | `nmcli device wifi show-password` | Print the current wifi SSID, password and a QR code to join it |
 
 ## Extra Resources
 - [Color codes & how to use them](https://en.wikipedia.org/wiki/ANSI_escape_code#Colors)
+- [Readline options (arch wiki)](https://wiki.archlinux.org/title/Readline)
+- [All readline options](https://www.gnu.org/software/bash/manual/html_node/Bindable-Readline-Commands.html)
+- [Bash reference manual](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Bash-Variables)
+- [List of programs that support XDG dirs](https://wiki.archlinux.org/title/XDG_Base_Directory)
+- [Controlling the bash prompt](https://www.gnu.org/software/bash/manual/html_node/Controlling-the-Prompt.html)
+
+### potential future additions
+- [ble.sh](https://github.com/akinomyoga/ble.sh)
+- [zoxide](https://github.com/ajeetdsouza/zoxide)
