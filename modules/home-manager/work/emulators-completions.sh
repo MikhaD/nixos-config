@@ -1,8 +1,6 @@
 _emulators_completions() {
-	if [[ $COMP_CWORD -eq 1 ]] ; then
+	if [[ $COMP_CWORD -eq 1 ]]; then
 		COMPREPLY=( $(compgen -W "default postgres testing" -- "${COMP_WORDS[COMP_CWORD]}") )
-	else
-		COMPREPLY=()
 	fi
 }
 

@@ -1,6 +1,17 @@
 # Work Module
 This module provides the applications and scripts I use for work.
 
+## Applications
+- `cloud-tasks-emulator` (a custom module built from source because it is not in nixpkgs)
+- `dsadmin` (a custom module downloaded from github)
+- `gcloud` (with the datastore emulator)
+- `ngrok`
+- `pycharm-professional`
+- `intellij-idea-ultimate`
+- `java` (open JDK)
+- `pgloader`
+- `google-cloud-sql-proxy`
+
 ## Features
 
 ### Emulators Script
@@ -19,15 +30,12 @@ The script tries to be as flexible as possible with tmux sessions.
 		- if you say no, it asks if you want to add the emulator windows to the current session
 	- if there isn't, it asks if you want to add the emulator windows to the current session, or create a new session called emulators.
 
-### Applications
-- `cloud-tasks-emulator` (a custom module built from source because it is not in nixpkgs)
-- `gcloud` (with the datastore emulator)
-- `ngrok`
-- `pycharm-professional`
-- `intellij-idea-ultimate`
-- `java` (open JDK)
-- `pgloader`
-- `google-cloud-sql-proxy`
+### dsadmin
+A simple admin interface for the google datastore emulator. In order to use it you first need to add google cloud datastore's env variables to your shell.
+```bash
+eval $(gcloud beta emulators datastore env-init)
+dsadmin
+```
 
 ## Resources
 - [Bash completions](https://opensource.com/article/18/3/creating-bash-completion-script)

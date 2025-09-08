@@ -16,7 +16,7 @@ buildGoModule rec {
   };
 
   vendorHash = "sha256-jThPgALga/mhLW5zNKEj8vcge7HbbFGZHTRTc2ALIP0=";
-  subPackages = [ "." ];
+  subPackages = ["."];
   ldflags = ["-s" "-w"];
 
   meta = {
