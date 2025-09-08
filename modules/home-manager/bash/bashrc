@@ -16,22 +16,22 @@ bind '"\e[B": history-search-forward'   # Use ↓ to search forwards through you
 bind '"\C-h": backward-kill-word'       # Use Ctrl+Backspace to delete the last word in the prompt
 bind '"\C-b": "cd ..\n"'                # Use Ctrl+b to go up one directory
 bind '"\es": "\C-asudo \C-e"'           # Use Alt+s to prepend sudo to the current command
-bind '"\C-r": "source ~/.bashrc\n"'     # Use Ctrl+R to reload the bashrc file
-bind '"\C-x": "tmux detach &> /dev/null\n"' # Use Ctrl+X to detach from the current tmux session
+bind '"\C-r": "source ~/nix/modules/home-manager/bash/bashrc\n"'     # Use Ctrl+R to reload the bashrc file
+bind '"\C-w": "tmux detach &> /dev/null\n"' # Use Ctrl+X to detach from the current tmux session
 # bind "set editing-mode vi"              # Use vi keybindings in the terminal (seems to prevent the use of the up and down arrow keys)
 # bind "set show-all-if-ambiguous on"     # print out all matching files/directories if there are multiple possibilities
 # bind "set colored-stats on"             # show directories in a different color when show-all-if-ambiguous is enabled
 # bind "set colored-completion-prefix on" # show the part of the completed text that was already typed in a different color when show-all-if-ambiguous is enabled
 
-#     ▗▄▄▖▗▄▄▄
-#    ▐▌   ▐▌  █
-#    ▐▌   ▐▌  █
-#    ▝▚▄▄▖▐▙▄▄▀
+#     ▗▄▄▖▗▖   ▗▄▄▄▖     ▗▄▖ ▗▖  ▗▖▗▄▄▄▖▗▄▄▖ ▗▖    ▗▄▖▗▖  ▗▖▗▄▄▖
+#    ▐▌   ▐▌     █      ▐▌ ▐▌▐▌  ▐▌▐▌   ▐▌ ▐▌▐▌   ▐▌ ▐▌▝▚▞▘▐▌
+#    ▐▌   ▐▌     █      ▐▌ ▐▌▐▌  ▐▌▐▛▀▀▘▐▛▀▚▖▐▌   ▐▛▀▜▌ ▐▌  ▝▀▚▖
+#    ▝▚▄▄▖▐▙▄▄▖▗▄█▄▖    ▝▚▄▞▘ ▝▚▞▘ ▐▙▄▄▖▐▌ ▐▌▐▙▄▄▖▐▌ ▐▌ ▐▌ ▗▄▄▞▘
 
 # Add the ability to cd up several directories using additional dots after cd ..
 # For example, cd ... goes up two directories
 cd() {
-    if [[ "$1" == ..+(.) ]]; then # requires extglob to be enabled
+    if [[ $1 == ..+(.) ]]; then # requires extglob to be enabled
         # Length of the argument (which is all .s)
         local n=${#1}
         local ups=""
@@ -47,6 +47,15 @@ cd() {
     fi
 }
 
+# If nix-shell is run without --run, --command or --pure then automatically start an interactive bash shell (so .bashrc is sourced)
+nix-shell() {
+    if [[ " $* " == *" --run "* || " $* " == *" --command "* || " $* " == *" --pure "* ]]; then
+        command nix-shell "$@"
+    else
+        command nix-shell "$@" --run "bash -i"
+    fi
+}
+
 #  ▗▄▄▖  ▗▄▖  ▗▄▄▖▗▖ ▗▖    ▗▄▄▖ ▗▄▄▖  ▗▄▖ ▗▖  ▗▖▗▄▄▖▗▄▄▄▖
 #  ▐▌ ▐▌▐▌ ▐▌▐▌   ▐▌ ▐▌    ▐▌ ▐▌▐▌ ▐▌▐▌ ▐▌▐▛▚▞▜▌▐▌ ▐▌ █
 #  ▐▛▀▚▖▐▛▀▜▌ ▝▀▚▖▐▛▀▜▌    ▐▛▀▘ ▐▛▀▚▖▐▌ ▐▌▐▌  ▐▌▐▛▀▘  █
@@ -59,10 +68,10 @@ parse_git_branch() {
         local branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
 
         # Check if we are in a detached HEAD state
-        if [ "$branch" = "HEAD" ]; then
+        if [[ $branch = "HEAD" ]]; then
             # Get the current commit hash
             local commit_hash=$(git rev-parse --short HEAD 2>/dev/null)
-            if [ "$commit_hash" != "" ]; then
+            if [[ $commit_hash != "" ]]; then
                 echo "⚠️ $commit_hash"
             else
                 echo "  "
@@ -133,18 +142,18 @@ declare -A DIR_ICONS=(
 parse_directory() {
     local directory=$(basename "$PWD")
     local parent_dir=$(basename "$(dirname "$PWD")")
-    if [[ "$PWD" == "$HOME"* ]]; then # if we are in a subdirectory of a subdirectory of home
-        if [ "$PWD" = "$HOME" ]; then
+    if [[ $PWD == "$HOME"* ]]; then # if we are in a subdirectory of a subdirectory of home
+        if [[ $PWD = $HOME ]]; then
             echo "~"
             return
-        elif [ "$PWD" = "$HOME/$directory" ]; then # if we are in a subdirectory of home
+        elif [[ $PWD = "$HOME/$directory" ]]; then # if we are in a subdirectory of home
             echo "~/$directory"
             return
         fi
         local home_subdir=$(echo ${PWD#$HOME/} | cut -d "/" -f 1)
         local icon="${DIR_ICONS[$home_subdir]}"
-        if [ -n "$icon" ]; then # if the parent directory has an icon
-            if [ "$PWD" = "$HOME/$parent_dir/$directory" ]; then
+        if [[ -n $icon ]]; then # if the parent directory has an icon
+            if [[ $PWD = "$HOME/$parent_dir/$directory" ]]; then
                 echo "~/$icon/$directory"
             else
                 echo "~/$icon/…/$directory"
@@ -153,14 +162,14 @@ parse_directory() {
             echo "~/…/$directory"
         fi
     else # if we are in a subdirectory of root
-        if [ "$PWD" = "/" ] || [ "$PWD" = "/$directory" ]; then
+        if [[ $PWD = "/" || $PWD = "/$directory" ]]; then
             echo "$PWD"
             return
         fi
         local subdir=$(echo $PWD | cut -d "/" -f 2)
         local icon="${DIR_ICONS[$subdir]}"
-        if [ -n "$icon" ]; then # if the parent directory has an icon
-            if [ "$PWD" = "/$parent_dir/$directory" ]; then
+        if [[ -n $icon ]]; then # if the parent directory has an icon
+            if [[ $PWD = "/$parent_dir/$directory" ]]; then
                 echo "/$icon/$directory"
             else
                 echo "/$icon/…/$directory"
@@ -172,7 +181,7 @@ parse_directory() {
 }
 
 distro_icon() {
-    if [ -e "/etc/os-release" ]; then
+    if [[ -e "/etc/os-release" ]]; then
         local distro=$(source /etc/os-release && echo $ID)
     else
         local distro="termux"
@@ -197,14 +206,14 @@ distro_icon() {
 
 # Function that displays 󰢹 before the prompt if the terminal is being accessed via SSH
 ssh_session() {
-    if [ -n "$SSH_CLIENT" ]; then
+    if [[ -n $SSH_CLIENT ]]; then
         echo "\[\e[94m\]󰢹 \[\e[0m\]";
     fi
 }
 
 # Function that displays  before the prompt if we are in a nix shell, or  󰌪 if we are in a pure nix shell (pure: no system software included)
 nix_shell() {
-    if [ -n "$IN_NIX_SHELL" ]; then
+    if [[ -n $IN_NIX_SHELL ]]; then
         local pure=$(test "$IN_NIX_SHELL" = "pure" && echo "󰌪 ")
         echo "\[\e[38;2;126;183;226m\] \[\e[38;2;159;226;126m\]$pure\[\e[0m\]"
     fi
@@ -212,15 +221,15 @@ nix_shell() {
 
 # Timer for measuring the time it takes to run a command
 timer_start() {
-    [ -n "$COMP_LINE" ] && return # do nothing if completing
-    [ "$BASH_COMMAND" = "$PROMPT_COMMAND" ] && return
+    [[ -n $COMP_LINE ]] && return # do nothing if completing
+    [[ $BASH_COMMAND = $PROMPT_COMMAND ]] && return
     timer=$(date +%s%3N)
 }
 
 # Stop the timer and print the time it took to run the command in a human readable format
 timer_stop() {
     local end_time=$(date +%s%3N)
-    if [ -z "$timer" ]; then
+    if [[ -z $timer ]]; then
         echo "-"
         return
     fi
@@ -244,10 +253,10 @@ prompt_command() {
     local exit_code=$?
     duration=$(timer_stop)
     unset timer
-    if [ $exit_code -eq 0 ]; then
+    if [[ $exit_code -eq 0 ]]; then
         exit_bg=42
         exit_fg=30
-    elif [ $exit_code -eq 130 ]; then # 130 is the exit code for Ctrl+C
+    elif [[ $exit_code -eq 130 ]]; then # 130 is the exit code for Ctrl+C
         exit_bg=43
         exit_fg=30
     else

@@ -1,4 +1,4 @@
-# Bash
+# Bash Module
 This module configures bash. Importing it into home manager will enable bash with the following options and additional functionality.
 > Be aware that a nerd font is required to see all icons in the prompt. JetBrains Mono Nerd Font can be included by importing `modules/nixos/system/fonts.nix` in your system configuration.
 
@@ -14,7 +14,8 @@ This module configures bash. Importing it into home manager will enable bash wit
 - Bind <kbd>Ctrl + Backspace</kbd> to delete the last word in the prompt
 - Bind <kbd>Ctrl + B</kbd> to go up one directory (`cd ..`)
 - Bind <kbd>Alt + S</kbd> to prepend `sudo` to the current command
-- Bind <kbd>Ctrl + R</kbd> to reload the bashrc file
+- Bind <kbd>Ctrl + R</kbd> to reload the bashrc file from `~/nix/modules/home-manager/bash/bashrc`
+- Bind <kbd>Ctrl + W</kbd> to detach from the current tmux session if there is one
 - Set the terminal cursor to a blinking bar
 
 ## Extra Functionality
@@ -28,7 +29,7 @@ The bash prompt has 6 sections. If a section is not applicable, it is omitted. T
 #### 0: Environment
 This section shows before the prompt and indicates if you are in a special environment. It can show any combination of the following:
 - A blue 󰢹 (remote desktop icon) if you are in an SSH shell.
-- A light blue  (nix snowflake) if you are in a nix shell, followed by a green 󰌪 (leaf) if you are in a pure nix shell.
+- A light blue  (nix snowflake) if you are in a nix shell, followed by a green 󰌪 (leaf) if you are in a pure nix shell (`--pure`).
 
 #### 1: OS Distribution and User
 This section shows the OS distribution icon and your username. The icon works for debian, nixos, ubuntu and termux (android).
