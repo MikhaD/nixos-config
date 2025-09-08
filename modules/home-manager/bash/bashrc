@@ -14,10 +14,11 @@ bind "set skip-completed-text on"       # When performing completion in the midd
 bind '"\e[A": history-search-backward'  # Use ↑ to search backwards through your history for the text in the prompt
 bind '"\e[B": history-search-forward'   # Use ↓ to search forwards through your history for the text in the prompt
 bind '"\C-h": backward-kill-word'       # Use Ctrl+Backspace to delete the last word in the prompt
-bind '"\C-b": "cd ..\n"'                # Use Ctrl+b to go up one directory
+bind '"\e[1;3D": "cd ..\n"'             # Use Alt+← to go up one directory
+bind '"\e[1;3C": "cd -\n"'              # Use Alt+→ to go to the previous directory
 bind '"\es": "\C-asudo \C-e"'           # Use Alt+s to prepend sudo to the current command
-bind '"\C-r": "source ~/nix/modules/home-manager/bash/bashrc\n"'     # Use Ctrl+R to reload the bashrc file
 bind '"\C-w": "tmux detach &> /dev/null\n"' # Use Ctrl+X to detach from the current tmux session
+bind '"\C-r": "source ~/nix/modules/home-manager/bash/bashrc\n"'     # Use Ctrl+R to reload the bashrc file
 # bind "set editing-mode vi"              # Use vi keybindings in the terminal (seems to prevent the use of the up and down arrow keys)
 # bind "set show-all-if-ambiguous on"     # print out all matching files/directories if there are multiple possibilities
 # bind "set colored-stats on"             # show directories in a different color when show-all-if-ambiguous is enabled
