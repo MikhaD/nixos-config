@@ -39,8 +39,8 @@
       ./../../modules/home-manager/obsidian
       ./../../modules/home-manager/python.nix
       ./../../modules/home-manager/tree.nix
-      # ./programs/cli/ssh.nix
       ./../../modules/home-manager/lsd.nix
+      # ./../../modules/home-manager/rofi.nix
       ./../../modules/home-manager/tmux
       ./../../modules/home-manager/wl-clipboard.nix
       ./../../modules/home-manager/xdg.nix
@@ -77,7 +77,6 @@
     freecad
     libreoffice-qt
     pinta
-    rofi-wayland
     # stremio # depends on insecure library
     vscode
 
