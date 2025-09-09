@@ -45,11 +45,12 @@ start_emulators() {
 		new_window_if_not_exists "$2" "datastore" "gcloud beta emulators datastore start --use-firestore-in-datastore-mode"
 		new_window_if_not_exists "$2" "vite" "cd ~/Documents/work/quicklysign-python3/quicklysign/statics && npm run dev"
 		new_window_if_not_exists "$2" "tasks" "cloud-tasks-emulator -host localhost -port 8123"
+		new_window_if_not_exists "$2" "dsadmin" "eval $(gcloud beta emulators datastore env-init) && dsadmin"
 	fi
 }
 
 name="emulators"
-if [[ -z "$TMUX" ]]; then
+if [[ $TMUX = "" ]]; then
 	# We are not inside a tmux session
 	# Does a tmux session called emulators already exist?
 	if ! tmux list-sessions -F "#{session_name}" 2>/dev/null | grep -qx $name; then
@@ -60,7 +61,7 @@ if [[ -z "$TMUX" ]]; then
 else
 	session_name=$(tmux display-message -p '#S')
 	# We are inside a tmux session
-	if [ "$session_name" != "emulators" ]; then
+	if [[ $session_name != "emulators" ]]; then
 		# check if there is an existing session called emulators
 		if tmux list-sessions -F "#{session_name}" 2>/dev/null | grep -qx $name; then
 			read -n 1 -t 5 -p "There is an existing tmux session called emulators. Attach to it? (Y/n): "

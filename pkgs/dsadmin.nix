@@ -1,28 +1,49 @@
-{ lib, stdenv, fetchurl }:
-stdenv.mkDerivation {
-  pname = "dsadmin";
+{
+  fetchFromGitHub,
+  buildGoModule,
+  mkYarnPackage,
+  nodejs,
+}: let
   version = "0.21.0";
 
-  src = fetchurl {
-    url = "https://github.com/remko/dsadmin/releases/download/v0.21.0/dsadmin-v0.21.0-linux-amd64.tar.gz";
-    sha256 = "sha256-K5eW3/K+jbxzVACj83AlpXDUqToN3VhdjsCrQU4t34M=";
+  src = fetchFromGitHub {
+    owner = "remko";
+    repo = "dsadmin";
+    rev = "v${version}";
+    hash = "sha256-bCqhClBjaDW5Kfoauv4VwW5IczJ3wE85uwsQ+BMUnms=";
   };
 
-  dontConfigure = true;
-  dontBuild = true;
-  dontUnpack = true; # Need to skip auto unzip and do it manually during the install phase because there is no folder in the tarball, it just contains the binary.
+  frontend = mkYarnPackage {
+    pname = "dsadmin-frontend";
+    inherit version src;
+    packageJSON = "${src}/package.json";
+    yarnLock = "${src}/yarn.lock";
 
-  installPhase = ''
-    runHook preInstall
-    tar -xzf $src
-    install -Dm755 dsadmin "$out/bin/dsadmin"
-    runHook postInstall
-  '';
+    nativeBuildInputs = [nodejs];
 
-  meta = with lib; {
-    description = " Google Cloud Datastore Emulator Administration UI ";
-    homepage = "https://github.com/remko/dsadmin";
-    license = licenses.mit;
-    mainProgram = "dsadmin";
+    buildPhase = ''
+      cp -r $src/* .
+      chmod +w public
+      ${nodejs}/bin/node build.mjs
+    '';
+
+    installPhase = ''
+      mkdir -p $out
+      cp -r public/* $out/
+    '';
+
+    distPhase = "true"; # Skip this phase by setting it to a no-op
   };
-}
+in
+  buildGoModule {
+    pname = "dsadmin";
+    inherit version src;
+
+    vendorHash = null;
+    subPackages = ["cmd/dsadmin"];
+    ldflags = ["-s" "-w"];
+
+    preBuild = ''
+      cp -r ${frontend}/* public/
+    '';
+  }
