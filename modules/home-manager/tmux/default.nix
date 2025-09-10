@@ -4,7 +4,6 @@
     # Start window & pane indexing at 1 (because 0 is further away on the keyboard)
     baseIndex = 1;
     mouse = true;
-    # newSession = true;
     keyMode = "vi";
     # Don't ask for confirmation when killing a tmux window or session
     disableConfirmationPrompt = true;

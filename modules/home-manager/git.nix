@@ -12,6 +12,7 @@
         prune = true;
         pruneTags = true;
       };
+      pager.branch = false;
       init.defaultBranch = "main";
       core.autocrlf = "input";
       advice.addIgnoredFile = false;

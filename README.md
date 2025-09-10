@@ -15,9 +15,9 @@ Update flake inputs (must be run in the same dir as the flake.nix):
 ```
 nix flake update
 ```
-Garbage collect nix store
+Delete all old revisions and garbage collect nix store
 ```
-sudo nix store gc
+sudo nix-collect-garbage -d
 ```
 Rebuild the system configuration and switch to it (run in the same dir as the flake.nix):
 ```

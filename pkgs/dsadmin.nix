@@ -13,6 +13,7 @@
     hash = "sha256-bCqhClBjaDW5Kfoauv4VwW5IczJ3wE85uwsQ+BMUnms=";
   };
 
+  # https://nixos.org/manual/nixpkgs/stable/#javascript-yarn2nix-mkYarnPackage
   frontend = mkYarnPackage {
     pname = "dsadmin-frontend";
     inherit version src;
@@ -32,7 +33,7 @@
       cp -r public/* $out/
     '';
 
-    distPhase = "true"; # Skip this phase by setting it to a no-op
+    doDist = false;
   };
 in
   buildGoModule {

@@ -4,7 +4,7 @@
     # Placed in ~/.bashrc
     initExtra = builtins.readFile ./bashrc;
     historyFile = "${config.xdg.stateHome}/bash_history";
-    historyControl = ["ignorespace" "erasedups"]; # ignore commands with leading whitespace; add each line only once, erasing prev occurrences
+    historyControl = ["ignoreboth" "erasedups"]; # ignore commands with leading whitespace; add each line only once, erasing prev occurrences
     historySize = 2000; # Number of commands saved per session
     historyFileSize = 8000; # Number of lines stored in the history file
     # Placed in ~/.profile (not needed as home manager automatically create a .bash_profile that sources .bashrc)

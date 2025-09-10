@@ -20,7 +20,7 @@
       "filebrowser"
       "emoji"
       "calc"
-      ];
+    ];
     extraConfig = {
       show-icons = true;
       combi-modes = [
