@@ -8,7 +8,8 @@
       # `--mouse --wheel-lines=3` enables mouse support in less (which bat uses as a pager), so you can scroll with the
       # mouse in things like man and bat while in tmux, which would usually intercept scroll events
       # -r enables raw control characters, which is needed for Nerd Fonts to work properly
-      pager = "less -r --mouse --wheel-lines=3";
+      # -F causes less to automatically exit if the content fits on one screen, making it behave like cat in that case
+      pager = "less -r -F --mouse --wheel-lines=3";
     };
   };
   home.sessionVariables = {
