@@ -5,6 +5,7 @@
   ...
 }: {
   nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings.trusted-users = [ "root" details.username ]; # Allow me to build system config remotely and push it to this machine via SSH
   nixpkgs.config.allowUnfree = true;
   time.timeZone = details.timeZone;
   i18n.defaultLocale = "en_ZA.UTF-8";

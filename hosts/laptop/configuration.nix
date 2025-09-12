@@ -8,11 +8,11 @@
     ./../../modules/nixos/system/bluetooth.nix
     ./../../modules/nixos/system/boot.nix
     ./../../modules/nixos/system/fonts.nix
-    ./../../modules/nixos/system/gc.nix
     ./../../modules/nixos/system/nvidia.nix
     ./../../modules/nixos/programs/nix-ld.nix
     ./../../modules/nixos/programs/podman.nix
     ./../../modules/nixos/programs/steam.nix
+    ./../../modules/nixos/system/store.nix
 
     ./../../modules/nixos/services/keyd.nix
     ./../../modules/nixos/services/pipewire.nix

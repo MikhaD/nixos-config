@@ -10,7 +10,7 @@
     ./../../modules/nixos/services/nextcloud.nix
 
     ./../../modules/nixos/system/boot.nix
-    ./../../modules/nixos/system/gc.nix
+    ./../../modules/nixos/system/store.nix
     ./../../modules/nixos/system/user.nix
 
     ./../../modules/nixos/programs/nix-ld.nix
