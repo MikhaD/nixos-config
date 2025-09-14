@@ -6,8 +6,8 @@
     ./../../modules/nixos/services/adguardhome.nix
     ./../../modules/nixos/services/sshd
     ./../../modules/nixos/services/tlp.nix
-    ./../../modules/nixos/services/vaultwarden.nix
-    ./../../modules/nixos/services/nextcloud.nix
+    # ./../../modules/nixos/services/vaultwarden.nix
+    # ./../../modules/nixos/services/nextcloud.nix
 
     ./../../modules/nixos/system/boot.nix
     ./../../modules/nixos/system/store.nix
