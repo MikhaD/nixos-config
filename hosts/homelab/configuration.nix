@@ -36,6 +36,13 @@
       ./../../modules/home-manager/tree.nix
     ];
     extra = {
+      tmux = {
+        enable = true;
+        prefix = "C-g";
+        prompt.info = {
+          host = false;
+        };
+      };
       programs.bash.profileExtra = ''
         SNAME="homelab"
         if [ -z "$TMUX" ]; then
