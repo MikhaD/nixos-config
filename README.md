@@ -33,3 +33,18 @@ nix flake check .
 - [Managing dotfiles with home manager](https://wiki.nixos.org/wiki/Home_Manager#Managing_your_dotfiles)
 - [Nix Flakes on NixOS](https://nixos.wiki/wiki/flakes#Using_nix_flakes_with_NixOS)
 - [Nix concepts](https://zero-to-nix.com/concepts/)
+
+## TODO
+- Tmux nix option for highlight color
+- Tmux nix options to enable or disable attaching / creating specific session when a new shell is opened
+- Make custom cd ... functionality work when there are directories after the ... (e.g. `cd .../some/other/dirs`)
+- Set up sops for secrets management
+- Move SSH to home manager
+- Move Firefox profiles to home manager
+- Move Obsidian vault to home manager
+- Move Firefox search engines to home manager
+- Rofi README
+- Overhaul work emulators script
+- Overhaul work emulators script bash completions
+- Add info on [] and [[]] in bash cheat-sheet
+- pkgs README with info on how to write derivations

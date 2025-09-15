@@ -28,3 +28,8 @@ else
 fi
 ```
 Conditions can be anything that returns a status code (0 for true, non-zero for false). A lot of conditions appear to be enclosed in single or double square brackets
+
+## TODO: Explain the difference
+https://mywiki.wooledge.org/BashFAQ/031
+
+https://stackoverflow.com/questions/3427872/whats-the-difference-between-and-in-bash

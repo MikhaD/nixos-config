@@ -12,13 +12,18 @@ This module configures bash. Importing it into home manager will enable bash wit
 - Sync bash history across all open terminals on each command
 - Don't store duplicate entries in bash history
 - When tab completing in the middle of a word, move the cursor past the completed text instead of inserting the completed text at the cursor position (pressing tab with your cursor after the `u` in `cd modules` will move your cursor to the end instead of changing it to `cd modulesles`)
-- Bind <kbd>Ctrl + Backspace</kbd> to delete the last word in the prompt
-- Bind <kbd>Alt + ←</kbd> to go up one directory (`cd ..`)
-- Bind <kbd>Alt + →</kbd> to go to the previous directory (`cd -`)
-- Bind <kbd>Alt + S</kbd> to prepend `sudo` to the current command
-- Bind <kbd>Ctrl + R</kbd> to reload the bashrc file from `~/nix/modules/home-manager/bash/bashrc`
-- Bind <kbd>Ctrl + W</kbd> to detach from the current tmux session if there is one
 - Set the terminal cursor to a blinking bar
+
+### Key Bindings
+
+| Keybind | Action |
+|---------|--------|
+| <kbd>Ctrl</kbd> + <kbd>Backspace</kbd> | Delete the last word behind the cursor |
+| <kbd>Alt</kbd> + <kbd>←</kbd> | Go up one directory (`cd ..`) |
+| <kbd>Alt</kbd> + <kbd>→</kbd> | Go to the previous directory (`cd -`) |
+| <kbd>Alt</kbd> + <kbd>S</kbd> | Prepend `sudo` to the current command |
+| <kbd>Ctrl</kbd> + <kbd>R</kbd> | Reload the bashrc file from `~/nix/modules/home-manager/bash/bashrc` |
+| <kbd>Ctrl</kbd> + <kbd>W</kbd> | Detach from the current tmux session if there is one |
 
 ## Extra Functionality
 - cd accepts any number of `.`s after `..` to go up additional directories (e.g. `cd ...` goes up 2 directories, `cd ....` goes up 3, etc).
