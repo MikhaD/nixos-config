@@ -9,21 +9,23 @@
         ids = ["*"];
         settings = {
           main = {
-            # Activate caps layer when capslock is pressed
-            capslock = "layer(caps)";
+            capslock = "layer(caps)"; # Activate caps layer when CapsLock is pressed
+            insert = "backspace"; # Map Insert → Backspace
             # Map my extra mouse buttons to Alt, Ctrl and Shift
             f20 = "layer(f20)";
             f23 = "layer(f23)";
             f24 = "layer(f24)";
           };
           # The caps layer emulates the S (Shift) modifier if there are no explicit mappings in the layer to be triggered
-          # No mappings in the layer means capslock becomes a shift key
-          "caps:S" = {};
+          "caps:S" = {}; # No mappings in the layer means CapsLock → Shift
           "f20:A" = {};
           "f23:C" = {};
           "f24:S" = {};
           control = {
+            # Ctrl + CapsLock → CapsLock
             capslock = "capslock";
+            # Ctrl + Insert → Insert
+            insert = "insert";
           };
         };
       };

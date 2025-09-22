@@ -14,7 +14,7 @@
     ./../../modules/nixos/programs/steam.nix
     ./../../modules/nixos/system/store.nix
 
-    ./../../modules/nixos/services/keyd.nix
+    ./../../modules/nixos/services/keyd
     ./../../modules/nixos/services/pipewire.nix
     ./../../modules/nixos/services/thermald.nix
 
@@ -83,7 +83,6 @@
     # stremio # depends on insecure library
     vscode
 
-    # keyd # I think this is installed if the service is enabled above
     nixd
     scrcpy
     ################ Required for kickstart.nvim #################
