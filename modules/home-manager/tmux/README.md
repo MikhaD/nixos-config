@@ -1,7 +1,8 @@
 # Tmux Module
 This module configures tmux. Importing it into home manager will enable tmux with the following options and additional functionality. All additional functionality is provided by my own scripts. This tmux setup does not depend on any external plugins.
 
-> [!Note] Be aware that a nerd font is required to see all icons in the prompt. JetBrains Mono Nerd Font can be included by importing `modules/nixos/system/fonts.nix` in your system configuration.
+> [!Note]
+> Be aware that a nerd font is required to see all icons in the prompt. JetBrains Mono Nerd Font can be included by importing `modules/nixos/system/fonts.nix` in your system configuration.
 
 ## Options
 - Mouse support is enabled

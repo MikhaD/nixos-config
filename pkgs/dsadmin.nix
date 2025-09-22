@@ -1,17 +1,13 @@
 {
-  fetchFromGitHub,
   buildGoModule,
   mkYarnPackage,
   nodejs,
+  src,
 }: let
-  version = "0.21.0";
 
-  src = fetchFromGitHub {
-    owner = "remko";
-    repo = "dsadmin";
-    rev = "v${version}";
-    hash = "sha256-bCqhClBjaDW5Kfoauv4VwW5IczJ3wE85uwsQ+BMUnms=";
-  };
+  inherit src;
+
+  version = src.shortRev;
 
   # https://nixos.org/manual/nixpkgs/stable/#javascript-yarn2nix-mkYarnPackage
   frontend = mkYarnPackage {

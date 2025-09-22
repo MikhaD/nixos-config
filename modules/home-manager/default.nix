@@ -33,7 +33,7 @@ in {
     home-manager = {
       useUserPackages = true;
       useGlobalPkgs = true;
-      extraSpecialArgs = {inherit details;};
+      extraSpecialArgs = {inherit details inputs;};
       users.${details.username} =
         lib.recursiveUpdate {
           imports = cfg.modules;

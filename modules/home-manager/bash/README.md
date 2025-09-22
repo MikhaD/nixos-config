@@ -1,7 +1,8 @@
 # Bash Module
 This module configures bash. Importing it into home manager will enable bash with the following options and additional functionality.
 
-> [!Note] Be aware that a nerd font is required to see all icons in the prompt. JetBrains Mono Nerd Font can be included by importing `modules/nixos/system/fonts.nix` in your system configuration.
+> [!Note]
+> Be aware that a nerd font is required to see all icons in the prompt. JetBrains Mono Nerd Font can be included by importing `modules/nixos/system/fonts.nix` in your system configuration.
 
 ## Readline & shell configuration
 - Press Tab to autocomplete file names and commands, and cycle through options with repeated presses

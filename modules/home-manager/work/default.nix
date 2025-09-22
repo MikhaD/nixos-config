@@ -1,6 +1,7 @@
 {
   pkgs,
   config,
+  inputs,
   ...
 }: let
   gdk = pkgs.google-cloud-sdk.withExtraComponents (with pkgs.google-cloud-sdk.components; [
@@ -24,16 +25,16 @@ in {
 
   home.packages = with pkgs; [
     gdk
-    google-cloud-sql-proxy
+    # google-cloud-sql-proxy
     jdk
-    jetbrains.idea-ultimate
+    # jetbrains.idea-ultimate
     jetbrains.pycharm-professional
     ngrok
-    pgloader
+    # pgloader
     stdenv.cc.cc.lib
     (pkgs.writeShellScriptBin "emulators" (builtins.readFile ./emulators.sh))
-    (pkgs.callPackage ../../../pkgs/tasks-emulator.nix {})
-    (pkgs.callPackage ../../../pkgs/dsadmin.nix {})
+    (pkgs.callPackage ../../../pkgs/tasks-emulator.nix { src = inputs.tasks-emulator; })
+    (pkgs.callPackage ../../../pkgs/dsadmin.nix { src = inputs.dsadmin; })
   ];
 
   xdg.dataFile."bash-completion/completions/emulators".source = ./emulators-completions.sh;

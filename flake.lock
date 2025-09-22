@@ -1,5 +1,22 @@
 {
   "nodes": {
+    "dsadmin": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1756482467,
+        "narHash": "sha256-bCqhClBjaDW5Kfoauv4VwW5IczJ3wE85uwsQ+BMUnms=",
+        "owner": "remko",
+        "repo": "dsadmin",
+        "rev": "12540a4bc45a876d5099d55011312b08e8489494",
+        "type": "github"
+      },
+      "original": {
+        "owner": "remko",
+        "ref": "v0.21.0",
+        "repo": "dsadmin",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -7,11 +24,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1756788591,
-        "narHash": "sha256-LOrOfPWpJU/ADWDyVwPv9XNuYPq5KJtmAmSzplpccmE=",
+        "lastModified": 1758464306,
+        "narHash": "sha256-i56XRXqjwJRdVYmpzVUQ0ktqBBHqNzQHQMQvFRF/acQ=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "f3d3b4592a73fb64b5423234c01985ea73976596",
+        "rev": "939e91e1cff1f99736c5b02529658218ed819a2a",
         "type": "github"
       },
       "original": {
@@ -22,11 +39,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1756542300,
-        "narHash": "sha256-tlOn88coG5fzdyqz6R93SQL5Gpq+m/DsWpekNFhqPQk=",
+        "lastModified": 1758277210,
+        "narHash": "sha256-iCGWf/LTy+aY0zFu8q12lK8KuZp7yvdhStehhyX1v8w=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "d7600c775f877cd87b4f5a831c28aa94137377aa",
+        "rev": "8eaee110344796db060382e15d3af0a9fc396e0e",
         "type": "github"
       },
       "original": {
@@ -38,8 +55,27 @@
     },
     "root": {
       "inputs": {
+        "dsadmin": "dsadmin",
         "home-manager": "home-manager",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "tasks-emulator": "tasks-emulator"
+      }
+    },
+    "tasks-emulator": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1674359562,
+        "narHash": "sha256-Zf4mUSnlvAbd86RL5mkKYc2Ykcj5mfeYFxIuBmvs05U=",
+        "owner": "aertje",
+        "repo": "cloud-tasks-emulator",
+        "rev": "903e09573440693ee369a21363bfb03ea9b68dc0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "aertje",
+        "ref": "v1.2.0",
+        "repo": "cloud-tasks-emulator",
+        "type": "github"
       }
     }
   },

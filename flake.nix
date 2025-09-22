@@ -5,6 +5,14 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    tasks-emulator = {
+      url = "github:aertje/cloud-tasks-emulator/v1.2.0";
+      flake = false;
+    };
+    dsadmin = {
+      url = "github:remko/dsadmin/v0.21.0";
+      flake = false;
+    };
   };
 
   outputs = inputs: let
