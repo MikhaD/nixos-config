@@ -28,6 +28,10 @@ Check configuration for errors (run in the same dir as the flake.nix):
 ```
 nix flake check .
 ```
+Format all nix files in the repo (run in the same dir as the flake.nix):
+```
+nix fmt .
+```
 
 ## Resources
 - [NixOS & Flakes book](https://nixos-and-flakes.thiscute.world/)

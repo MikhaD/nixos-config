@@ -70,21 +70,20 @@
 
   environment.systemPackages = with pkgs; [
     ########################## CLI Tools #########################
-    alejandra
-    bruno
     curl
     exfat # Allow me to format drives as exfat (broad OS compatibility)
     quickgui
+
+    nixd
     #################### Desktop Applications ####################
+    bruno
     # code-cursor
     freecad
     libreoffice-qt
     pinta
+    scrcpy
     # stremio # depends on insecure library
     vscode
-
-    nixd
-    scrcpy
     ################ Required for kickstart.nvim #################
     gnumake
     libgcc

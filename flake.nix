@@ -37,5 +37,7 @@
       (mkNixOSConfig "laptop" ./hosts/laptop/configuration.nix)
       (mkNixOSConfig "homelab" ./hosts/homelab/configuration.nix)
     ];
+    # tell nix which formatter to use when you run nix fmt <filename/dir>
+    formatter.x86_64-linux = inputs.nixpkgs.legacyPackages.x86_64-linux.alejandra;
   };
 }

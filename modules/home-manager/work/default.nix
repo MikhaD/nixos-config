@@ -33,8 +33,8 @@ in {
     # pgloader
     stdenv.cc.cc.lib
     (pkgs.writeShellScriptBin "emulators" (builtins.readFile ./emulators.sh))
-    (pkgs.callPackage ../../../pkgs/tasks-emulator.nix { src = inputs.tasks-emulator; })
-    (pkgs.callPackage ../../../pkgs/dsadmin.nix { src = inputs.dsadmin; })
+    (pkgs.callPackage ../../../pkgs/tasks-emulator.nix {src = inputs.tasks-emulator;})
+    (pkgs.callPackage ../../../pkgs/dsadmin.nix {src = inputs.dsadmin;})
   ];
 
   xdg.dataFile."bash-completion/completions/emulators".source = ./emulators-completions.sh;

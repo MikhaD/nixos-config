@@ -4,7 +4,6 @@
   nodejs,
   src,
 }: let
-
   inherit src;
 
   version = src.shortRev;
