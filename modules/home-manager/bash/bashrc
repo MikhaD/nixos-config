@@ -269,7 +269,8 @@ prompt_command() {
     history -n   # Read new lines other sessions have added to the bash history file
 }
 
-trap 'timer_start' DEBUG
+# Run timer_start before each simple command (DEBUG) and before each interrupt (INT, i.e. Ctrl+C)
+trap timer_start DEBUG INT
 # PROMPT_COMMAND must be a single command so that it matches BASH_COMMAND in timer_start, otherwise the timer will be
 # reset just before it is stopped because the DEBUG trap is triggered by PROMPT_COMMAND
 PROMPT_COMMAND="prompt_command"

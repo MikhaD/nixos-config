@@ -86,7 +86,7 @@
     vscode
     ################ Required for kickstart.nvim #################
     gnumake
-    libgcc
+    gcc
     lua
     ripgrep
     unzip

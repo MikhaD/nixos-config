@@ -53,7 +53,7 @@ name="emulators"
 if [[ $TMUX = "" ]]; then
 	# We are not inside a tmux session
 	# Does a tmux session called emulators already exist?
-	if ! tmux list-sessions -F "#{session_name}" 2>/dev/null | grep -qx $name; then
+	if ! tmux list-sessions -F "#S" 2>/dev/null | grep -qx $name; then
 		tmux new-session -d -s $name
 	fi
 	start_emulators "$1" "$name"
@@ -63,7 +63,7 @@ else
 	# We are inside a tmux session
 	if [[ $session_name != "emulators" ]]; then
 		# check if there is an existing session called emulators
-		if tmux list-sessions -F "#{session_name}" 2>/dev/null | grep -qx $name; then
+		if tmux list-sessions -F "#S" 2>/dev/null | grep -qx $name; then
 			read -n 1 -t 5 -p "There is an existing tmux session called emulators. Attach to it? (Y/n): "
 			echo
 			if [[ $REPLY =~ [Yy] || -z $REPLY ]]; then

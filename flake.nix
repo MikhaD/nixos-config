@@ -22,6 +22,10 @@
       email = "31388146+MikhaD@users.noreply.github.com";
       timeZone = "Africa/Johannesburg";
     };
+    forAllSystems = inputs.nixpkgs.lib.genAttrs [
+      # Add more system architectures here as needed
+      "x86_64-linux"
+    ];
     mkNixOSConfig = hostname: path: {
       name = hostname;
       value = inputs.nixpkgs.lib.nixosSystem {
@@ -38,6 +42,6 @@
       (mkNixOSConfig "homelab" ./hosts/homelab/configuration.nix)
     ];
     # tell nix which formatter to use when you run nix fmt <filename/dir>
-    formatter.x86_64-linux = inputs.nixpkgs.legacyPackages.x86_64-linux.alejandra;
+    formatter = forAllSystems (system: inputs.nixpkgs.legacyPackages.${system}.alejandra);
   };
 }
