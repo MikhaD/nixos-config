@@ -32,7 +32,7 @@ in {
     ngrok
     # pgloader
     stdenv.cc.cc.lib
-    (pkgs.writeShellScriptBin "emulators" (builtins.readFile ./emulators.sh))
+    (pkgs.writers.writePython3Bin "emulators" {flakeIgnore = ["E501"];} (builtins.readFile ./emulators.py))
     (pkgs.callPackage ../../../pkgs/tasks-emulator.nix {src = inputs.tasks-emulator;})
     (pkgs.callPackage ../../../pkgs/dsadmin.nix {src = inputs.dsadmin;})
   ];
