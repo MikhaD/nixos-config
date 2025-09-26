@@ -18,6 +18,7 @@
       cls = "clear"; # clear screen using cls like windows powershell
       grep = "grep --color=auto"; # Use grep with color by default
       wifi = "nmcli device wifi show-password"; # Print the wifi password & QR code to join
+      myip = "echo $(curl -s ifconfig.me)"; # Get my public IP address (echo needed to avoid newline issues)
     };
     # All options: https://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html
     shellOptions = [

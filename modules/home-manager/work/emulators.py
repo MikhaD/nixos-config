@@ -236,8 +236,11 @@ if __name__ == "__main__":
             exit(0)
 
     emulator_names = set(args.emulators).union(*[config["presets"][preset] for preset in args.preset])
-    if not emulator_names and args.command in ["start", "stop"]:
-        emulator_names = config["presets"]["default"]
+    if not emulator_names:
+        if args.command == "start":
+            emulator_names = config["presets"]["default"]
+        if args.command == "stop":
+            emulator_names = config["emulators"].keys()
 
     emulators = [
         Emulator(name, config["emulators"][name], config["settings"]["container-tool"]) for name in emulator_names
