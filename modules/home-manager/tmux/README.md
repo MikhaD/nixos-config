@@ -21,8 +21,9 @@ This module configures tmux. Importing it into home manager will enable tmux wit
 | <kbd>Prefix</kbd> + <kbd>-</kbd> | Split the window horizontally (Replaces <kbd>Prefix</kbd> + <kbd>"</kbd>) |
 
 ## Custom nix options
-- `prefix`: change the prefix key (default is <kbd>Ctrl + B</kbd>)
+- `prefix`: change the prefix key (default is <kbd>Ctrl + B</kbd>).
 - `prompt.info`: toggle system info in the status bar. See [status bar customization](#status-bar-customization) for details.
+- `color`: change the color of the session pill at the start of the prompt, and the active tab (default is green).
 
 ## Status Bar Customization
 The status bar has been placed at the top of the window with an empty line below it and has 3 general sections.

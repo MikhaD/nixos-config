@@ -13,6 +13,11 @@ in {
       default = "C-b";
       description = "Set tmux prefix key. Default is Ctrl + G.";
     };
+    color = lib.mkOption {
+      type = lib.types.str;
+      default = "green";
+      description = "Set the color of the session pill and active tab.";
+    };
     prompt.info = {
       host = lib.mkOption {
         type = lib.types.bool;
@@ -48,6 +53,8 @@ in {
       disableConfirmationPrompt = true;
       extraConfig = lib.concatStringsSep "" ([
           (builtins.readFile ./tmux.conf)
+	  "set-option -g status-left '#[fg=${cfg.color}]#[bg=${cfg.color},fg=black] #S#[bg=default,fg=${cfg.color}]#[default] '\n"
+	  "set-option -g window-status-current-format '#[fg=${cfg.color}]#[bg=${cfg.color},fg=black]  #W #[fg=${cfg.color},bg=default]#[default]'\n"
           "set-option -g status-right \""
         ]
         ++ lib.optional cfg.prompt.info.host "#[fg=#99CCE6]#[bg=#99CCE6,fg=black]󰟀 #[default] #H "
