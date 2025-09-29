@@ -8,8 +8,8 @@ Several modules (listed below), have their own readme files with more informatio
 1. [Work](modules/home-manager/work/README.md)
 
 
-
-⚠️ This is a work in progress. There are many aspects of my system that are still configured imperatively.
+> [!Warning]
+> This config is a work in progress. There are many aspects of my system that are still configured imperatively, or omitted until I get nix-sops working.
 
 ## Useful nix command reference
 Update flake inputs (must be run in the same dir as the flake.nix):
@@ -54,3 +54,4 @@ nix fmt .
 - Overhaul work emulators script bash completions
 - Add info on [] and [[]] in bash cheat-sheet
 - pkgs README with info on how to write derivations
+- Figure out how to get nixpkgs in repl so I can test more easily

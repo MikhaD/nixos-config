@@ -194,15 +194,15 @@ distro_icon() {
         ["termux"]=" "
     )
     declare -A distro_colors=(
-        ["debian"]="91"
-        ["ubuntu"]="93"
-        ["nixos"]="94"
-        ["termux"]="32"
+        ["debian"]="168;0;48"
+        ["ubuntu"]="233;84;32"
+        ["nixos"]="126;183;226"
+        ["termux"]="164;198;57"
     )
     local icon="${distro_icons[$distro]:- }"
     local color="${distro_colors[$distro]:-33}"
     unset distro_icons distro_colors
-    echo "\[\e[$1;${color}m\]${icon}"
+    echo "\[\e[48;2;${1}m\e[38;2;${color}m\]${icon}"
 }
 
 # Function that displays 󰢹 before the prompt if the terminal is being accessed via SSH
@@ -255,13 +255,13 @@ prompt_command() {
     duration=$(timer_stop)
     unset timer
     if [[ $exit_code -eq 0 ]]; then
-        exit_bg=42
+        exit_bg="20;184;121" # green
         exit_fg=30
     elif [[ $exit_code -eq 130 ]]; then # 130 is the exit code for Ctrl+C
-        exit_bg=43
+        exit_bg="204;166;51" # yellow
         exit_fg=30
     else
-        exit_bg=41
+        exit_bg="205;49;49" #  red
         exit_fg=37
     fi
     # Sync bash history between all open terminals
@@ -275,19 +275,19 @@ trap timer_start DEBUG INT
 # reset just before it is stopped because the DEBUG trap is triggered by PROMPT_COMMAND
 PROMPT_COMMAND="prompt_command"
 
-bg1=100   # light grey
-fg1=30    # black
-usr_fg=32 # green
-dir_bg=47 # white
-git_bg=46 # cyan
-edge=""  # other options:          
+bg1="102;102;102" #    grey
+fg1=30 #               black
+usr_fg=32 #            green
+dir_bg="255;255;255" # white
+git_bg="20;151;184" #  blue
+edge="" # other options:          
 
 PS1="$(ssh_session)$(nix_shell)"
-PS1+="\[\e[$(($bg1 - 10))m\]$(distro_icon $bg1)\[\e[1;$usr_fg;${bg1}m\]\u \[\e[0;$(($bg1 - 10));${dir_bg}m\]$edge"
-PS1+="\[\e[${fg1}m\] \$(parse_directory) \[\e[$git_bg;$(($dir_bg - 10))m\]$edge"
-PS1+="\[\e[${fg1}m\] \$(parse_git_branch)\[\e[0;\${exit_bg};$(($git_bg - 10))m\]$edge"
-PS1+=" \[\e[\${exit_fg}m\] \${duration} \[\e[$bg1;\$((exit_bg - 10))m\]$edge"
-PS1+="\[\e[1;37m\]\\$\[\e[0;$(($bg1 - 10))m\]$edge\[\e[0m\] "
+PS1+="\[\e[38;2;${bg1}m\]$(distro_icon $bg1)\[\e[1;${usr_fg}m\e[48;2;${bg1}m\]\u \[\e[0m\e[38;2;${bg1}m\e[48;2;${dir_bg}m\]$edge"
+PS1+="\[\e[${fg1}m\] \$(parse_directory) \[\e[48;2;${git_bg}m\e[38;2;${dir_bg}m\]$edge"
+PS1+="\[\e[${fg1}m\] \$(parse_git_branch)\[\e[0m\e[48;2;\${exit_bg}m\e[38;2;${git_bg}m\]$edge"
+PS1+=" \[\e[\${exit_fg}m\] \${duration} \[\e[48;2;${bg1}m\e[38;2;\${exit_bg}m\]$edge"
+PS1+="\[\e[1;37m\]\\$\[\e[0m\e[38;2;${bg1}m\]$edge\[\e[0m\] "
 
 unset distro_icon ssh_session nix_shell bg1 fg1 usr_fg dir_bg git_bg edge
 
