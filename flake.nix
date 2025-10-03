@@ -13,6 +13,10 @@
       url = "github:remko/dsadmin/v0.21.0";
       flake = false;
     };
+    ulauncher6 = {
+      url = "github:Ulauncher/Ulauncher/v6.0.0-beta26";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs: let

@@ -40,7 +40,7 @@
       tmux = {
         enable = true;
         prefix = "C-g";
-	color = "#99CCE6";
+        color = "#99CCE6";
         prompt.info = {
           host = false;
         };
