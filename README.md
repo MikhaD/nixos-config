@@ -6,7 +6,7 @@ Several modules (listed below), have their own readme files with more informatio
 1. [KeyD](modules/nixos/services/keyd/README.md)
 1. [Tmux](modules/home-manager/tmux/README.md)
 1. [Work](modules/home-manager/work/README.md)
-
+1. [Ulauncher](modules/home-manager/ulauncher/README.md)
 
 > [!Warning]
 > This config is a work in progress. There are many aspects of my system that are still configured imperatively, or omitted until I get nix-sops working.
