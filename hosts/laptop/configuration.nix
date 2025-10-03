@@ -33,6 +33,7 @@
       ./../../modules/home-manager/fastfetch.nix
       ./../../modules/home-manager/fzf.nix
       ./../../modules/home-manager/git.nix
+      ./../../modules/home-manager/jq.nix
       ./../../modules/home-manager/neovim.nix
       ./../../modules/home-manager/nodejs.nix
       ./../../modules/home-manager/obs.nix
@@ -40,8 +41,8 @@
       ./../../modules/home-manager/python.nix
       ./../../modules/home-manager/tree.nix
       ./../../modules/home-manager/lsd.nix
-      ./../../modules/home-manager/ulauncher
       ./../../modules/home-manager/tmux
+      ./../../modules/home-manager/ulauncher
       ./../../modules/home-manager/wl-clipboard.nix
       ./../../modules/home-manager/xdg.nix
 
@@ -72,7 +73,6 @@
     ########################## CLI Tools #########################
     curl
     exfat # Allow me to format drives as exfat (broad OS compatibility)
-    quickgui
 
     nixd
     #################### Desktop Applications ####################
@@ -81,6 +81,7 @@
     freecad
     libreoffice-qt
     pinta
+    quickgui
     scrcpy
     # stremio # depends on insecure library
     vscode
