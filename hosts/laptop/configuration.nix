@@ -62,8 +62,7 @@
   # https://github.com/Mic92/envfs
   # services.envfs.enable = true;
 
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
+  services.printing.enable = false;
 
   environment.variables = {
     GTK_USE_PORTAL = 1;
