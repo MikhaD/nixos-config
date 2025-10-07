@@ -40,9 +40,9 @@
       tmux = {
         enable = true;
         prefix = "C-g";
-        color = "#99CCE6";
-        prompt.info = {
-          host = false;
+        prompt = {
+          color = "#99CCE6";
+          info.host = false;
         };
       };
       programs.bash.profileExtra = ''

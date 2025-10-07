@@ -13,7 +13,7 @@ in {
       default = "C-b";
       description = "Set tmux prefix key. Default is Ctrl + G.";
     };
-    color = lib.mkOption {
+    prompt.color = lib.mkOption {
       type = lib.types.str;
       default = "green";
       description = "Set the color of the session pill and active tab.";
@@ -51,17 +51,20 @@ in {
       prefix = cfg.prefix;
       # Don't ask for confirmation when killing a tmux window or session
       disableConfirmationPrompt = true;
-      extraConfig = lib.concatStringsSep "" ([
-          (builtins.readFile ./tmux.conf)
-          "set-option -g status-left '#[fg=${cfg.color}]#[bg=${cfg.color},fg=black] #S#[bg=default,fg=${cfg.color}]#[default] '\n"
-          "set-option -g window-status-current-format '#[fg=${cfg.color}]#[bg=${cfg.color},fg=black]  #W #[fg=${cfg.color},bg=default]#[default]'\n"
-          "set-option -g status-right \""
-        ]
-        ++ lib.optional cfg.prompt.info.host "#[fg=#99CCE6]#[bg=#99CCE6,fg=black]󰟀 #[default] #H "
-        ++ lib.optional cfg.prompt.info.disk "#[fg=#999FE5]#[bg=#999FE5,fg=black]󰋊 #[default] #(tmux-disk-fraction) "
-        ++ lib.optional cfg.prompt.info.memory "#[fg=#BF99E5]#[bg=#BF99E5,fg=black]󰍛 #[default] #(tmux-memory-fraction 1) "
-        ++ lib.optional cfg.prompt.info.battery "#[fg=#E599DF]#[bg=#E599DF,fg=black]#(tmux-battery-icon) #[default] #(cat /sys/class/power_supply/BAT0/capacity)%"
-        ++ ["\""]);
+      extraConfig = let
+        color = cfg.prompt.color;
+      in
+        lib.concatStringsSep "" ([
+            (builtins.readFile ./tmux.conf)
+            "set-option -g status-left '#[fg=${color}]#[bg=${color},fg=black] #S#[bg=default,fg=${color}]#[default] '\n"
+            "set-option -g window-status-current-format '#[fg=${color}]#[bg=${color},fg=black]  #W #[fg=${color},bg=default]#[default]'\n"
+            "set-option -g status-right \""
+          ]
+          ++ lib.optional cfg.prompt.info.host "#[fg=#99CCE6]#[bg=#99CCE6,fg=black]󰟀 #[default] #H "
+          ++ lib.optional cfg.prompt.info.disk "#[fg=#999FE5]#[bg=#999FE5,fg=black]󰋊 #[default] #(tmux-disk-fraction) "
+          ++ lib.optional cfg.prompt.info.memory "#[fg=#BF99E5]#[bg=#BF99E5,fg=black]󰍛 #[default] #(tmux-memory-fraction 1) "
+          ++ lib.optional cfg.prompt.info.battery "#[fg=#E599DF]#[bg=#E599DF,fg=black]#(tmux-battery-icon) #[default] #(cat /sys/class/power_supply/BAT0/capacity)%"
+          ++ ["\""]);
     };
     # Requires login logout to take effect in tmux status bar
     home.packages =
