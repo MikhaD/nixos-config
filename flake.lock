@@ -41,11 +41,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1759106866,
-        "narHash": "sha256-GjLvAl7qxGxKtop6ghasxjQ1biTT7pA+WU45byzMl/4=",
+        "lastModified": 1759853171,
+        "narHash": "sha256-uqbhyXtqMbYIiMqVqUhNdSuh9AEEkiasoK3mIPIVRhk=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "619ae569293b6427d23cce4854eb4f3c33af3eec",
+        "rev": "1a09eb84fa9e33748432a5253102d01251f72d6d",
         "type": "github"
       },
       "original": {
@@ -119,16 +119,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1758823014,
-        "narHash": "sha256-b/j82YKlXjJo01M+5hQpWOGPEfloSueaX6kQ3hq+VDk=",
+        "lastModified": 1759441219,
+        "narHash": "sha256-xOd/2T6vb6PQjcLEMVK4L3cSH/uSARfAAPEcZ+qSm4w=",
         "owner": "Ulauncher",
         "repo": "Ulauncher",
-        "rev": "5dc0c21a3b9881907f459e60113c7b4ba4cc96bc",
+        "rev": "a647e73e04b9f94e1bce93c46a675dff52d4df7a",
         "type": "github"
       },
       "original": {
         "owner": "Ulauncher",
-        "ref": "v6.0.0-beta26",
+        "ref": "v6.0.0-beta27",
         "repo": "Ulauncher",
         "type": "github"
       }

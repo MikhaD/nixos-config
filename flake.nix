@@ -14,7 +14,7 @@
       flake = false;
     };
     ulauncher6 = {
-      url = "github:Ulauncher/Ulauncher/v6.0.0-beta26";
+      url = "github:Ulauncher/Ulauncher/v6.0.0-beta27";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

@@ -6,6 +6,34 @@ import subprocess
 import sys
 
 
+class Logger:
+    def __init__(self, quiet: bool = False):
+        self.quiet = quiet
+
+    def log(self, *args, prefix: str | None = None):
+        if not self.quiet:
+            if prefix:
+                print(f"[32m{prefix}[0m", end="")
+            print(*args)
+
+    def warn(self, *args, prefix: str | None = None):
+        if not self.quiet:
+            if prefix:
+                print(f"[33m{prefix}[0m", end="")
+            print(*args)
+
+    def danger(self, *args, prefix: str | None = None):
+        if not self.quiet:
+            if prefix:
+                print(f"[31m{prefix}[0m", end="")
+            print(*args)
+
+    def error(self, *args, prefix: str | None = None):
+        if prefix:
+            print(f"[31m{prefix}[0m", end="", file=sys.stderr)
+        print(*args, file=sys.stderr)
+
+
 class Tmux:
     def __init__(self, name: str):
         # check if tmux session exists and create it if it doesn't
@@ -56,6 +84,8 @@ class Tmux:
 
 
 class Emulator:
+    logger = Logger()
+
     def __init__(self, name, config: dict, container_tool: str):
         self.name = name
         if "container" in config:
@@ -84,16 +114,18 @@ class Emulator:
 
         self.dir = config.get("dir")
 
-    def start(self, session: Tmux, quiet: bool = False):
+    def start(self, session: Tmux, logger: Logger | None = None):
+        logger = logger or self.logger
         if not session.has_window(self.name):
             session.new_window(self.name, self.command, self.dir)
-            if not quiet: print("[32mSTARTED[0m:", self.name)
+            logger.log(self.name, prefix="STARTED: ")
         else:
-            if not quiet: print(f"[33mSKIPPED[0m: {self.name} (already running)")
+            logger.warn(f"{self.name} (already running)", prefix="SKIPPED: ")
 
-    def stop(self, session: Tmux, quiet: bool = False):
+    def stop(self, session: Tmux, logger: Logger | None = None):
+        logger = logger or self.logger
         if session.kill_window(self.name):
-            if not quiet: print("[31mSTOPPED[0m:", self.name)
+            logger.danger(self.name, prefix="STOPPED: ")
 
 
 def merge(a: dict, b: dict) -> dict:
@@ -229,10 +261,8 @@ if __name__ == "__main__":
     init_config_parser.add_argument("--force", "-f", action="store_true", help="Overwrite existing config file if it exists.")
     config_subparsers.add_parser("show", help="Show current config contents and path")
 
-
     args = parser.parse_args()
-
-    quiet = args.quiet or config["settings"].get("quiet", False)
+    console = Logger(args.quiet or config["settings"].get("quiet", False))
 
     if args.container_tool:
         config["settings"]["container-tool"] = args.container_tool
@@ -249,7 +279,7 @@ if __name__ == "__main__":
 
         case "attach":
             if not Tmux.session_exists(session_name):
-                print(f"[1;31mERROR[0m: Session {session_name} does not exist.", file=sys.stderr)
+                console.error(f"Session {session_name} does not exist.", prefix="ERROR: ")
                 exit(1)
             session = Tmux(session_name)
             session.attach(1)
@@ -272,25 +302,24 @@ if __name__ == "__main__":
         case "config":
             path = config_path()
             if args.config_command == "edit":
-                print(f"{editor} {path}")
                 subprocess.run(f"{editor} {path}", shell=True)
             elif args.config_command == "init":
                 if os.path.exists(path):
                     if args.force:
-                        if not quiet: print(f"[33mWARNING[0m: Config file already exists at{path}. Overwriting.")
+                        console.warn(f"Config file already exists at{path}. Overwriting.", prefix="WARNING: ")
                     else:
-                        print(f"[1;31mERROR[0m: Config file already exists at {path}", file=sys.stderr)
+                        console.error(f"Config file already exists at {path}", prefix="ERROR: ")
                         exit(1)
                 os.makedirs(os.path.dirname(path), exist_ok=True)
                 with open(path, "w") as f:
                     json.dump(get_config(default=True), f, indent=2)
-                if not quiet: print(f"Created default config file at {path}")
+                console.log(f"Created default config file at {path}")
             if args.config_command == "show":
-                if sys.stdout.isatty() and not quiet: # only print location if not being piped
+                if sys.stdout.isatty():  # only print location if not being piped
                     if os.path.exists(path):
-                        print(f"[32m{path}[0m:")
+                        console.log(":", prefix=path)
                     else:
-                        print(f"[33mNo config file, showing default.\nRun [0m{sys.argv[0]} config init[33m to create one[0m")
+                        console.log(f"[33mNo config file, showing default.\nRun [0m{sys.argv[0]} config init[33m to create one[0m")
                 print(json.dumps(get_config(), indent=2))
             exit(0)
 
@@ -311,9 +340,9 @@ if __name__ == "__main__":
 
             for emulator in emulators:
                 if args.command == "start":
-                    emulator.start(session, quiet)
+                    emulator.start(session, console)
                 elif args.command == "stop":
-                    emulator.stop(session, quiet)
+                    emulator.stop(session, console)
 
             if args.command == "start" and Tmux.current_session_name() != session.name:
                 session.attach(1)
