@@ -31,6 +31,7 @@
       ./../../modules/home-manager/git.nix
       ./../../modules/home-manager/lsd.nix
       ./../../modules/home-manager/neovim.nix
+      ./../../modules/home-manager/nodejs.nix
       ./../../modules/home-manager/python.nix
       ./../../modules/home-manager/speedtest-cli.nix
       ./../../modules/home-manager/tmux
