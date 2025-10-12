@@ -3,6 +3,7 @@
   details,
   hostname,
   inputs,
+  pkgs,
   ...
 }: {
   nix.settings.experimental-features = ["nix-command" "flakes"];
@@ -22,4 +23,7 @@
   programs.command-not-found.enable = true;
   networking.networkmanager.enable = true;
   networking.hostName = hostname;
+  environment.systemPackages = with pkgs; [
+    nixd
+  ];
 }

@@ -72,8 +72,6 @@
     ########################## CLI Tools #########################
     curl
     exfat # Allow me to format drives as exfat (broad OS compatibility)
-
-    nixd
     #################### Desktop Applications ####################
     bruno
     # code-cursor
