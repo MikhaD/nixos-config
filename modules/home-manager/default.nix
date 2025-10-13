@@ -3,6 +3,7 @@
   config,
   details,
   inputs,
+  pkgs,
   ...
 }: let
   cfg = config.home-config;
@@ -16,6 +17,11 @@ in {
       type = lib.types.listOf lib.types.path;
       default = [];
       description = "List of home-manager modules to import for the user.";
+    };
+    packages = lib.mkOption {
+      type = lib.types.listOf lib.types.package;
+      default = [];
+      description = "List of packages to install for the user.";
     };
     sessionVariables = lib.mkOption {
       type = lib.types.attrsOf lib.types.str;
@@ -40,6 +46,7 @@ in {
           home = {
             username = details.username;
             homeDirectory = "/home/${details.username}";
+            inherit (cfg) packages;
 
             sessionVariables =
               {

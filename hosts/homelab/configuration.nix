@@ -4,7 +4,8 @@
     ./../../modules/home-manager
 
     ./../../modules/nixos/services/adguardhome.nix
-    ./../../modules/home-manager/caddy
+    ./../../modules/nixos/services/caddy
+    ./../../modules/nixos/services/cloudflared.nix
     ./../../modules/nixos/services/sshd
     ./../../modules/nixos/services/tlp.nix
     # ./../../modules/nixos/services/vaultwarden.nix
