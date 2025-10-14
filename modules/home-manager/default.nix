@@ -3,7 +3,6 @@
   config,
   details,
   inputs,
-  pkgs,
   ...
 }: let
   cfg = config.home-config;

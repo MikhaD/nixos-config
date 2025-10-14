@@ -11,6 +11,13 @@ Several modules (listed below), have their own readme files with more informatio
 > [!Warning]
 > This config is a work in progress. There are many aspects of my system that are still configured imperatively, or omitted until I get nix-sops working.
 
+## Opinions
+This configuration expects and enforces several rules and patterns:
+- This configuration repository must be located at `/home/<username>/nix/flake.nix` (configurable in the flake details).
+- The /etc/nixos directory must not contain any .nix or .lock files except for a symlink to the flake.nix file in this repository.
+- System modules can install packages in home manager via `home-config.packages`.
+- All modules can set options on the user via `default-user.extra`.
+
 ## Useful nix command reference
 Update flake inputs (must be run in the same dir as the flake.nix):
 ```

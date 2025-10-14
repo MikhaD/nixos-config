@@ -20,11 +20,12 @@
   };
 
   outputs = inputs: let
-    details = {
+    details = rec {
       username = "mikha";
       fullName = "Mikha Davids";
       email = "31388146+MikhaD@users.noreply.github.com";
       timeZone = "Africa/Johannesburg";
+      flakePath = "/home/${username}/nix/flake.nix";
     };
     forAllSystems = inputs.nixpkgs.lib.genAttrs [
       # Add more system architectures here as needed
