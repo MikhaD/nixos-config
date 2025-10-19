@@ -6,13 +6,10 @@
   pkgs,
   ...
 }: {
-  base.enforceFlakeLocation = false;
-  base.languageServer.enable = false;
-  base.commandNotFound.enable = false;
-
   environment.packages = with pkgs; [
     man
     openssh
+    gnugrep
   ];
 
   home-manager = {
@@ -22,6 +19,9 @@
     config = {pkgs, ...}: {
       imports = [
         ./../../modules/home-manager/bash
+	./../../modules/home-manager/bat.nix
+	./../../modules/home-manager/dig.nix
+	./../../modules/home-manager/fastfetch.nix
         ./../../modules/home-manager/git.nix
         ./../../modules/home-manager/lsd.nix
         ./../../modules/home-manager/neovim.nix
@@ -38,7 +38,9 @@
     termux-wake-unlock.enable = true;
   };
 
-  terminal.font = pkgs.nerd-fonts.jetbrains-mono;
+  terminal.font = pkgs.runCommand "font" {} ''
+    cp ${pkgs.nerd-fonts.jetbrains-mono}/share/fonts/truetype/NerdFonts/JetBrainsMono/JetBrainsMonoNerdFont-Regular.ttf $out
+  '';
 
   environment.motd = ""; # Do not show text at the top of the screen each time a new shell is created
 

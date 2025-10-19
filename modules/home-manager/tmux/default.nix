@@ -7,7 +7,11 @@
   cfg = config.tmux;
 in {
   options.tmux = {
-    enable = lib.mkEnableOption "Enable tmux.";
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Enable tmux.";
+    };
     prefix = lib.mkOption {
       type = lib.types.str;
       default = "C-b";

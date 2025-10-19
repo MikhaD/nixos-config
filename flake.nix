@@ -53,12 +53,10 @@
       (mkNixOSConfig "homelab" ./hosts/homelab/configuration.nix)
     ];
     nixOnDroidConfigurations.default = inputs.nix-on-droid.lib.nixOnDroidConfiguration {
-      specialArgs = {
-        inherit details inputs;
-        hostname = "phone";
-      };
+      pkgs = import inputs.nixpkgs { system = "aarch64-linux"; };
       modules = [
-        ./modules/base.nix
+        ({...}: {home-manager.extraSpecialArgs = {inherit details inputs; hostname = "phone";};})
+        #./modules/base.nix
         ./hosts/phone/configuration.nix
       ];
     };
