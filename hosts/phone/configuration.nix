@@ -3,13 +3,12 @@
   config,
   details,
   inputs,
-  lib,
   pkgs,
   ...
 }: {
   imports = [
-    #./modules/sshd.nix
-    #./modules/termux.nix
+    # ./../../modules/android/sshd.nix
+    ./../../modules/android/termux.nix
   ];
   user.userName = details.username;
   nix.nixPath = ["nixpkgs=${inputs.nixpkgs}"];
@@ -44,44 +43,45 @@
       };
       tmux = {
         prefix = "C-g";
-	prompt = {
+        prompt = {
           color = "#87D7D7";
-	  info = {
+          info = {
             disk = false;
-	    memory = false;
-	    battery = false;
-	  };
-	};
+            memory = false;
+            battery = false;
+          };
+        };
       };
       home.stateVersion = "24.05";
     };
   };
 
-  android-integration = {
-    termux-reload-settings.enable = true;
-    termux-setup-storage.enable = true;
-    termux-wake-lock.enable = true;
-    termux-wake-unlock.enable = true;
+  termux = {
+    commands = {
+      setup-storage = true;
+      wake-lock = true;
+      wake-unlock = true;
+    };
+    properties = {
+      volume-keys = "volume";
+      soft-keyboard-toggle-behavior = "enable/disable";
+      volume-keys = "volume";
+      fullscreen = true;
+      terminal-cursor-blink-rate = 500;
+      terminal-cursor-style = "bar";
+      extra-keys = "[['ESC','TAB','CTRL','ALT','HOME','END','PGUP','PGDN']]";
+    };
   };
 
   time.timeZone = details.timeZone;
   terminal.font = "${pkgs.nerd-fonts.jetbrains-mono}/share/fonts/truetype/NerdFonts/JetBrainsMono/JetBrainsMonoNerdFont-Regular.ttf";
-  environment.motd = "Tmux meta key is Ctrl + G"; # Text at the top of the screen each time a new shell is created
+  # Text printed to the top of the screen in new shells
+  environment.motd = ''
+     Tmux meta key is Ctrl + G
+     Long press KEYBOARD button to toggle extra keys row
+  '';
   # Backup etc files instead of failing to activate generation if a file already exists in /etc
   environment.etcBackupExtension = ".old";
-
-  # termux.properties does not work if it is a symlink
-  build.activation.termuxProperties = ''
-    if [[ -e ${config.user.home}/.termux/termux.properties ]]; then
-      $DRY_RUN_CMD rm $VERBOSE_ARG ${config.user.home}/.termux/termux.properties
-    fi
-    $DRY_RUN_CMD cp $VERBOSE_ARG ${./termux.properties} ${config.user.home}/.termux/termux.properties
-    $DRY_RUN_CMD chmod $VERBOSE_ARG 600 ${config.user.home}/.termux/termux.properties
-  '';
-
-  build.activation.sshd = ''
-    
-  '';
 
   # Read the changelog before changing this value
   system.stateVersion = "24.05";

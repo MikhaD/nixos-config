@@ -10,7 +10,7 @@ bind "TAB: menu-complete"               # Use TAB to auto-complete
 bind "set completion-ignore-case on"    # Do not differentiate between upper and lower case when completing
 bind "set echo-control-characters off"  # Do not print out control characters in a visible format (e.g. ^C)
 # When performing completion in the middle of a word move the cursor past the completed text instead of inserting the completed text at the cursor position
-# for example if your cursor was after the u in cd modules it will just move your cursor to the end instead of changing it to cd modulesles
+# for example if your cursor was after the u in cd modules it will just move your cursor to the end instead of changing it to cd modules
 bind "set skip-completed-text on"
 bind '"\e[A": history-search-backward'  # Use ↑ to search backwards through your history for the text in the prompt
 bind '"\e[B": history-search-forward'   # Use ↓ to search forwards through your history for the text in the prompt
