@@ -63,7 +63,6 @@
       wake-unlock = true;
     };
     properties = {
-      volume-keys = "volume";
       soft-keyboard-toggle-behavior = "enable/disable";
       volume-keys = "volume";
       fullscreen = true;

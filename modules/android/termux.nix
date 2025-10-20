@@ -12,7 +12,7 @@
       then (builtins.toJSON value)
       else toString value;
 
-    recurse = prefix: (pkgs.lib.mapAttrsToList (key: value: let
+    recurse = prefix: (lib.mapAttrsToList (key: value: let
       fullKey =
         if builtins.stringLength prefix > 0
         then "${prefix}.${key}"
@@ -22,7 +22,7 @@
       then recurse fullKey value
       else "${fullKey} = ${toRawString value}"));
   in
-    builtins.concatStringsSep "\n" (pkgs.lib.flatten (recurse "" attrs));
+    builtins.concatStringsSep "\n" (lib.flatten (recurse "" attrs));
 in {
   options.termux = {
     # https://github.com/termux/termux-tools/blob/master/termux.properties
@@ -99,11 +99,6 @@ in {
         type = lib.types.str;
         default = "[['ESC','/',{key: '-', popup: '|'},'HOME','UP','END','PGUP'], ['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]";
         description = "Complex syntax that needs more work. See https://wiki.termux.com/wiki/Touch_Keyboard";
-      };
-      use-black-ui = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
-        description = "Force dark theme for UI elements even if system theme is light.";
       };
       disable-hardware-keyboard-shortcuts = lib.mkOption {
         type = lib.types.bool;
@@ -214,7 +209,6 @@ in {
       ${toProperties cfg.properties}
       EOF
       $DRY_RUN_CMD chmod $VERBOSE_ARG 600 ${config.user.home}/.termux/termux.properties
-      $DRY_RUN_CMD termux-reload-settings
     '';
   };
 }
