@@ -65,16 +65,16 @@ in {
             "set-option -g status-right \""
           ]
           ++ lib.optional cfg.prompt.info.host "#[fg=#99CCE6]#[bg=#99CCE6,fg=black]󰟀 #[default] #H "
-          ++ lib.optional cfg.prompt.info.disk "#[fg=#999FE5]#[bg=#999FE5,fg=black]󰋊 #[default] #(tmux-disk-fraction) "
-          ++ lib.optional cfg.prompt.info.memory "#[fg=#BF99E5]#[bg=#BF99E5,fg=black]󰍛 #[default] #(tmux-memory-fraction 1) "
-          ++ lib.optional cfg.prompt.info.battery "#[fg=#E599DF]#[bg=#E599DF,fg=black]#(tmux-battery-icon) #[default] #(cat /sys/class/power_supply/BAT0/capacity)%"
+          ++ lib.optional cfg.prompt.info.disk "#[fg=#999FE5]#[bg=#999FE5,fg=black]󰋊 #[default] #(_tmux-disk-fraction) "
+          ++ lib.optional cfg.prompt.info.memory "#[fg=#BF99E5]#[bg=#BF99E5,fg=black]󰍛 #[default] #(_tmux-memory-fraction 1) "
+          ++ lib.optional cfg.prompt.info.battery "#[fg=#E599DF]#[bg=#E599DF,fg=black]#(_tmux-battery-icon) #[default] #(cat /sys/class/power_supply/BAT0/capacity)%"
           ++ ["\""]);
     };
     # Requires login logout to take effect in tmux status bar
     home.packages =
       []
-      ++ lib.optional cfg.prompt.info.disk (pkgs.writeShellScriptBin "tmux-disk-fraction" (builtins.readFile ./disk-fraction.sh))
-      ++ lib.optional cfg.prompt.info.memory (pkgs.writeShellScriptBin "tmux-memory-fraction" (builtins.readFile ./memory-fraction.sh))
-      ++ lib.optional cfg.prompt.info.battery (pkgs.writeShellScriptBin "tmux-battery-icon" (builtins.readFile ./battery-icon.sh));
+      ++ lib.optional cfg.prompt.info.disk (pkgs.writeShellScriptBin "_tmux-disk-fraction" (builtins.readFile ./disk-fraction.sh))
+      ++ lib.optional cfg.prompt.info.memory (pkgs.writeShellScriptBin "_tmux-memory-fraction" (builtins.readFile ./memory-fraction.sh))
+      ++ lib.optional cfg.prompt.info.battery (pkgs.writeShellScriptBin "_tmux-battery-icon" (builtins.readFile ./battery-icon.sh));
   };
 }
