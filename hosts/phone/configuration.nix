@@ -8,16 +8,18 @@
   ...
 }: {
   imports = [
-    ./modules/sshd.nix
-    ./modules/termux.nix
+    #./modules/sshd.nix
+    #./modules/termux.nix
   ];
   user.userName = details.username;
   nix.nixPath = ["nixpkgs=${inputs.nixpkgs}"];
   nix.extraOptions = "experimental-features = nix-command flakes";
 
   environment.packages = with pkgs; [
+    coreutils
+    gnugrep
+    findutils
     openssh
-    busybox
   ];
 
   home-manager = {
@@ -37,6 +39,9 @@
         ./../../modules/home-manager/tmux
         ./../../modules/home-manager/xdg.nix
       ];
+      programs.bash.shellAliases = {
+        clear = "printf '\\033[2J\\033[H'"; # This shell does not come with a clear command, so this aliases clear to Ctrl + L
+      };
       tmux = {
         prefix = "C-g";
 	prompt = {
