@@ -40,6 +40,18 @@ Format all nix files in the repo (run in the same dir as the flake.nix):
 nix fmt .
 ```
 
+## SSH Setup
+1. This configuration expects you to have SSH keys set up at `~/.ssh/id_ed25519` and `~/.ssh/id_ed25519.pub`.
+These can be generated with:
+	```bash
+	ssh-keygen -t ed25519 -a 100 -C "<system name>"
+	```
+	> [!Note]
+	> `<system name>` is a unique name for the system (e.g. "laptop" or "homelab"). This is used as a comment in the public key file for easier identification. The -a flag sets the number of KDF (key derivation function) rounds on your ssh key password to 100 for better brute force resistance.
+
+2. Add the public key to github [here](https://github.com/settings/keys) by clicking new SSH key. Add it twice, once as a signing key and once as an authentication key.
+3. If you want to use that key to SSH into other systems running SSH servers configured by this repository add the public key to the ./modules/nixos/services/sshd/ssh-public-keys.nix file named `<system name>.pub`.
+
 ## Resources
 - [NixOS & Flakes book](https://nixos-and-flakes.thiscute.world/)
 - [Managing dotfiles with home manager](https://wiki.nixos.org/wiki/Home_Manager#Managing_your_dotfiles)
