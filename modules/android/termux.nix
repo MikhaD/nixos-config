@@ -211,9 +211,9 @@ in {
         $DRY_RUN_CMD chmod $VERBOSE_ARG 600 ${config.user.home}/.termux/termux.properties
       fi
       $DRY_RUN_CMD cat <<EOF > ${config.user.home}/.termux/termux.properties
-      ######################### 🛑 DO NOT EDIT 🛑 #########################
-      Any changes made to this file will be overwritten on next activation.
-      ################# 🛑 THIS FILE IS AUTO GENERATED 🛑 #################
+      ########################### 🛑 DO NOT EDIT 🛑 ###########################
+      # Any changes made to this file will be overwritten on next activation. #
+      ################### 🛑 THIS FILE IS AUTO GENERATED 🛑 ###################
       ${toProperties cfg.properties}
       EOF
       $DRY_RUN_CMD chmod $VERBOSE_ARG 400 ${config.user.home}/.termux/termux.properties

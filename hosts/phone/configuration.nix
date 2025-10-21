@@ -11,7 +11,7 @@
   ];
   user.userName = details.username;
   nix.nixPath = ["nixpkgs=${inputs.nixpkgs}"];
-  nix.extraOptions = "experimental-features = nix-command flakes";
+  nix.extraOptions = "experimental-features = nix-command flakes pipe-operators";
 
   environment.packages = with pkgs; [
     coreutils
