@@ -12,17 +12,19 @@
       then (builtins.toJSON value)
       else toString value;
 
-    recurse = prefix: (lib.mapAttrsToList (key: value: let
-      fullKey =
-        if builtins.stringLength prefix > 0
-        then "${prefix}.${key}"
-        else key;
-    in
-      if builtins.isAttrs value
-      then recurse fullKey value
-      else "${fullKey} = ${toRawString value}"));
+    recurse = prefix:
+      (key: value: let
+        fullKey =
+          if builtins.stringLength prefix > 0
+          then "${prefix}.${key}"
+          else key;
+      in
+        if builtins.isAttrs value
+        then recurse fullKey value
+        else "${fullKey} = ${toRawString value}")
+      |> lib.mapAttrsToList;
   in
-    builtins.concatStringsSep "\n" (lib.flatten (recurse "" attrs));
+    (recurse "" attrs) |> lib.flatten |> builtins.concatStringsSep "\n";
 in {
   options.termux = {
     # https://github.com/termux/termux-tools/blob/master/termux.properties

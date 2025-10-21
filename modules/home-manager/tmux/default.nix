@@ -22,59 +22,75 @@ in {
       default = "green";
       description = "Set the color of the session pill and active tab.";
     };
-    prompt.info = {
-      host = lib.mkOption {
-        type = lib.types.bool;
-        default = true;
-        description = "Show host in tmux status bar.";
-      };
-      disk = lib.mkOption {
-        type = lib.types.bool;
-        default = true;
-        description = "Show disk usage in tmux status bar.";
-      };
-      memory = lib.mkOption {
-        type = lib.types.bool;
-        default = true;
-        description = "Show memory usage in tmux status bar.";
-      };
-      battery = lib.mkOption {
-        type = lib.types.bool;
-        default = true;
-        description = "Show battery status in tmux status bar.";
-      };
+    prompt.info = lib.mkOption {
+      type = lib.types.either lib.types.bool (lib.types.submodule {
+        host = lib.mkOption {
+          type = lib.types.bool;
+          default = true;
+          description = "Show host in tmux status bar.";
+        };
+        disk = lib.mkOption {
+          type = lib.types.bool;
+          default = true;
+          description = "Show disk usage in tmux status bar.";
+        };
+        memory = lib.mkOption {
+          type = lib.types.bool;
+          default = true;
+          description = "Show memory usage in tmux status bar.";
+        };
+        battery = lib.mkOption {
+          type = lib.types.bool;
+          default = true;
+          description = "Show battery status in tmux status bar.";
+        };
+      });
+      default = true;
+      description = "Configure what info to show in the tmux status bar. Can be a boolean to enable/disable all info.";
     };
   };
-  config = lib.mkIf cfg.enable {
-    programs.tmux = {
-      enable = true;
-      # Start window & pane indexing at 1 (because 0 is further away on the keyboard)
-      baseIndex = 1;
-      mouse = true;
-      keyMode = "vi";
-      prefix = cfg.prefix;
-      # Don't ask for confirmation when killing a tmux window or session
-      disableConfirmationPrompt = true;
-      extraConfig = let
-        color = cfg.prompt.color;
-      in
-        lib.concatStringsSep "" ([
-            (builtins.readFile ./tmux.conf)
-            "set-option -g status-left '#[fg=${color}]#[bg=${color},fg=black] #S#[bg=default,fg=${color}]#[default] '\n"
-            "set-option -g window-status-current-format '#[fg=${color}]#[bg=${color},fg=black]  #W #[fg=${color},bg=default]#[default]'\n"
-            "set-option -g status-right \""
-          ]
-          ++ lib.optional cfg.prompt.info.host "#[fg=#99CCE6]#[bg=#99CCE6,fg=black]󰟀 #[default] #H "
-          ++ lib.optional cfg.prompt.info.disk "#[fg=#999FE5]#[bg=#999FE5,fg=black]󰋊 #[default] #(_tmux-disk-fraction) "
-          ++ lib.optional cfg.prompt.info.memory "#[fg=#BF99E5]#[bg=#BF99E5,fg=black]󰍛 #[default] #(_tmux-memory-fraction 1) "
-          ++ lib.optional cfg.prompt.info.battery "#[fg=#E599DF]#[bg=#E599DF,fg=black]#(_tmux-battery-icon) #[default] #(cat /sys/class/power_supply/BAT0/capacity)%"
-          ++ ["\""]);
+  config = let
+    # Normalize prompt.info to always be an attribute set
+    promptInfo =
+      if builtins.isBool cfg.prompt.info
+      then {
+        host = cfg.prompt.info;
+        disk = cfg.prompt.info;
+        memory = cfg.prompt.info;
+        battery = cfg.prompt.info;
+      }
+      else cfg.prompt.info;
+  in
+    lib.mkIf cfg.enable {
+      programs.tmux = {
+        enable = true;
+        # Start window & pane indexing at 1 (because 0 is further away on the keyboard)
+        baseIndex = 1;
+        mouse = true;
+        keyMode = "vi";
+        prefix = cfg.prefix;
+        # Don't ask for confirmation when killing a tmux window or session
+        disableConfirmationPrompt = true;
+        extraConfig = let
+          color = cfg.prompt.color;
+        in
+          lib.concatStringsSep "" ([
+              (builtins.readFile ./tmux.conf)
+              "set-option -g status-left '#[fg=${color}]#[bg=${color},fg=black] #S#[bg=default,fg=${color}]#[default] '\n"
+              "set-option -g window-status-current-format '#[fg=${color}]#[bg=${color},fg=black]  #W #[fg=${color},bg=default]#[default]'\n"
+              "set-option -g status-right \""
+            ]
+            ++ lib.optional promptInfo.host "#[fg=#99CCE6]#[bg=#99CCE6,fg=black]󰟀 #[default] #H "
+            ++ lib.optional promptInfo.disk "#[fg=#999FE5]#[bg=#999FE5,fg=black]󰋊 #[default] #(_tmux-disk-fraction) "
+            ++ lib.optional promptInfo.memory "#[fg=#BF99E5]#[bg=#BF99E5,fg=black]󰍛 #[default] #(_tmux-memory-fraction 1) "
+            ++ lib.optional promptInfo.battery "#[fg=#E599DF]#[bg=#E599DF,fg=black]#(_tmux-battery-icon) #[default] #(cat /sys/class/power_supply/BAT0/capacity)%"
+            ++ ["\""]);
+      };
+      # Requires login logout to take effect in tmux status bar
+      home.packages =
+        []
+        ++ lib.optional promptInfo.disk (pkgs.writeShellScriptBin "_tmux-disk-fraction" (builtins.readFile ./disk-fraction.sh))
+        ++ lib.optional promptInfo.memory (pkgs.writeShellScriptBin "_tmux-memory-fraction" (builtins.readFile ./memory-fraction.sh))
+        ++ lib.optional promptInfo.battery (pkgs.writeShellScriptBin "_tmux-battery-icon" (builtins.readFile ./battery-icon.sh));
     };
-    # Requires login logout to take effect in tmux status bar
-    home.packages =
-      []
-      ++ lib.optional cfg.prompt.info.disk (pkgs.writeShellScriptBin "_tmux-disk-fraction" (builtins.readFile ./disk-fraction.sh))
-      ++ lib.optional cfg.prompt.info.memory (pkgs.writeShellScriptBin "_tmux-memory-fraction" (builtins.readFile ./memory-fraction.sh))
-      ++ lib.optional cfg.prompt.info.battery (pkgs.writeShellScriptBin "_tmux-battery-icon" (builtins.readFile ./battery-icon.sh));
-  };
 }

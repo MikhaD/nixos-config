@@ -1,4 +1,4 @@
-# Default config applied to all machines, imported in flake
+# Default module applied to all nixos machines, imported in flake
 {
   config,
   details,
@@ -18,11 +18,6 @@
       type = lib.types.bool;
       default = true;
       description = "Install the Nix language server (nixd).";
-    };
-    commandNotFound.enable = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "Enable command-not-found suggestions in the terminal.";
     };
   };
   config = {
@@ -44,8 +39,6 @@
 
     networking.networkmanager.enable = true;
     networking.hostName = hostname;
-
-    programs.command-not-found.enable = config.base.commandNotFound.enable;
 
     environment.systemPackages =
       []

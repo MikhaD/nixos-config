@@ -1,6 +1,5 @@
 # available options: https://nix-community.github.io/nix-on-droid/nix-on-droid-options.html
 {
-  config,
   details,
   inputs,
   pkgs,
@@ -45,11 +44,7 @@
         prefix = "C-g";
         prompt = {
           color = "#87D7D7";
-          info = {
-            disk = false;
-            memory = false;
-            battery = false;
-          };
+          info = false;
         };
       };
       home.stateVersion = "24.05";
