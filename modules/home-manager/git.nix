@@ -1,11 +1,14 @@
-{details, ...}: {
+{
+  details,
+  config,
+  ...
+}: {
   programs.git = {
     enable = true;
     settings = {
       user = {
         name = details.username;
         email = details.email;
-        signingkey = "$HOME/.ssh/id_ed25519.pub";
       };
       aliases.logg = "log --oneline --graph --all --decorate";
       push.autoSetupRemote = true;
@@ -22,7 +25,11 @@
       core.autocrlf = "input";
       advice.addIgnoredFile = false;
       color.ui = "auto";
-      gpg.format = "ssh";
+    };
+    signing = {
+      signByDefault = true;
+      format = "ssh";
+      key = "${config.home.homeDirectory}/.ssh/id_ed25519.pub";
     };
   };
 }
