@@ -1,12 +1,13 @@
 {details, ...}: {
   programs.git = {
     enable = true;
-    userName = details.username;
-    userEmail = details.email;
-    aliases = {
-      logg = "log --oneline --graph --all --decorate";
-    };
-    extraConfig = {
+    settings = {
+      user = {
+        name = details.username;
+        email = details.email;
+        signingkey = "$HOME/.ssh/id_ed25519.pub";
+      };
+      aliases.logg = "log --oneline --graph --all --decorate";
       push.autoSetupRemote = true;
       fetch = {
         prune = true;
@@ -21,6 +22,7 @@
       core.autocrlf = "input";
       advice.addIgnoredFile = false;
       color.ui = "auto";
+      gpg.format = "ssh";
     };
   };
 }
