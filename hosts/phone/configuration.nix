@@ -26,6 +26,7 @@
     extraSpecialArgs = {inherit details inputs;};
     config = {
       imports = [
+        inputs.nix-index-database.homeModules.nix-index
         ./../../modules/home-manager/bash
         ./../../modules/home-manager/bat.nix
         ./../../modules/home-manager/dig.nix
@@ -37,6 +38,7 @@
         ./../../modules/home-manager/tmux
         ./../../modules/home-manager/xdg.nix
       ];
+      programs.nix-index.enable = true;
       programs.bash.shellAliases = {
         clear = "printf '\\033[2J\\033[H'"; # This shell does not come with a clear command, so this aliases clear to Ctrl + L
       };

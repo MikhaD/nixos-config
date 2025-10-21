@@ -1,4 +1,8 @@
-{config, ...}: {
+{
+  config,
+  inputs,
+  ...
+}: {
   programs.bash = {
     enable = true;
     # Placed in ~/.bashrc
@@ -33,5 +37,4 @@
       "autocd" #                  Change to a directory just by typing its name
     ];
   };
-  programs.command-not-found.enable = true;
 }
