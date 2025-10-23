@@ -24,25 +24,27 @@ in {
     };
     prompt.info = lib.mkOption {
       type = lib.types.either lib.types.bool (lib.types.submodule {
-        host = lib.mkOption {
-          type = lib.types.bool;
-          default = true;
-          description = "Show host in tmux status bar.";
-        };
-        disk = lib.mkOption {
-          type = lib.types.bool;
-          default = true;
-          description = "Show disk usage in tmux status bar.";
-        };
-        memory = lib.mkOption {
-          type = lib.types.bool;
-          default = true;
-          description = "Show memory usage in tmux status bar.";
-        };
-        battery = lib.mkOption {
-          type = lib.types.bool;
-          default = true;
-          description = "Show battery status in tmux status bar.";
+        options = {
+          host = lib.mkOption {
+            type = lib.types.bool;
+            default = true;
+            description = "Show host in tmux status bar.";
+          };
+          disk = lib.mkOption {
+            type = lib.types.bool;
+            default = true;
+            description = "Show disk usage in tmux status bar.";
+          };
+          memory = lib.mkOption {
+            type = lib.types.bool;
+            default = true;
+            description = "Show memory usage in tmux status bar.";
+          };
+          battery = lib.mkOption {
+            type = lib.types.bool;
+            default = true;
+            description = "Show battery status in tmux status bar.";
+          };
         };
       });
       default = true;
