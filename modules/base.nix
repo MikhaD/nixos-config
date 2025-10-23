@@ -46,7 +46,7 @@
 
     system.activationScripts = lib.mkIf config.base.enforceFlakeLocation {
       linkConfig.text = ''
-        FLAKE_PATH=${details.flakePath}
+        FLAKE_PATH=${details.flakePath}/flake.nix
         if [[ ! -f $FLAKE_PATH ]]; then
           echo -e "\e[31mERROR:\e[0m Flake must be located at $FLAKE_PATH"
           exit 1
