@@ -20,23 +20,29 @@ This configuration expects and enforces several rules and patterns:
 
 ## Useful nix command reference
 Update flake inputs (must be run in the same dir as the flake.nix):
-```
+```sh
 nix flake update
 ```
 Delete all old revisions and garbage collect nix store
-```
+```sh
+# If your system imports the nh home manager module
+gc
+# Normal way (-d deletes old generations)
 sudo nix-collect-garbage -d
 ```
 Rebuild the system configuration and switch to it (run in the same dir as the flake.nix):
-```
+```sh
+# If your system imports the nh home manager module
+nh os switch
+# Normal way
 sudo nixos-rebuild switch --flake .
 ```
 Check configuration for errors (run in the same dir as the flake.nix):
-```
+```sh
 nix flake check .
 ```
 Format all nix files in the repo (run in the same dir as the flake.nix):
-```
+```sh
 nix fmt .
 ```
 
