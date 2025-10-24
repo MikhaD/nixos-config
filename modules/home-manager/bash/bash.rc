@@ -68,7 +68,7 @@ nix-shell() {
 
 parse_git_branch() {
     # Check if we are in a git repository (2> &1 redirects stderr to stdout, which is going to /dev/null)
-    if git rev-parse --git-dir >/dev/null 2>&1; then
+    if git rev-parse --git-dir &> /dev/null; then
         # Get the current branch name or commit hash
         local branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
 
@@ -77,11 +77,11 @@ parse_git_branch() {
             # Get the current commit hash
             local commit_hash=$(git rev-parse --short HEAD 2>/dev/null)
             if [[ $commit_hash != "" ]]; then
-                echo "⚠️ $commit_hash"
+                echo " $commit_hash "
             else
                 echo "  "
             fi
-        else
+        elif git rev-parse @{u} &> /dev/null; then # Check if the branch has an upstream
             # Get the ahead/behind status
             local status=$(git status -sb 2>/dev/null)
             local ahead_behind=""
@@ -94,6 +94,8 @@ parse_git_branch() {
                 ahead_behind="$ahead_behind↓$behind_count"
             fi
             echo " $branch $ahead_behind"
+        else
+            echo " $branch 󱄁 "
         fi
     fi
 }
