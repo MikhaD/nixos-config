@@ -23,7 +23,7 @@ This module configures bash. Importing it into home manager will enable bash wit
 | <kbd>Alt</kbd> + <kbd>←</kbd> | Go up one directory (`cd ..`) |
 | <kbd>Alt</kbd> + <kbd>→</kbd> | Go to the previous directory (`cd -`) |
 | <kbd>Alt</kbd> + <kbd>S</kbd> | Prepend `sudo` to the current command |
-| <kbd>Ctrl</kbd> + <kbd>R</kbd> | Reload the bashrc file from `~/nix/modules/home-manager/bash/bashrc` |
+| <kbd>Ctrl</kbd> + <kbd>R</kbd> | Reload the bashrc file from `~/nix/modules/home-manager/bash/bash.rc` |
 | <kbd>Ctrl</kbd> + <kbd>W</kbd> | Detach from the current tmux session if there is one |
 
 ## Extra Functionality
@@ -47,7 +47,7 @@ This section shows the current directory, which is be abbreviated for long paths
 
 
 - The current user's home directory is abbreviated as `~`.
-- Directories with specific names in the home directory and the `/` directory are replaced with icons when you are within their sub directories (if you are in a dir with an icon but not in one of it's sub dirs it's name will not be replaced by an icon). Desktop, Documents, Downloads, Music, Pictures etc. are all examples of directories that have icons. You can find the full list in the `bashrc` file in this module (see `DIR_ICONS`).
+- Directories with specific names in the home directory and the `/` directory are replaced with icons when you are within their sub directories (if you are in a dir with an icon but not in one of it's sub dirs it's name will not be replaced by an icon). Desktop, Documents, Downloads, Music, Pictures etc. are all examples of directories that have icons. You can find the full list in the `bash.rc` file in this module (see `DIR_ICONS`).
 - If more than 1 directory deep in the current users home directory or `/`, the path is abbreviated to show `…/<current-dir>` for brevity. If the root directory in `~` or `/` is a directory with an icon, it will be `<icon>/…/<current-dir>`, and will only truncate when you are more than 2 directories deep.<br>
 	![prompt sections](../../../.assets/readme-images/bash-prompt-dir.png)<br>
 	In the example above the user is several directories deep in the Documents dir in their home directory, in a dir called Personal.

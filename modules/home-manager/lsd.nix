@@ -17,6 +17,7 @@
         ".bash_profile" = "";
         ".bashrc" = "";
         "bashrc" = "";
+        "bash.rc" = "";
         "bin" = "";
         ".cache" = "󱘿";
         ".config" = "";

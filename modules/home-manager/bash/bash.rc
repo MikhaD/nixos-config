@@ -6,12 +6,12 @@
 #    ▐▛▀▚▖▐▛▀▀▘▐▛▀▜▌▐▌  █▐▌     █  ▐▌ ▝▜▌▐▛▀▀▘
 #    ▐▌ ▐▌▐▙▄▄▖▐▌ ▐▌▐▙▄▄▀▐▙▄▄▖▗▄█▄▖▐▌  ▐▌▐▙▄▄▖
 
-bind "TAB: menu-complete"               # Use TAB to auto-complete
 bind "set completion-ignore-case on"    # Do not differentiate between upper and lower case when completing
 bind "set echo-control-characters off"  # Do not print out control characters in a visible format (e.g. ^C)
-# When performing completion in the middle of a word move the cursor past the completed text instead of inserting the completed text at the cursor position
-# for example if your cursor was after the u in cd modules it will just move your cursor to the end instead of changing it to cd modules
-bind "set skip-completed-text on"
+bind "TAB: menu-complete"               # Use TAB to auto-complete
+bind "set skip-completed-text on"       # When performing completion in the middle of a word move the cursor past the completed text instead of
+                                        # inserting the completed text at the cursor position. For example if your cursor was after the u in cd
+                                        # modules it will just move your cursor to the end instead of changing it to cd modulesles.
 bind '"\e[A": history-search-backward'  # Use ↑ to search backwards through your history for the text in the prompt
 bind '"\e[B": history-search-forward'   # Use ↓ to search forwards through your history for the text in the prompt
 bind '"\C-h": backward-kill-word'       # Use Ctrl+Backspace to delete the last word in the prompt
@@ -19,7 +19,7 @@ bind '"\e[1;3D": "cd ..\n"'             # Use Alt+← to go up one directory
 bind '"\e[1;3C": "cd -\n"'              # Use Alt+→ to go to the previous directory
 bind '"\es": "\C-asudo \C-e"'           # Use Alt+s to prepend sudo to the current command
 bind '"\C-l": clear-display'            # Use Ctrl+L to clear the screen (override the default clear-screen, which does just scrolls the screen up)
-bind '"\C-r": "source ~/nix/modules/home-manager/bash/bashrc\n"'     # Use Ctrl+R to reload the bashrc file from my nix configuration
+bind '"\C-r": "source ~/nix/modules/home-manager/bash/bash.rc\n"'     # Use Ctrl+R to reload the bashrc file from my nix configuration
 if [[ -n $TMUX ]]; then
     bind '"\C-w": "tmux detach &> /dev/null\n"' # Use Ctrl+W to detach from the current tmux session
 fi
@@ -186,25 +186,41 @@ parse_directory() {
 }
 
 distro_icon() {
-    if [[ -e "/etc/os-release" ]]; then
-        local distro=$(source /etc/os-release && echo $ID)
-    else
-        local distro="termux"
-    fi
+    case "$(uname -s)" in
+        Linux*)
+            if [[ -d /system && -d /data ]]; then
+                local distro="termux"
+            elif [[ -e "/etc/os-release" ]]; then
+                local distro=$(source /etc/os-release && echo $ID)
+            else
+                local distro="linux"
+            fi
+            ;;
+        CYGWIN*|MINGW*|MSYS*)
+            local distro="windows"
+            ;;
+        *)
+            local distro="unknown"
+            ;;
+    esac
     declare -A distro_icons=(
         ["debian"]=" "
         ["ubuntu"]=" "
         ["nixos"]=" "
         ["termux"]=" "
+        ["windows"]=" "
+        ["linux"]=" "
     )
     declare -A distro_colors=(
         ["debian"]="168;0;48"
         ["ubuntu"]="233;84;32"
         ["nixos"]="126;183;226"
         ["termux"]="164;198;57"
+        ["windows"]="0;173;239"
+        ["linux"]="255;255;0"
     )
-    local icon="${distro_icons[$distro]:- }"
-    local color="${distro_colors[$distro]:-33}"
+    local icon="${distro_icons[$distro]}"
+    local color="${distro_colors[$distro]:-0;0;0}"
     unset distro_icons distro_colors
     echo "\[\e[48;2;${1}m\e[38;2;${color}m\]${icon}"
 }
