@@ -25,6 +25,7 @@
     nix.settings.trusted-users = ["root" details.username]; # Allow me to build system config remotely and push it to this machine via SSH
     nix.nixPath = ["nixpkgs=${inputs.nixpkgs}"];
     nixpkgs.config.allowUnfree = true;
+    programs.command-not-found.enable = true;
 
     time.timeZone = details.timeZone;
     i18n.defaultLocale = "en_ZA.UTF-8";
