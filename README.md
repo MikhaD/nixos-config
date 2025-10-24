@@ -4,6 +4,7 @@ This repository contains my nixos configuration files for my laptop and server.
 Several modules (listed below), have their own readme files with more information.
 1. [Bash](modules/home-manager/bash/README.md)
 1. [KeyD](modules/nixos/services/keyd/README.md)
+1. [Nh](modules/home-manager/nh/README.md)
 1. [Tmux](modules/home-manager/tmux/README.md)
 1. [Work](modules/home-manager/work/README.md)
 1. [Ulauncher](modules/home-manager/ulauncher/README.md)
