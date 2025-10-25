@@ -23,8 +23,11 @@
       pager.branch = false;
       init.defaultBranch = "main";
       core.autocrlf = "input";
-      advice.addIgnoredFile = false;
       color.ui = "auto";
+      advice = {
+        addIgnoredFile = false;
+        detachedHead = false;
+      };
     };
     signing = {
       signByDefault = true;
