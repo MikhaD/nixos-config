@@ -15,7 +15,6 @@
 
   environment.packages = with pkgs; [
     coreutils
-    gnugrep
     findutils
     openssh
   ];
@@ -33,6 +32,7 @@
         ./../../modules/home-manager/fastfetch.nix
         ./../../modules/home-manager/fzf.nix
         ./../../modules/home-manager/git.nix
+        ./../../modules/home-manager/grep.nix
         ./../../modules/home-manager/lsd.nix
         ./../../modules/home-manager/neovim.nix
         ./../../modules/home-manager/tmux

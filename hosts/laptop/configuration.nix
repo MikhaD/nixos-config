@@ -34,6 +34,7 @@
       ./../../modules/home-manager/fastfetch.nix
       ./../../modules/home-manager/fzf.nix
       ./../../modules/home-manager/git.nix
+      ./../../modules/home-manager/grep.nix
       ./../../modules/home-manager/jq.nix
       ./../../modules/home-manager/neovim.nix
       ./../../modules/home-manager/nh
