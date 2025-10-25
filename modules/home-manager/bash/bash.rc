@@ -66,37 +66,65 @@ nix-shell() {
 #  ▐▛▀▚▖▐▛▀▜▌ ▝▀▚▖▐▛▀▜▌    ▐▛▀▘ ▐▛▀▚▖▐▌ ▐▌▐▌  ▐▌▐▛▀▘  █
 #  ▐▙▄▞▘▐▌ ▐▌▗▄▄▞▘▐▌ ▐▌    ▐▌   ▐▌ ▐▌▝▚▄▞▘▐▌  ▐▌▐▌    █
 
-parse_git_branch() {
-    # Check if we are in a git repository (2> &1 redirects stderr to stdout, which is going to /dev/null)
-    if git rev-parse --git-dir &> /dev/null; then
-        # Get the current branch name or commit hash
-        local branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+parse_git_status() {
+    if ! git rev-parse --is-inside-work-tree &> /dev/null; then return; fi
+    local short=$([[ $1 == "-s" || $1 == "--short" ]] && echo true || echo false)
+    declare -a statuses
+    declare -a icons=("" "" "" "" "" "󱈸" "")
+    declare -a short_icons=("*" "+" "-" "󰫿" "󰫰" "!" "?")
 
-        # Check if we are in a detached HEAD state
-        if [[ $branch = "HEAD" ]]; then
-            # Get the current commit hash
-            local commit_hash=$(git rev-parse --short HEAD 2>/dev/null)
-            if [[ $commit_hash != "" ]]; then
-                echo " $commit_hash "
-            else
-                echo "  "
-            fi
-        elif git rev-parse @{u} &> /dev/null; then # Check if the branch has an upstream
-            # Get the ahead/behind status
-            local status=$(git status -sb 2>/dev/null)
-            local ahead_behind=""
-            if [[ $status =~ \[ahead\ [0-9]+ ]]; then
-                local ahead_count=$(echo $status | grep -oP '(?<=\[ahead )\d+')
-                ahead_behind="↑$ahead_count"
-            fi
-            if [[ $status =~ behind\ [0-9]+\] ]]; then
-                local behind_count=$(echo $status | grep -oP '(?<=behind )\d+(?=\])')
-                ahead_behind="$ahead_behind↓$behind_count"
-            fi
-            echo " $branch $ahead_behind"
+    while IFS="" read -r line; do
+        local status=${line:0:2}
+        case $status in
+            M*|*M) ((statuses[0] += 1)) ;;       # Modified  * / 
+            A*|*A) ((statuses[1] += 1)) ;;       # Added     + / 
+            D*|*D) ((statuses[2] += 1)) ;;       # Deleted   - / 
+            R*|*R) ((statuses[3] += 1)) ;;       # Renamed   󰫿 / 
+            C*|*C) ((statuses[4] += 1)) ;;       # Copied    󰫰 / 
+            U*|*U|AA|DD) ((statuses[5] += 1)) ;; # Unmerged  ! / 󱈸 (conflicts)
+            \?\?) ((statuses[6] += 1)) ;;        # Untracked ? / 
+        esac
+    done < <(git status -sb --porcelain)
+    # Array only has indices where values were assigned, & ! before array ref gets indices
+    for i in "${!statuses[@]}"; do
+        if $short; then
+            echo -n "${short_icons[$i]}"
         else
-            echo " $branch 󱄁 "
+            echo -n "${statuses[$i]}${icons[$i]} "
         fi
+    done
+    echo ""
+}
+
+parse_git_branch() {
+    # Get branch name if in git repo
+    local branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+    if [[ -z $branch ]]; then return; fi
+
+    # Check if in a detached HEAD state
+    if [[ $branch == "HEAD" ]]; then
+        # Get current commit hash
+        local commit_hash=$(git rev-parse --short HEAD 2>/dev/null)
+        if [[ $commit_hash == "" ]]; then
+            echo "  "
+        else
+            echo " $commit_hash "
+        fi
+    elif git rev-parse @{u} &> /dev/null; then # Check if branch has upstream
+        # Get ahead/behind status
+        local status=$(git status -sb --porcelain)
+        local ahead_behind=""
+        if [[ $status =~ \[ahead\ [0-9]+ ]]; then
+            local ahead_count=$(echo $status | grep -oP '(?<=\[ahead )\d+')
+            ahead_behind="↑$ahead_count"
+        fi
+        if [[ $status =~ behind\ [0-9]+\] ]]; then
+            local behind_count=$(echo $status | grep -oP '(?<=behind )\d+(?=\])')
+            ahead_behind="$ahead_behind↓$behind_count"
+        fi
+        echo " $branch $ahead_behind"
+    else
+        echo " $branch 󱄁 "
     fi
 }
 
@@ -297,17 +325,19 @@ trap timer_start DEBUG INT
 # reset just before it is stopped because the DEBUG trap is triggered by PROMPT_COMMAND
 PROMPT_COMMAND="prompt_command"
 
-bg1="102;102;102" #    grey
-fg1=30 #               black
-usr_fg=32 #            green
-dir_bg="255;255;255" # white
-git_bg="20;151;184" #  blue
-edge="" # other options:          
+bg1="102;102;102" #      grey
+fg1=30 #                 black
+usr_fg=32 #              green
+dir_bg="255;255;255" #   white
+git_bg="20;151;184" #    blue
+status_bg="20;129;184" # darker blue
+edge="" # other options:             
 
 PS1="$(ssh_session)$(nix_shell)"
 PS1+="\[\e[38;2;${bg1}m\]$(distro_icon $bg1)\[\e[1;${usr_fg}m\e[48;2;${bg1}m\]\u \[\e[0m\e[38;2;${bg1}m\e[48;2;${dir_bg}m\]$edge"
 PS1+="\[\e[${fg1}m\] \$(parse_directory) \[\e[48;2;${git_bg}m\e[38;2;${dir_bg}m\]$edge"
-PS1+="\[\e[${fg1}m\] \$(parse_git_branch)\[\e[0m\e[48;2;\${exit_bg}m\e[38;2;${git_bg}m\]$edge"
+PS1+="\[\e[${fg1}m\] \$(parse_git_branch)\[\e[0m\e[48;2;\${status_bg}m\e[38;2;${git_bg}m\]$edge"
+PS1+="\[\e[${fg1}m\] \$(parse_git_status)\[\e[0m\e[48;2;\${exit_bg}m\e[38;2;\${status_bg}m\]$edge"
 PS1+=" \[\e[\${exit_fg}m\] \${duration} \[\e[48;2;${bg1}m\e[38;2;\${exit_bg}m\]$edge"
 PS1+="\[\e[1;37m\]\\$\[\e[0m\e[38;2;${bg1}m\]$edge\[\e[0m\] "
 
