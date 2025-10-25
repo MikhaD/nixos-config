@@ -6,6 +6,8 @@
       extension = {
         markdown = "";
         md = "";
+        properties = "";
+        toml = "";
         yaml = "";
         yml = "";
       };
