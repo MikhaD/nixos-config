@@ -16,6 +16,8 @@
   environment.packages = with pkgs; [
     coreutils
     findutils
+    gawk
+    gnused
     openssh
   ];
 
