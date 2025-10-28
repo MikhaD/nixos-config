@@ -9,10 +9,10 @@
   ...
 }: {
   options.base = {
-    enforceFlakeLocation = lib.mkOption {
+    warnAboutFlakeLocation = lib.mkOption {
       type = lib.types.bool;
       default = true;
-      description = "Prevent building if the flake is not located at the location specified in details.flakePath, and symlink it to /etc/nixos/flake.nix.";
+      description = "Log warnings on build and boot if the flake is not located at the location specified in details.flakePath, and symlink it to /etc/nixos/flake.nix.";
     };
     languageServer.enable = lib.mkOption {
       type = lib.types.bool;
@@ -45,16 +45,17 @@
       []
       ++ lib.optional config.base.languageServer.enable pkgs.nixd;
 
-    system.activationScripts = lib.mkIf config.base.enforceFlakeLocation {
+    # ! HAVING THIS ENABLED PREVENTS ALL REVISIONS FROM BOOTING
+    system.activationScripts = lib.mkIf config.base.warnAboutFlakeLocation {
       linkConfig.text = ''
         FLAKE_PATH=${details.flakePath}/flake.nix
         if [[ ! -f $FLAKE_PATH ]]; then
-          echo -e "\e[31mERROR:\e[0m Flake must be located at $FLAKE_PATH"
-          exit 1
+          echo -e "\e[33mWARNING:\e[0m Flake should be located at $FLAKE_PATH"
+          exit 0
         fi
         if find /etc/nixos -maxdepth 1 -type f | grep -qE "\.(nix|lock)"; then
-          echo "\e[31mERROR:\e[0m /etc/nixos must not contain any .nix or .lock files. Remove them and try again."
-          exit 1
+          echo "\e[33mWARNING:\e[0m /etc/nixos must not contain any .nix or .lock files."
+          exit 0
         else
           if [[ -L /etc/nixos/flake.nix ]]; then
             rm /etc/nixos/flake.nix

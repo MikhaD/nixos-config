@@ -6,10 +6,8 @@
   # Bootloader
   boot = {
     kernelParams = ["quiet"];
-    # TODO: Update to 6.17 as soon as it doesn't prevent booting on my hardware (6.17.2 was the last one that worked for me)
-    # https://www.linuxlookup.com/linux_kernel
-    # kernelPackages = pkgs.linuxPackages_latest;
-    kernelPackages = pkgs.linuxPackages_6_16;
+    # https://www.linuxlookup.com/linux_kernel (latest kernel versions)
+    kernelPackages = pkgs.linuxPackages_latest;
     loader = {
       systemd-boot = {
         enable = true;

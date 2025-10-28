@@ -28,8 +28,8 @@ Delete all old revisions and garbage collect nix store
 ```sh
 # If your system imports the nh home manager module
 gc
-# Normal way (-d deletes old generations)
-sudo nix-collect-garbage -d
+# Normal way (keep 5 old generations)
+sudo nix-collect-garbage --keep 5
 ```
 Rebuild the system configuration and switch to it (run in the same dir as the flake.nix):
 ```sh
@@ -65,6 +65,25 @@ These can be generated with:
 - [Nix Flakes on NixOS](https://nixos.wiki/wiki/flakes#Using_nix_flakes_with_NixOS)
 - [Nix concepts](https://zero-to-nix.com/concepts/)
 - [Great intro to flakes & their outputs](https://youtu.be/RoMArT8UCKM)
+<details>
+	<summary>How to use a custom version of the Linux kernel</summary>
+
+**Example:**
+
+```nix
+boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_6_17.override {
+	argsOverride = rec {
+		version = "6.17.2";
+		modDirVersion = version;
+		src = pkgs.fetchurl {
+			url = "mirror://kernel/linux/kernel/v6.x/linux-${version}.tar.xz";
+			hash = "sha256-/evLBlBl9cG43Gim+1nNpQzd2/kQPSB8IZbVXqdk9X8=";
+		};
+	};
+});
+```
+
+</section>
 
 ## TODO
 - Tmux nix option for highlight color
