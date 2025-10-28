@@ -24,6 +24,11 @@ This module configures tmux. Importing it into home manager will enable tmux wit
 - `prefix`: change the prefix key (default is <kbd>Ctrl + B</kbd>).
 - `prompt.info`: toggle system info in the status bar. See [status bar customization](#status-bar-customization) for details.
 - `prompt.color`: change the color of the session pill at the start of the prompt, and the active tab (default is green).
+- `selectionColor.background`: change the background color of selected text in copy mode (default is "#99CCE6").
+- `selectionColor.foreground`: change the foreground color of selected text in copy mode (default is "black").
+- `message.duration`: set the duration (in milliseconds) for which tmux messages are displayed (default is 4000).
+- `message.color.background`: change the background color of tmux messages (default is "#D9AD8C").
+- `message.color.foreground`: change the foreground color of tmux messages (default is "black").
 
 ## Status Bar Customization
 The status bar has been placed at the top of the window with an empty line below it and has 3 general sections.
@@ -34,10 +39,15 @@ The status bar has been placed at the top of the window with an empty line below
 This section shows the current tmux session name with a tmux icon before it.
 
 #### 2: Window List
-This section shows the list of windows in the current session, styled to look like tabs. The current window is highlighted in the classic tmux status bar green.
+This section shows the list of windows in the current session, styled to look like tabs. The current window is highlighted in the color specified by `prompt.color` (default is the classic tmux green).
 
 #### 3: System Info
 This section can be configured to show various system information, provided by custom scripts included by this module should they be enabled.
+
+The `prompt.info` option can be set to:
+- `true` to enable all info sections
+- `false` to disable all info sections
+- An attribute set to configure individual sections
 
 ##### 3.1 Host
 This shows the hostname of the current machine with a computer icon before it. It can be toggled with `tmux.prompt.info.host` and is enabled by default.

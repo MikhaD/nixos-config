@@ -17,6 +17,37 @@ in {
       default = "C-b";
       description = "Set tmux prefix key. Default is Ctrl + G.";
     };
+    selectionColor = {
+      background = lib.mkOption {
+        type = lib.types.str;
+        default = "#99CCE6";
+        description = "Set the background color of the cursor selection.";
+      };
+      foreground = lib.mkOption {
+        type = lib.types.str;
+        default = "black";
+        description = "Set the color of the text in a selection.";
+      };
+    };
+    message = {
+      duration = lib.mkOption {
+        type = lib.types.int;
+        default = 4000; # original default is 750
+        description = "Set the duration (in milliseconds) for which tmux messages are displayed.";
+      };
+      color = {
+        background = lib.mkOption {
+          type = lib.types.str;
+          default = "#D9AD8C";
+          description = "Set the background color of tmux messages.";
+        };
+        foreground = lib.mkOption {
+          type = lib.types.str;
+          default = "black";
+          description = "Set the foreground color of tmux messages.";
+        };
+      };
+    };
     prompt.color = lib.mkOption {
       type = lib.types.str;
       default = "green";
@@ -78,6 +109,10 @@ in {
         in
           lib.concatStringsSep "" ([
               (builtins.readFile ./tmux.conf)
+              "\n"
+              "set -g display-time ${cfg.message.duration}\n"
+              "set-option -g message-style fg=${cfg.message.color.foreground},bg=${cfg.message.color.background}\n" # Tmux message colors
+              "set-option -g mode-style fg=${cfg.selectionColor.foreground},bg=${cfg.selectionColor.background}\n\n" # Selection colors
               "set-option -g status-left '#[fg=${color}]#[bg=${color},fg=black] #S#[bg=default,fg=${color}]#[default] '\n"
               "set-option -g window-status-current-format '#[fg=${color}]#[bg=${color},fg=black]  #W #[fg=${color},bg=default]#[default]'\n"
               "set-option -g status-right \""
