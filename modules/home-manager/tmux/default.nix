@@ -110,7 +110,7 @@ in {
           lib.concatStringsSep "" ([
               (builtins.readFile ./tmux.conf)
               "\n"
-              "set -g display-time ${cfg.message.duration}\n"
+              "set -g display-time ${toString cfg.message.duration}\n"
               "set-option -g message-style fg=${cfg.message.color.foreground},bg=${cfg.message.color.background}\n" # Tmux message colors
               "set-option -g mode-style fg=${cfg.selectionColor.foreground},bg=${cfg.selectionColor.background}\n\n" # Selection colors
               "set-option -g status-left '#[fg=${color}]#[bg=${color},fg=black] #S#[bg=default,fg=${color}]#[default] '\n"
