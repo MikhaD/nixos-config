@@ -18,6 +18,11 @@
       DontCheckDefaultBrowser = true;
       EnableTrackingProtection = {
         Value = true;
+        # Locked = true;
+        Cryptomining = true;
+        Fingerprinting = true;
+        # EmailTracking = true;
+        SuspectedFingerprinting = true;
       };
       HardwareAcceleration = true;
       HttpsOnlyMode = "enabled";

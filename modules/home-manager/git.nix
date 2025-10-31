@@ -11,6 +11,8 @@
         email = details.email;
       };
       aliases.logg = "log --oneline --graph --all --decorate";
+      aliases.sb = "status -sb";
+      aliases.ss = "status -s";
       push.autoSetupRemote = true;
       fetch = {
         prune = true;
