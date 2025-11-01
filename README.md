@@ -46,6 +46,19 @@ Format all nix files in the repo (run in the same dir as the flake.nix):
 ```sh
 nix fmt .
 ```
+### Repl
+Open a nix repl with the flake loaded
+```sh
+nix repl .#nixosConfigurations.<system name>
+```
+Evaluate nix file. Note that you will probably want `let pkgs = import <nixpkgs> { }; in` at the start of the file to get access to nixpkgs.
+```nix
+nix repl --file <filepath>
+```
+Load nixpkgs in repl
+```nix
+:l <nixpkgs>
+```
 
 ## SSH Setup
 1. This configuration expects you to have SSH keys set up at `~/.ssh/id_ed25519` and `~/.ssh/id_ed25519.pub`.

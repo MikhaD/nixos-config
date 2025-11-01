@@ -182,7 +182,6 @@ in {
     programs.bash = let
       tColors = fg: bg: ''\[\e[0;38;2;${fg};48;2;${bg}m\]'';
       start = prevBg: section: ''${tColors prevBg section.background}${cfg.prompt.icons.sep}\[\e[38;2;${section.color}m\]'';
-      end = ''\[\e[0m\]'';
     in {
       enable = true;
       historyFile = "${config.xdg.stateHome}/bash_history";
@@ -262,7 +261,7 @@ in {
             ))
           sections)
           ++ ["\n"]
-          ++ lib.optional (lib.length sections > 0) ''PS1+="\[\e[38;2;${(lib.last sections).background};49m\]${cfg.prompt.icons.end}\[\e[0m\] "'' # might not be able to easily set end icon different to sep
+          ++ lib.optional (lib.length sections > 0) ''PS1+="\[\e[38;2;${(lib.last sections).background};49m\]${cfg.prompt.icons.end}\[\e[0m\] "''
         );
       in
         lib.concatStringsSep "\n" [

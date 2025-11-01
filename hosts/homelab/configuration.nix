@@ -1,4 +1,4 @@
-{...}: {
+{hostname, ...}: {
   imports = [
     ./hardware-configuration.nix
     ./../../modules/home-manager
@@ -43,7 +43,6 @@
     ];
     extra = {
       tmux = {
-        enable = true;
         prefix = "C-g";
         prompt = {
           color = "#99CCE6";
@@ -51,13 +50,13 @@
         };
       };
 
+      # Start new tmux session on login if not already inside tmux, or attach to existing
       programs.bash.profileExtra = ''
-        SNAME="homelab"
         if [ -z "$TMUX" ]; then
-          if ! tmux has-session -t "$SNAME" 2>/dev/null; then
-            tmux new-session -s "$SNAME"
+          if ! tmux has-session -t "${hostname}" 2>/dev/null; then
+            tmux new-session -s "${hostname}"
           else
-           tmux attach-session -t "$SNAME"
+           tmux attach-session -t "${hostname}"
           fi
         else
           echo "Tmux meta key is Ctrl + G"

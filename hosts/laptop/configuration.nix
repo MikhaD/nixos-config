@@ -57,9 +57,6 @@
       # BOTO_CONFIG = "${config.xdg.configHome}/botorc"; # Removes .boto from ~
       # ANDROID_USER_HOME = "${config.xdg.dataHome}/android"; # Removes .android/ from ~
     };
-    extra = {
-      tmux.enable = true;
-    };
   };
 
   # https://github.com/Mic92/envfs
