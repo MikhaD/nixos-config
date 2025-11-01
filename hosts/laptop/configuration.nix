@@ -45,7 +45,7 @@
       ./../../modules/home-manager/tree.nix
       ./../../modules/home-manager/lsd.nix
       ./../../modules/home-manager/tmux
-      ./../../modules/home-manager/ulauncher
+      # ./../../modules/home-manager/ulauncher
       ./../../modules/home-manager/wl-clipboard.nix
       ./../../modules/home-manager/xdg.nix
 

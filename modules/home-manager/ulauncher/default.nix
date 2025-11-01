@@ -3,7 +3,7 @@
   pkgs,
   ...
 }: let
-  iconPath = "${inputs.ulauncher6.packages.${pkgs.system}.default}/share/ulauncher/icons";
+  iconPath = "${inputs.ulauncher6.packages.${pkgs.stdenv.hostPlatform.system}.default}/share/ulauncher/icons";
 in {
   imports = [./ulauncher.nix];
   ulauncher = {

@@ -146,7 +146,7 @@ in {
 
   config = lib.mkIf cfg.enable {
     home.packages = [
-      inputs.ulauncher6.packages.${pkgs.system}.default
+      inputs.ulauncher6.packages.${pkgs.stdenv.hostPlatform.system}.default
     ];
     xdg.configFile."ulauncher/settings.json".text = builtins.toJSON {
       arrow_key_aliases = cfg.arrowKeyAliases;
