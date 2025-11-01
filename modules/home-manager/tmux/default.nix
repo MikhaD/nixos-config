@@ -126,8 +126,8 @@ in {
       # Requires login logout to take effect in tmux status bar
       home.packages =
         []
-        ++ lib.optional promptInfo.disk (pkgs.writeShellScriptBin "_tmux-disk-fraction" (builtins.readFile ./disk-fraction.sh))
-        ++ lib.optional promptInfo.memory (pkgs.writeShellScriptBin "_tmux-memory-fraction" (builtins.readFile ./memory-fraction.sh))
-        ++ lib.optional promptInfo.battery (pkgs.writeShellScriptBin "_tmux-battery-icon" (builtins.readFile ./battery-icon.sh));
+        ++ lib.optional promptInfo.disk (pkgs.writeShellScriptBin "_tmux-disk-fraction" (builtins.readFile ./scripts/disk-fraction.sh))
+        ++ lib.optional promptInfo.memory (pkgs.writeShellScriptBin "_tmux-memory-fraction" (builtins.readFile ./scripts/memory-fraction.sh))
+        ++ lib.optional promptInfo.battery (pkgs.writeShellScriptBin "_tmux-battery-icon" (builtins.readFile ./scripts/battery-icon.sh));
     };
 }
