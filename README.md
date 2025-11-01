@@ -95,8 +95,11 @@ boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_6_17.override {
 - Move Obsidian vault to home manager
 - Move Firefox search engines to home manager
 - Rofi README
-- Overhaul work emulators script
 - Overhaul work emulators script bash completions
 - Add info on [] and [[]] in bash cheat-sheet
 - pkgs README with info on how to write derivations
-- Figure out how to get nixpkgs in repl so I can test more easily
+- Phone SSH
+- Bash options:
+  - Use unused timer.success, timer.failure, timer.warning, gitBranch.statusSummary, directory.abridged
+  - Remove functions from bashrc that are not used when sections are toggled off
+  - Create directory icons option
