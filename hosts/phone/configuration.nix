@@ -21,10 +21,12 @@
     openssh
   ];
 
-  home-manager = {
+  home-manager = let
+    utils = inputs.self.utils.${pkgs.stdenv.hostPlatform.system};
+  in {
     useUserPackages = true;
     useGlobalPkgs = true;
-    extraSpecialArgs = {inherit details inputs;};
+    extraSpecialArgs = {inherit details inputs utils;};
     config = {
       imports = [
         inputs.nix-index-database.homeModules.nix-index

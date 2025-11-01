@@ -3,15 +3,17 @@
   config,
   details,
   inputs,
+  pkgs,
   ...
 }: let
   cfg = config.home-config;
+  utils = inputs.self.utils.${pkgs.stdenv.hostPlatform.system};
 in {
   imports = [
     inputs.home-manager.nixosModules.home-manager
   ];
   options.home-config = {
-    enable = lib.mkEnableOption "Enable home configuration via home-manager";
+    enable = lib.mkEnableOption "home configuration via home-manager";
     modules = lib.mkOption {
       type = lib.types.listOf lib.types.path;
       default = [];
@@ -38,7 +40,7 @@ in {
     home-manager = {
       useUserPackages = true;
       useGlobalPkgs = true;
-      extraSpecialArgs = {inherit details inputs;};
+      extraSpecialArgs = {inherit details inputs utils;};
       users.${details.username} =
         lib.recursiveUpdate {
           imports = cfg.modules;

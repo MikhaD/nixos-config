@@ -22,13 +22,14 @@ This module configures tmux. Importing it into home manager will enable tmux wit
 
 ## Custom nix options
 - `prefix`: change the prefix key (default is <kbd>Ctrl + B</kbd>).
-- `prompt.info`: toggle system info in the status bar. See [status bar customization](#status-bar-customization) for details.
-- `prompt.color`: change the color of the session pill at the start of the prompt, and the active tab (default is green).
-- `selectionColor.background`: change the background color of selected text in copy mode (default is "#99CCE6").
-- `selectionColor.foreground`: change the foreground color of selected text in copy mode (default is "black").
+- `selection.background`: change the background color of selected text in copy mode (default is "#99CCE6").
+- `selection.color`: change the foreground color of selected text in copy mode (default is "#000").
 - `message.duration`: set the duration (in milliseconds) for which tmux messages are displayed (default is 4000).
-- `message.color.background`: change the background color of tmux messages (default is "#D9AD8C").
-- `message.color.foreground`: change the foreground color of tmux messages (default is "black").
+- `message.color`: change the foreground color of tmux messages (default is "#000").
+- `message.background`: change the background color of tmux messages (default is "#D9AD8C").
+- `prompt.color`: change the text color of the session pill and active tab (default is "#000").
+- `prompt.background`: change the background color of the session pill and active tab (default is the classic tmux green).
+- `prompt.info`: toggle system info in the status bar. See [status bar customization](#status-bar-customization) for details.
 
 ## Status Bar Customization
 The status bar has been placed at the top of the window with an empty line below it and has 3 general sections.
@@ -39,7 +40,7 @@ The status bar has been placed at the top of the window with an empty line below
 This section shows the current tmux session name with a tmux icon before it.
 
 #### 2: Window List
-This section shows the list of windows in the current session, styled to look like tabs. The current window is highlighted in the color specified by `prompt.color` (default is the classic tmux green).
+This section shows the list of windows in the current session, styled to look like tabs. The current window is highlighted in the colors specified by `prompt.color` and `prompt.background` (defaults are black text on the classic tmux green background).
 
 #### 3: System Info
 This section can be configured to show various system information, provided by custom scripts included by this module should they be enabled.
@@ -49,15 +50,17 @@ The `prompt.info` option can be set to:
 - `false` to disable all info sections
 - An attribute set to configure individual sections
 
+Each info section can be individually configured with its own colors:
+
 ##### 3.1 Host
-This shows the hostname of the current machine with a computer icon before it. It can be toggled with `tmux.prompt.info.host` and is enabled by default.
+This shows the hostname of the current machine with a computer icon before it. It can be toggled with `tmux.prompt.info.host.enable` and is enabled by default. Colors can be customized with `tmux.prompt.info.host.color` (default "#000") and `tmux.prompt.info.host.background` (default "#99CCE6").
 
 ##### 3.2 Disk
-This shows the disk usage of the root filesystem with a hard drive icon before it. It can be toggled with `tmux.prompt.info.disk` and is enabled by default.
+This shows the disk usage of the root filesystem with a hard drive icon before it. It can be toggled with `tmux.prompt.info.disk.enable` and is enabled by default. Colors can be customized with `tmux.prompt.info.disk.color` (default "#000") and `tmux.prompt.info.disk.background` (default "#999FE5").
 
 ##### 3.3 Memory
-This shows the current memory usage with a CPU icon before it (the memory icon is too large). It can be toggled with `tmux.prompt.info.memory` and is enabled by default.
+This shows the current memory usage with a CPU icon before it (the memory icon is too large). It can be toggled with `tmux.prompt.info.memory.enable` and is enabled by default. Colors can be customized with `tmux.prompt.info.memory.color` (default "#000") and `tmux.prompt.info.memory.background` (default "#BF99E5").
 
 ##### 3.4 Battery
-This shows the current battery percentage with a battery icon before it. It can be toggled with `tmux.prompt.info.battery` and is enabled by default.
+This shows the current battery percentage with a battery icon before it. It can be toggled with `tmux.prompt.info.battery.enable` and is enabled by default. Colors can be customized with `tmux.prompt.info.battery.color` (default "#000") and `tmux.prompt.info.battery.background` (default "#E599DF").
 The icon is a filled battery, filled to the % the battery is currently charged to in increments of 10. If the laptop is plugged in it will display a lightning bolt next to it. If it is fully charged and plugged in it will show a plug icon instead.

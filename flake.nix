@@ -63,6 +63,7 @@
         ./hosts/phone/configuration.nix
       ];
     };
+    utils = forAllSystems (system: import ./lib/default.nix {inherit (inputs.nixpkgs.legacyPackages.${system}) lib;});
     # tell nix which formatter to use when you run nix fmt <filename/dir>
     formatter = forAllSystems (system: inputs.nixpkgs.legacyPackages.${system}.alejandra);
   };

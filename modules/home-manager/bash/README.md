@@ -26,6 +26,72 @@ This module configures bash. Importing it into home manager will enable bash wit
 | <kbd>Ctrl</kbd> + <kbd>R</kbd> | Reload the bashrc file from `~/nix/modules/home-manager/bash/bash.rc` |
 | <kbd>Ctrl</kbd> + <kbd>W</kbd> | Detach from the current tmux session if there is one |
 
+## Custom nix options
+
+### Cursor Configuration
+- `cursor.shape`: set the cursor shape - "block", "underline", or "bar" (default is "bar").
+- `cursor.blink`: enable cursor blinking (default is true).
+
+### Prompt Indicators
+- `prompt.indicator.ssh.enable`: show an indicator when connected via SSH (default is true).
+- `prompt.indicator.ssh.color`: hex color of the SSH indicator (default is "#3DAEE9").
+- `prompt.indicator.nixShell.enable`: show a nix snowflake icon when inside a nix-shell (default is true).
+- `prompt.indicator.nixShell.color`: hex color of the nix-shell indicator (default is "#7EB7E2").
+- `prompt.indicator.nixShell.pureColor`: hex color of the leaf icon indicating a pure nix shell (default is "#9FE27E").
+
+### Prompt Sections
+Each section can be individually enabled/disabled and customized:
+
+#### System Section
+- `prompt.section.system.enable`: show system information in the prompt (default is true).
+- `prompt.section.system.distroIcon`: show the distro icon (default is true).
+- `prompt.section.system.user`: show the username (default is true).
+- `prompt.section.system.host`: show the hostname (default is false).
+- `prompt.section.system.color`: hex color of the system section text (default is "#7ED9D9").
+- `prompt.section.system.background`: hex background color of the system section (default is "#666").
+- `prompt.section.system.precedence`: sorting priority this section in the prompt (default is 0).
+
+#### Directory Section
+- `prompt.section.directory.enable`: show the current directory (default is true).
+- `prompt.section.directory.abridged`: use concise directory display with icons and truncation (default is true).
+- `prompt.section.directory.color`: hex color of the directory section text (default is "#000").
+- `prompt.section.directory.background`: hex background color of the directory section (default is "#FFF").
+- `prompt.section.directory.precedence`: sorting priority this section in the prompt (default is 1).
+
+#### Git Branch Section
+- `prompt.section.gitBranch.enable`: show the current git branch and commits ahead/behind (default is true).
+- `prompt.section.gitBranch.statusSummary`: show a summary of git status next to the branch name (default is true, automatically disabled if gitStatus is enabled).
+- `prompt.section.gitBranch.color`: hex color of the git branch section text (default is "#000").
+- `prompt.section.gitBranch.background`: hex background color of the git branch section (default is "#1497B8").
+- `prompt.section.gitBranch.precedence`: sorting priority this section in the prompt (default is 2).
+
+#### Git Status Section
+- `prompt.section.gitStatus.enable`: show detailed git status (modified/untracked files) (default is true).
+- `prompt.section.gitStatus.color`: hex color of the git status section text (default is "#000").
+- `prompt.section.gitStatus.background`: hex background color of the git status section (default is "#1481B8").
+- `prompt.section.gitStatus.precedence`: sorting priority this section in the prompt (default is 3).
+
+#### Timer Section
+- `prompt.section.timer.enable`: show command execution time and exit status (default is true).
+- `prompt.section.timer.success.color`: hex color when command succeeded (default is "#000").
+- `prompt.section.timer.success.background`: hex background color when command succeeded (default is "#14B879").
+- `prompt.section.timer.failure.color`: hex color when command failed (default is "#FFF").
+- `prompt.section.timer.failure.background`: hex background color when command failed (default is "#CD3131").
+- `prompt.section.timer.warning.color`: hex color when command was interrupted (default is "#000").
+- `prompt.section.timer.warning.background`: hex background color when command was interrupted (default is "#CCA633").
+- `prompt.section.timer.precedence`: sorting priority this section in the prompt (default is 4).
+
+#### Privilege Section
+- `prompt.section.privilege.enable`: show privilege symbol (# for root, $ for user) (default is true).
+- `prompt.section.privilege.color`: hex color of the privilege symbol (default is "#FFF").
+- `prompt.section.privilege.background`: hex background color of the privilege symbol (default is "#666").
+- `prompt.section.privilege.precedence`: sorting priority this section in the prompt (default is 5).
+
+### Prompt Icons
+- `prompt.icons.start`: icon to use at the start of the prompt (default is "").
+- `prompt.icons.end`: icon to use at the end of the prompt (default is "").
+- `prompt.icons.sep`: icon to use as separator between sections (default is "").
+
 ## Extra Functionality
 - cd accepts any number of `.`s after `..` to go up additional directories (e.g. `cd ...` goes up 2 directories, `cd ....` goes up 3, etc).
 
@@ -45,7 +111,6 @@ This section shows the OS distribution icon and your username. The icon works fo
 #### 2: Current Directory
 This section shows the current directory, which is be abbreviated for long paths.
 
-
 - The current user's home directory is abbreviated as `~`.
 - Directories with specific names in the home directory and the `/` directory are replaced with icons when you are within their sub directories (if you are in a dir with an icon but not in one of it's sub dirs it's name will not be replaced by an icon). Desktop, Documents, Downloads, Music, Pictures etc. are all examples of directories that have icons. You can find the full list in the `bash.rc` file in this module (see `DIR_ICONS`).
 - If more than 1 directory deep in the current users home directory or `/`, the path is abbreviated to show `…/<current-dir>` for brevity. If the root directory in `~` or `/` is a directory with an icon, it will be `<icon>/…/<current-dir>`, and will only truncate when you are more than 2 directories deep.<br>
@@ -56,7 +121,7 @@ This section shows the current directory, which is be abbreviated for long paths
 This section shows the current git branch and status if you are in a git repository.
 - If you are in a new repo with no commits, it will show  (new shoot icon). You can see an example of this in the first image of the [Prompt Customization](#prompt-customization) section.
 - If you are on a branch, it will show the branch name.
-- If you are in a detached head state, it will show ⚠️ followed by the short commit hash.
+- If you are in a detached head state, it will show   followed by the short commit hash.
 - If there are commits that have not been pushed to the remote, it will show ↑, followed by the number of commits.
 - If there are commits that have not been pulled from the remote, it will show ↓, followed by the number of commits.
 

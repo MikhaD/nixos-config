@@ -8,7 +8,7 @@
   cfg = config.ulauncher;
 in {
   options.ulauncher = {
-    enable = lib.mkEnableOption "Enable Ulauncher.";
+    enable = lib.mkEnableOption "Ulauncher";
     # Can't find this in UI, or figure out how to use it
     arrowKeyAliases = lib.mkOption {
       type = lib.types.str;

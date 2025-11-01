@@ -45,8 +45,8 @@
       tmux = {
         prefix = "C-g";
         prompt = {
-          color = "#99CCE6";
-          info.host = false;
+          background = "#99CCE6";
+          info.host.enable = false;
         };
       };
 

@@ -5,7 +5,7 @@
   ...
 }: {
   options.default-user = {
-    enable = lib.mkEnableOption "Create a user with the details provided in the flake.";
+    enable = lib.mkEnableOption "default user creation using the details provided in the flake";
     extra = lib.mkOption {
       type = lib.types.attrs;
       default = {};
@@ -14,7 +14,7 @@
     autoLogin = lib.mkOption {
       type = lib.types.bool;
       default = false;
-      description = "Enable autologin for the default user.";
+      description = "Whether to enable autologin for the default user.";
     };
   };
 
