@@ -96,10 +96,9 @@ boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_6_17.override {
 });
 ```
 
-</section>
+</details>
 
 ## TODO
-- Tmux nix option for highlight color
 - Tmux nix options to enable or disable attaching / creating specific session when a new shell is opened
 - Make custom cd ... functionality work when there are directories after the ... (e.g. `cd .../some/other/dirs`)
 - Set up sops for secrets management

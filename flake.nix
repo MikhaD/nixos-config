@@ -62,6 +62,14 @@
         ./hosts/nix-on-droid/phone/configuration.nix
       ];
     };
+    # inspired by https://github.com/librephoenix/nixos-config/blob/95e3002ce7e5519f8692d1903b7cff7110d99c00/flake.nix#L146
+    apps = forAllSystems (system: {
+      default = {
+        type = "app";
+        program = toString ./install.sh;
+        meta.description = "Install script to set up a system using this config";
+      };
+    });
     # tell nix which formatter to use when you run nix fmt <filename/dir>
     formatter = forAllSystems (system: inputs.nixpkgs.legacyPackages.${system}.alejandra);
   };
