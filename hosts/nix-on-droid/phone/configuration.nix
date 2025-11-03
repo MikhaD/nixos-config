@@ -3,11 +3,12 @@
   details,
   inputs,
   pkgs,
+  myUtils,
   ...
 }: {
   imports = [
-    # ./../../modules/android/sshd.nix
-    ./../../modules/android/termux.nix
+    # ./../../../modules/android/sshd.nix
+    ./../../../modules/android/termux.nix
   ];
   user.userName = details.username;
   nix.nixPath = ["nixpkgs=${inputs.nixpkgs}"];
@@ -21,26 +22,27 @@
     openssh
   ];
 
-  home-manager = let
-    utils = inputs.self.utils.${pkgs.stdenv.hostPlatform.system};
-  in {
+  home-manager = {
     useUserPackages = true;
     useGlobalPkgs = true;
-    extraSpecialArgs = {inherit details inputs utils;};
+    extraSpecialArgs = {
+      inherit details inputs;
+      utils = myUtils;
+    };
     config = {
       imports = [
         inputs.nix-index-database.homeModules.nix-index
-        ./../../modules/home-manager/bash
-        ./../../modules/home-manager/bat.nix
-        ./../../modules/home-manager/dig.nix
-        ./../../modules/home-manager/fastfetch.nix
-        ./../../modules/home-manager/fzf.nix
-        ./../../modules/home-manager/git.nix
-        ./../../modules/home-manager/grep.nix
-        ./../../modules/home-manager/lsd.nix
-        ./../../modules/home-manager/neovim.nix
-        ./../../modules/home-manager/tmux
-        ./../../modules/home-manager/xdg.nix
+        ./../../../modules/home-manager/bash
+        ./../../../modules/home-manager/bat.nix
+        ./../../../modules/home-manager/dig.nix
+        ./../../../modules/home-manager/fastfetch.nix
+        ./../../../modules/home-manager/fzf.nix
+        ./../../../modules/home-manager/git.nix
+        ./../../../modules/home-manager/grep.nix
+        ./../../../modules/home-manager/lsd.nix
+        ./../../../modules/home-manager/neovim.nix
+        ./../../../modules/home-manager/tmux
+        ./../../../modules/home-manager/xdg.nix
       ];
       programs.nix-index.enable = true;
       programs.bash.shellAliases = {

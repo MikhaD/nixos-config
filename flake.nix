@@ -41,29 +41,27 @@
       "x86_64-linux"
       "aarch64-linux"
     ];
-    mkNixOSConfig = hostname: path: {
-      name = hostname;
-      value = inputs.nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit details inputs hostname;};
-        modules = [
-          ./modules/base.nix
-          path
-        ];
-      };
-    };
+    myUtils = import ./lib {inherit (inputs.nixpkgs) lib;};
   in {
-    nixosConfigurations = builtins.listToAttrs [
-      (mkNixOSConfig "laptop" ./hosts/laptop/configuration.nix)
-      (mkNixOSConfig "homelab" ./hosts/homelab/configuration.nix)
-    ];
+    nixosConfigurations =
+      builtins.readDir ./hosts/nixos
+      |> builtins.mapAttrs (
+        hostname: _:
+          inputs.nixpkgs.lib.nixosSystem {
+            specialArgs = {inherit details inputs hostname myUtils;};
+            modules = [
+              ./modules/base.nix
+              (./. + "/hosts/nixos/${hostname}/configuration.nix")
+            ];
+          }
+      );
     nixOnDroidConfigurations.default = inputs.nix-on-droid.lib.nixOnDroidConfiguration {
       pkgs = import inputs.nixpkgs {system = "aarch64-linux";};
-      extraSpecialArgs = {inherit details inputs;};
+      extraSpecialArgs = {inherit details inputs myUtils;};
       modules = [
-        ./hosts/phone/configuration.nix
+        ./hosts/nix-on-droid/phone/configuration.nix
       ];
     };
-    utils = forAllSystems (system: import ./lib/default.nix {inherit (inputs.nixpkgs.legacyPackages.${system}) lib;});
     # tell nix which formatter to use when you run nix fmt <filename/dir>
     formatter = forAllSystems (system: inputs.nixpkgs.legacyPackages.${system}.alejandra);
   };
