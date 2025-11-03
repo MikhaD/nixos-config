@@ -10,9 +10,11 @@
         name = details.username;
         email = details.email;
       };
-      aliases.logg = "log --oneline --graph --all --decorate";
-      aliases.sb = "status -sb";
-      aliases.ss = "status -s";
+      alias = {
+        logg = "log --oneline --graph --all --decorate";
+        sb = "status -sb";
+        ss = "status -s";
+      };
       push.autoSetupRemote = true;
       fetch = {
         prune = true;
