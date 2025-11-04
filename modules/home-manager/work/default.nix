@@ -3,11 +3,7 @@
   config,
   inputs,
   ...
-}: let
-  gdk = pkgs.google-cloud-sdk.withExtraComponents (with pkgs.google-cloud-sdk.components; [
-    cloud-datastore-emulator
-  ]);
-in {
+}: {
   imports = [
     ./../terraform.nix
   ];
@@ -24,18 +20,12 @@ in {
   };
 
   home.packages = with pkgs; [
-    gdk
+    inputs.emulators.packages.${stdenv.hostPlatform.system}.default
     # google-cloud-sql-proxy
-    jdk
     # jetbrains.idea-ultimate
     jetbrains.pycharm-professional
     ngrok
     # pgloader
     stdenv.cc.cc.lib
-    (pkgs.writers.writePython3Bin "emulators" {flakeIgnore = ["E501"];} (builtins.readFile ./emulators.py))
-    (pkgs.callPackage ../../../pkgs/tasks-emulator.nix {src = inputs.tasks-emulator;})
-    (pkgs.callPackage ../../../pkgs/dsadmin.nix {src = inputs.dsadmin;})
   ];
-
-  xdg.dataFile."bash-completion/completions/emulators".source = ./emulators-completions.sh;
 }

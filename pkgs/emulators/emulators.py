@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+VERSION = "1.1.0"
+
 import argparse
 import copy
 import json
@@ -48,7 +51,9 @@ class Tmux:
 
     def kill_window(self, name: str):
         if self.has_window(name):
-            subprocess.run(f"tmux kill-window -t {name}", shell=True)
+            # send Ctrl-C to stop the process, otherwise processes like redis-server keep running in the background
+            subprocess.run (f"tmux send-keys -t {self.name}:{name} C-c", shell=True)
+            subprocess.run(f"tmux kill-window -t {self.name}:{name}", shell=True)
             return True
         return False
 
@@ -165,11 +170,8 @@ def get_config(default: bool = False) -> dict:
         },
         "emulators": {
             "redis": {
-                "container": {
-                    "image": "redis:latest",
-                    "name": "redis_server",
-                    "ports": ["6379:6379"],
-                }
+                "dir": "~/Documents/work/quicklysign-python3",
+                "commands": ["redis-server"],
             },
             "datastore": {
                 "commands": ["gcloud beta emulators datastore start --use-firestore-in-datastore-mode"]
@@ -217,8 +219,7 @@ def get_config(default: bool = False) -> dict:
             config = merge(config, json.load(f))
     return config
 
-
-if __name__ == "__main__":
+def main(version: str):
     config = get_config()
     editor = os.getenv("EDITOR", "nano")
 
@@ -227,6 +228,7 @@ if __name__ == "__main__":
         epilog="Emulators are defined in a config file (default ~/.config/emulators/config.json). You can create it manually or let this script create a default one for you."
     )
     # Flags
+    parser.add_argument("--version", "-v", action="version", version=f"emulators {version}")
     parser.add_argument("--add-to-current-session", "-a", action="store_true", help="Add emulator windows to the current tmux session if one exists (overrides --target-session).")
     parser.add_argument("--container-tool", "-c", type=str, choices=["docker", "podman"], help="Containerization tool to use for container emulators.", default=None)
     parser.add_argument("--quiet", "-q", action="store_true", help="Suppress non-error output for commands that do not explicitly print output.")
@@ -346,3 +348,6 @@ if __name__ == "__main__":
 
             if args.command == "start" and Tmux.current_session_name() != session.name:
                 session.attach(1)
+
+if __name__ == "__main__":
+    main(VERSION)

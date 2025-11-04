@@ -1,26 +1,22 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    emulators = {
+      url = "path:./pkgs/emulators";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     home-manager = {
       url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-on-droid = {
       url = "github:/nix-community/nix-on-droid";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
-    };
-    nix-index-database = {
-      url = "github:nix-community/nix-index-database";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    tasks-emulator = {
-      url = "github:aertje/cloud-tasks-emulator/v1.2.0";
-      flake = false;
-    };
-    dsadmin = {
-      url = "github:remko/dsadmin/v0.21.0";
-      flake = false;
     };
     ulauncher6 = {
       url = "github:Ulauncher/Ulauncher/v6.0.0-beta27";
