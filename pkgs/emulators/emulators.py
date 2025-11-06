@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = "1.1.0"
+VERSION = "1.1.1"
 
 import argparse
 import copy
@@ -53,7 +53,7 @@ class Tmux:
         if self.has_window(name):
             # send Ctrl-C to stop the process, otherwise processes like redis-server keep running in the background
             subprocess.run (f"tmux send-keys -t {self.name}:{name} C-c", shell=True)
-            subprocess.run(f"tmux kill-window -t {self.name}:{name}", shell=True)
+            subprocess.run(f"tmux kill-window -t {self.name}:{name}", shell=True, stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
             return True
         return False
 

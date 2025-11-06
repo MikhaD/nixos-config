@@ -91,7 +91,7 @@
       # https://nixos.org/manual/nixpkgs/unstable/#buildpythonapplication-function
       default = pkgs.python3Packages.buildPythonApplication {
         pname = "emulators";
-        version = "1.1.0";
+        version = "1.1.1";
         src = ./.;
         format = "other";
         propagatedBuildInputs = [
