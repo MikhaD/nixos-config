@@ -72,6 +72,20 @@ These can be generated with:
 2. Add the public key to github [here](https://github.com/settings/keys) by clicking new SSH key. Add it twice, once as a signing key and once as an authentication key.
 3. If you want to use that key to SSH into other systems running SSH servers configured by this repository add the public key to the ./modules/nixos/services/sshd/ssh-public-keys.nix file named `<system name>.pub`.
 
+### Generate age key from SSH key
+prefix with a space to prevent your password from being stored in your shell history
+```sh
+ nix-shell -p ssh-to-age --run "export SSH_TO_AGE_PASSPHRASE='<SSH Key Password>' && ssh-to-age -private-key -i ~/.ssh/id_ed25519 > ~/.config/sops/age/keys.txt"
+ # Generate public key
+ nix-shell -p age --run "age-keygen -y ~/.config/sops/age/keys.txt"
+ # Use age key to replace file with encrypted version
+ sops --encrypt --age "$(cat ~/.ssh/id_ed25519.pub)" -i <input file>
+ # Edit encrypted file
+ sops <encrypted file>
+ # (if there is a .sops.yaml file configured)
+ sops encrypt/decrypt -i <input file>
+```
+
 ## Resources
 - [NixOS & Flakes book](https://nixos-and-flakes.thiscute.world/)
 - [Managing dotfiles with home manager](https://wiki.nixos.org/wiki/Home_Manager#Managing_your_dotfiles)

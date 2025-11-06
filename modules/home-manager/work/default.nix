@@ -24,7 +24,6 @@
     # google-cloud-sql-proxy
     # jetbrains.idea-ultimate
     jetbrains.pycharm-professional
-    ngrok
     # pgloader
     stdenv.cc.cc.lib
   ];

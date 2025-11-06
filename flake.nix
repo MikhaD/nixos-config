@@ -1,27 +1,25 @@
 {
   inputs = {
-    emulators = {
-      url = "path:./pkgs/emulators";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    emulators.url = "path:./pkgs/emulators";
+    emulators.inputs.nixpkgs.follows = "nixpkgs";
+
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nix-index-database = {
-      url = "github:nix-community/nix-index-database";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nix-on-droid = {
-      url = "github:/nix-community/nix-on-droid";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
-    };
-    ulauncher6 = {
-      url = "github:Ulauncher/Ulauncher/v6.0.0-beta27";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+
+    nix-index-database.url = "github:nix-community/nix-index-database";
+    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
+
+    nix-on-droid.url = "github:/nix-community/nix-on-droid";
+    nix-on-droid.inputs.nixpkgs.follows = "nixpkgs";
+    nix-on-droid.inputs.home-manager.follows = "home-manager";
+
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+
+    # ulauncher6.url = "github:Ulauncher/Ulauncher/v6.0.0-beta27";
+    # ulauncher6.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = inputs: let
