@@ -1,12 +1,11 @@
 {
   pkgs,
   config,
-  inputs,
   ...
 }: {
-  imports = [
-    ./../terraform.nix
-  ];
+  # imports = [
+  #   ./../terraform.nix
+  # ];
 
   home.sessionVariables = {
     MAVEN_OPTS = "-Duser.home=${config.xdg.dataHome}/maven"; # Removes .m2/ from ~
@@ -19,8 +18,12 @@
     LD_LIBRARY_PATH = "${pkgs.stdenv.cc.cc.lib}/lib";
   };
 
+  programs.bash.shellAliases = {
+    work = "cd ~/Documents/work/quicklysign-python3 && nix develop";
+  };
+
   home.packages = with pkgs; [
-    inputs.emulators.packages.${stdenv.hostPlatform.system}.default
+    # inputs.emulators.packages.${stdenv.hostPlatform.system}.default
     # google-cloud-sql-proxy
     # jetbrains.idea-ultimate
     jetbrains.pycharm-professional
