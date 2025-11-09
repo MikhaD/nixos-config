@@ -41,6 +41,7 @@
         ./../../../modules/home-manager/grep.nix
         ./../../../modules/home-manager/lsd.nix
         ./../../../modules/home-manager/neovim.nix
+        ./../../../modules/home-manager/nh
         ./../../../modules/home-manager/tmux
         ./../../../modules/home-manager/xdg.nix
       ];
