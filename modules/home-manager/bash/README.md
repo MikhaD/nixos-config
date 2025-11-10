@@ -88,9 +88,12 @@ Each section can be individually enabled/disabled and customized:
 - `prompt.section.privilege.precedence`: sorting priority this section in the prompt (default is 5).
 
 ### Prompt Icons
-- `prompt.icons.start`: icon to use at the start of the prompt (default is "").
-- `prompt.icons.end`: icon to use at the end of the prompt (default is "").
-- `prompt.icons.sep`: icon to use as separator between sections (default is "").
+- `prompt.icons.start`: icon to use at the start of the prompt (default is "").
+- `prompt.icons.end`: icon to use at the end of the prompt (default is "").
+- `prompt.icons.sep`: icon to use as separator between sections (default is "").
+
+### Extra Lines
+- `bash.extra`: list of extra lines appended to the end of the generated bashrc (after all module content). Each item becomes its own line.
 
 ## Extra Functionality
 - cd accepts any number of `.`s after `..` to go up additional directories (e.g. `cd ...` goes up 2 directories, `cd ....` goes up 3, etc).
@@ -139,8 +142,8 @@ The following aliases are included by default:
 | Alias | Command | Description |
 |-------|---------|-------------|
 | `cls` | `clear` | Clear the terminal |
-| `grep` | `grep --color=auto` | Enable colored grep output |
 | `wifi` | `nmcli device wifi show-password` | Print the current wifi SSID, password and a QR code to join it |
+| `myip` | `echo $(curl -s ifconfig.me)` | Print public IP address |
 
 ## Extra Resources
 - [Color codes & how to use them](https://en.wikipedia.org/wiki/ANSI_escape_code#Colors)

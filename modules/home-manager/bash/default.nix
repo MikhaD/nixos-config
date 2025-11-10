@@ -152,6 +152,11 @@ in {
         };
       };
     };
+    extra = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [];
+      description = "Extra lines to add to the end of the bash profile (~/.bashrc), concatenated with \\n.";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -168,7 +173,7 @@ in {
       shellAliases = {
         cls = "clear"; #                            Clear screen using cls like windows powershell
         wifi = "nmcli device wifi show-password"; # Print the wifi password & QR code to join
-        myip = "echo $(curl -s ifconfig.me)"; #     Get my public IP address (echo needed to avoid newline issues)
+        myip = "echo $(curl -s ifconfig.me)"; #     Get my public IP address (echo needed to print with newline)
       };
 
       # All options: https://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html
@@ -240,21 +245,23 @@ in {
           ++ lib.optional (lib.length sections > 0) ''PS1+="\[\e[38;2;${(lib.last sections).background};49m\]${cfg.prompt.icons.end}\[\e[0m\] "''
         );
       in
-        lib.concatStringsSep "\n" [
-          (lib.readFile ./bash.rc)
-          ''
-            ${components}
+        lib.concatStringsSep "\n" ([
+            (lib.readFile ./bash.rc)
+            ''
+              ${components}
 
-            unset distro_icon ssh_session nix_shell
+              unset distro_icon ssh_session nix_shell
 
-            #     ▗▄▄▖▗▖ ▗▖▗▄▄▖  ▗▄▄▖ ▗▄▖ ▗▄▄▖
-            #    ▐▌   ▐▌ ▐▌▐▌ ▐▌▐▌   ▐▌ ▐▌▐▌ ▐▌
-            #    ▐▌   ▐▌ ▐▌▐▛▀▚▖ ▝▀▚▖▐▌ ▐▌▐▛▀▚▖
-            #    ▝▚▄▄▖▝▚▄▞▘▐▌ ▐▌▗▄▄▞▘▝▚▄▞▘▐▌ ▐▌
+              #     ▗▄▄▖▗▖ ▗▖▗▄▄▖  ▗▄▄▖ ▗▄▖ ▗▄▄▖
+              #    ▐▌   ▐▌ ▐▌▐▌ ▐▌▐▌   ▐▌ ▐▌▐▌ ▐▌
+              #    ▐▌   ▐▌ ▐▌▐▛▀▚▖ ▝▀▚▖▐▌ ▐▌▐▛▀▚▖
+              #    ▝▚▄▄▖▝▚▄▞▘▐▌ ▐▌▗▄▄▞▘▝▚▄▞▘▐▌ ▐▌
 
-            echo -ne "\e[?${toString cursor} q"
-          ''
-        ];
+              echo -ne "\e[?${toString cursor} q"
+
+            ''
+          ]
+          ++ cfg.extra);
     };
   };
 }
