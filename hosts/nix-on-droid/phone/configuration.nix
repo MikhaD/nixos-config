@@ -19,7 +19,10 @@
     findutils
     gawk
     gnused
+    nettools
     openssh
+
+    nix-output-monitor
   ];
 
   home-manager = {
@@ -48,6 +51,7 @@
       programs.nix-index.enable = true;
       programs.bash.shellAliases = {
         clear = "printf '\\033[2J\\033[H'"; # This shell does not come with a clear command, so this aliases clear to Ctrl + L
+	rebuild = "nix-on-droid switch --flake ~/nix |& nom";
       };
       tmux = {
         prefix = "C-g";
