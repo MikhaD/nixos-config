@@ -21,8 +21,6 @@
     gnused
     nettools
     openssh
-
-    nix-output-monitor
   ];
 
   home-manager = {
@@ -45,13 +43,14 @@
         ./../../../modules/home-manager/lsd.nix
         ./../../../modules/home-manager/neovim.nix
         ./../../../modules/home-manager/nh
+        ./../../../modules/home-manager/nom.nix
         ./../../../modules/home-manager/tmux
         ./../../../modules/home-manager/xdg.nix
       ];
       programs.nix-index.enable = true;
       programs.bash.shellAliases = {
         clear = "printf '\\033[2J\\033[H'"; # This shell does not come with a clear command, so this aliases clear to Ctrl + L
-	rebuild = "nix-on-droid switch --flake ~/nix |& nom";
+        rebuild = "nix-on-droid switch --flake ~/nix |& nom";
       };
       tmux = {
         prefix = "C-g";

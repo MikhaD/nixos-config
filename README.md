@@ -92,6 +92,7 @@ prefix with a space to prevent your password from being stored in your shell his
 - [Nix Flakes on NixOS](https://nixos.wiki/wiki/flakes#Using_nix_flakes_with_NixOS)
 - [Nix concepts](https://zero-to-nix.com/concepts/)
 - [Great intro to flakes & their outputs](https://youtu.be/RoMArT8UCKM)
+- [How to install NixOS on a flashdrive](https://www.reddit.com/r/NixOS/comments/160t87r/how_to_install_nixos_onto_a_flash_drive/)
 <details>
 	<summary>How to use a custom version of the Linux kernel</summary>
 
@@ -121,6 +122,8 @@ boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_6_17.override {
 - Move Obsidian vault to home manager
 - Move Firefox search engines to home manager
 - Rofi README
+- Consider switching to a stand alone home manager config instead of including it in the nixos config to make rebuilding faster (nh home switch)
+- Look into nix VMs. Do they have access to the host file system?
 - Overhaul work emulators script bash completions
 - Add info on [] and [[]] in bash cheat-sheet
 - pkgs README with info on how to write derivations
