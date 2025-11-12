@@ -32,6 +32,7 @@
       ./../../../modules/home-manager/chromium.nix
       ./../../../modules/home-manager/dig.nix
       ./../../../modules/home-manager/fastfetch.nix
+      ./../../../modules/home-manager/firefox.nix
       ./../../../modules/home-manager/fzf.nix
       ./../../../modules/home-manager/git.nix
       ./../../../modules/home-manager/grep.nix
@@ -49,8 +50,6 @@
       # ./../../../modules/home-manager/ulauncher
       ./../../../modules/home-manager/wl-clipboard.nix
       ./../../../modules/home-manager/xdg.nix
-
-      ./../../../modules/home-manager/firefox.nix
 
       ./../../../modules/home-manager/work
     ];

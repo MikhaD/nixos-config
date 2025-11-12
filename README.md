@@ -131,5 +131,4 @@ boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_6_17.override {
 - Bash options:
   - Use unused timer.success, timer.failure, timer.warning, gitBranch.statusSummary, directory.abridged
   - Remove functions from bashrc that are not used when sections are toggled off
-  - Create directory icons option
   - Update readme with new prompt section & examples

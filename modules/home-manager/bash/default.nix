@@ -21,6 +21,45 @@
       visible = false;
       internal = true;
     };
+
+  dirIcons = {
+    ".android" = "";
+    ".cache" = "󱘿";
+    ".config" = "";
+    ".docker" = "";
+    ".git" = "";
+    ".github" = "";
+    ".java" = "";
+    ".mozilla" = "󰈹";
+    ".npm" = "";
+    ".tmux" = "";
+    ".vim" = "";
+    ".vscode" = "󰨞";
+    "Android" = "";
+    "Desktop" = "";
+    "Development" = "󰘦";
+    "Documents" = "󱔗";
+    "Downloads" = "󰉍";
+    "Music" = "󱍙";
+    "Pictures" = "󰉏";
+    "Public" = "";
+    "Videos" = "󰨜";
+    "bin" = "";
+    "etc" = "";
+    "lib" = "";
+    "lib64" = "";
+    "media" = "󰕓";
+    "mnt" = "";
+    "nix" = "";
+    "nixos" = "";
+    "opt" = "";
+    "proc" = "";
+    "root" = "";
+    "secrets" = "󰉐";
+    "tmp" = "";
+    "usr" = "󰪋";
+    "var" = "";
+  };
 in {
   options.bash = {
     enable = utils.mkEnableOptionTrue "bash as the default shell";
@@ -71,7 +110,12 @@ in {
           };
           color = utils.mkBashColorOption "#000" "Hex color of the directory section in the bash prompt.";
           background = utils.mkBashColorOption "#FFF" "Hex background color of the directory section in the bash prompt.";
-          # configure directory icons here
+          icons = lib.mkOption {
+            type = lib.types.attrsOf lib.types.str;
+            default = dirIcons;
+            description = "Mapping of directory names to icons for use in the bash prompt. find more icons here: https://www.nerdfonts.com/cheat-sheet. Note that any icons specified will be MERGED with the default set of icons.";
+            apply = attrs: dirIcons // attrs;
+          };
           # private options:
           command = mkCommandOption ''\$(_parse_directory)'';
           precedence = mkPrecedenceOption 1;
@@ -190,6 +234,12 @@ in {
       ];
       # Placed in ~/.bashrc
       initExtra = let
+        dirIconsFn = ''
+          declare -A DIR_ICONS=(
+          ${lib.mapAttrsToList (name: value: ''["${name}"]="${value}"'') cfg.prompt.section.directory.icons |> lib.concatStringsSep "\n"}
+          )
+        '';
+
         cursors = {
           block = 2;
           underline = 4;
@@ -246,6 +296,7 @@ in {
         );
       in
         lib.concatStringsSep "\n" ([
+            dirIconsFn
             (lib.readFile ./bash.rc)
             ''
               ${components}
