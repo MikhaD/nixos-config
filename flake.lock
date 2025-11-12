@@ -238,7 +238,7 @@
         "nix-index-database": "nix-index-database",
         "nix-on-droid": "nix-on-droid",
         "nixpkgs": "nixpkgs",
-        "sops-nix": "sops-nix"
+        "secrets": "secrets"
       }
     },
     "scss-reset": {
@@ -257,24 +257,20 @@
         "type": "github"
       }
     },
-    "sops-nix": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
+    "secrets": {
       "locked": {
-        "lastModified": 1762659808,
-        "narHash": "sha256-2Kv2mANf+FRisqhpfeZ8j9firBxb23ZvEXwdcunbpGI=",
-        "owner": "Mic92",
-        "repo": "sops-nix",
-        "rev": "524312bc62e3f34bd9231a2f66622663d3355133",
-        "type": "github"
+        "lastModified": 1762932409,
+        "narHash": "sha256-lr06JALQJ+TA2g+goejA414TuI6AHZV2AM5vXBO1Iy0=",
+        "ref": "refs/heads/main",
+        "rev": "44651a5bc1a3d85e3ad6a17aec4d7aaf2f11b1f1",
+        "shallow": true,
+        "type": "git",
+        "url": "ssh://git@github.com/MikhaD/nix-secrets.git"
       },
       "original": {
-        "owner": "Mic92",
-        "repo": "sops-nix",
-        "type": "github"
+        "shallow": true,
+        "type": "git",
+        "url": "ssh://git@github.com/MikhaD/nix-secrets.git"
       }
     }
   },

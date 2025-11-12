@@ -44,7 +44,7 @@
       ./../../../modules/home-manager/python.nix
       ./../../../modules/home-manager/tree.nix
       ./../../../modules/home-manager/lsd.nix
-      ./../../../modules/home-manager/sops.nix
+      ./../../../modules/home-manager/ssh.nix
       ./../../../modules/home-manager/tmux
       # ./../../../modules/home-manager/ulauncher
       ./../../../modules/home-manager/wl-clipboard.nix

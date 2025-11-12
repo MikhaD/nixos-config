@@ -15,8 +15,8 @@
     nix-on-droid.inputs.nixpkgs.follows = "nixpkgs";
     nix-on-droid.inputs.home-manager.follows = "home-manager";
 
-    sops-nix.url = "github:Mic92/sops-nix";
-    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+    # Secrets I don't want in a public repo, but are not secret enough that they must be hidden from the global nix store
+    secrets.url = "git+ssh://git@github.com/MikhaD/nix-secrets.git?shallow=1";
 
     # ulauncher6.url = "github:Ulauncher/Ulauncher/v6.0.0-beta27";
     # ulauncher6.inputs.nixpkgs.follows = "nixpkgs";
