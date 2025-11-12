@@ -3,8 +3,7 @@
   lib,
   ...
 }: let
-  keyDir = ./ssh-public-keys;
-  keyFiles = map (file: "${keyDir}/${file}") (lib.mapAttrsToList (name: _: name) (builtins.readDir keyDir));
+  keyFiles = lib.filesystem.listFilesRecursive ./ssh-public-keys;
 in {
   imports = [
     ./../../system/user.nix

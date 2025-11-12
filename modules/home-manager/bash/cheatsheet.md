@@ -35,7 +35,7 @@ fi
 ```
 Conditions can be anything that returns a status code (0 for true, non-zero for false).
 
-If you have looked at a bash script you will have likely noticed that many conditions appear to be enclosed in single or double square brackets.
+If you have looked at a bash script you will have likely noticed that many conditions appear to be enclosed in single or double brackets of some kind.
 
 ### Single square brackets `[]`
 `[` is actually a command, which is equivalent to the `test` command. The only difference is that `[` requires a closing `]` as the last argument.
@@ -44,6 +44,49 @@ Because of this you can learn the syntax required for `[` conditions by looking 
 
 ### Double square brackets `[[]]`
 `[[` is a bash keyword that is more powerful than `[` and `test`. It supports additional features like pattern and regex matching. It also does not require bash variables to be quoted in order to work correctly, nor does it require brackets or less than and greater than signs to be escaped. It also allows for logical operators like `&&` and `||` to be used within the condition.
+
+### Double parentheses `(( ))`
+`(( ))` is used to evaluate arithmetic expressions. It allows you to perform arithmetic operations and comparisons, and assign the result of arithmetic expressions to variables.
+
+**Example**
+```bash
+# Assign the result of of 50 mod 7 to the variable rem
+((rem = 50 % 7))
+```
+> [!NOTE]
+> You do not need the `$` prefix when referencing variables within `(( ))`.
+
+You can use any of the comparison operators within `(( ))`, and the result of the comparison will be 1 (true) or 0 (false), allowing you to use `(( ))` in `if` statements.
+
+This is a (possibly incomplete) list of operators available within `(( ))`:
+| Operator | Description | Example |
+|----------|-------------|---------|
+| `+`      | Addition | `((sum = a + b))` |
+| `-`      | Subtraction | `((diff = a - b))` |
+| `*`      | Multiplication | `((prod = a * b))` |
+| `/`      | Division | `((quot = a / b))` |
+| `%`      | Modulus | `((rem = a % b))` |
+| `**`     | Exponentiation | `((power = a ** b))` |
+| `++`     | Increment by 1 | `((a++))` or `((++a))` |
+| `--`     | Decrement by 1 | `((a--))` or `((--a))` |
+| `==`     | Equal to | `if (( a == b )); then ...` |
+| `!=`     | Not equal to | `if (( a != b )); then ...` |
+| `<`      | Less than | `if (( a < b )); then ...` |
+| `<=`     | Less than or equal to | `if (( a <= b )); then ...` |
+| `>`      | Greater than | `if (( a > b )); then ...` |
+| `>=`     | Greater than or equal to | `if (( a >= b )); then ...` |
+| `&&`     | Logical AND | `if (( a > 0 && b > 0 )); then ...` |
+| `\|\|`     | Logical OR | `if (( a > 0 \|\| b > 0 )); then ...` |
+| `!`      | Logical NOT | `if (( ! (a > 0) )); then ...` |
+| `>>`	 | Right shift | `(( a = 5 >> 1 ))` |
+| `<<`	 | Left shift | `(( a = 5 << 1 ))` |
+| `&`	 | Bitwise AND | `(( c = a & b ))` |
+| `\|`	 | Bitwise OR | `(( c = a \| b ))` |
+| `^`	 | Bitwise XOR | `(( c = a ^ b ))` |
+> [!Note]
+> The following operators can also be combined with `=` to mean "apply the operation to the variable and assign the result back to it": `+`, `-`, `*`, `/`, `%`, `>>`, `<<`, `&`, `|`, `^`.
+
+[Reference Manual](https://www.gnu.org/software/bash/manual/bash.html#Shell-Arithmetic-1)
 
 ### Operators
 The logical operators used in `[` and `[[` conditions are similar but not identical. A list of differences can be found [here](https://mywiki.wooledge.org/BashFAQ/031). This cheat sheet uses the ones for `[[`.

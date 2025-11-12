@@ -10,6 +10,10 @@
       description = "Whether to enable ${name}.";
     };
 
+  /**
+  Normalize a hex color string to the full 6- or 8-digit uppercase form with leading "#".
+  Input string does not need leading "#", and can be in 3-, 4-, 6-, or 8-digit form.
+  */
   normalizeHexColor = str: let
     hexChars = lib.stringToCharacters "0123456789ABCDEF";
     isValidHex = str: lib.elem (lib.stringLength str) [3 4 6 8] && (str |> lib.toUpper |> lib.stringToCharacters |> lib.all (c: lib.elem c hexChars));
@@ -27,6 +31,9 @@
     else s
   )}";
 
+  /**
+  Convert a 6 digit hex color string prefixed with "#" to "R;G;B" format for bash.
+  */
   hexToRGB = str: let
     hexFromSubstring = start: end: str: lib.substring start end str |> lib.trivial.fromHexString;
     hex = normalizeHexColor str;
@@ -36,6 +43,9 @@
     blue = hexFromSubstring 4 2 s;
   in "${toString red};${toString green};${toString blue}";
 
+  /**
+  Create a hex color option with normalization.
+  */
   mkHexColorOption = default: description:
     lib.mkOption {
       type = lib.types.str;
@@ -44,5 +54,8 @@
       apply = normalizeHexColor;
     };
 
+  /**
+  Create a bash color option that converts hex to "R;G;B".
+  */
   mkBashColorOption = default: description: (mkHexColorOption default description) // {apply = hexToRGB;};
 }
