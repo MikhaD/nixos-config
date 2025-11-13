@@ -38,7 +38,7 @@ _find_parent_virtualenv() {
             echo "$dir/.venv"
             return 0
         fi
-        [[ $dir == $HOME ]] && return 1
+        [[ $dir == $HOME || $dir == "/" ]] && return 1
         dir="$(dirname "$dir")"
     done
 }
