@@ -16,7 +16,6 @@ bind '"\e[1;3D": "cd ..\n"'             # Use Alt+← to go up one directory
 bind '"\e[1;3C": "cd -\n"'              # Use Alt+→ to go to the previous directory
 bind '"\es": "\C-asudo \C-e"'           # Use Alt+s to prepend sudo to the current command
 bind '"\C-l": clear-display'            # Use Ctrl+L to clear the screen (override the default clear-screen, which does just scrolls the screen up)
-bind '"\e[H": "cd\n"'
 bind '"\C-r": "source ~/nix/modules/home-manager/bash/bash.rc\n"'     # Use Ctrl+R to reload the bashrc file from my nix configuration
 if [[ -n $TMUX ]]; then
     bind '"\C-w": "tmux detach &> /dev/null\n"' # Use Ctrl+W to detach from the current tmux session
@@ -33,51 +32,37 @@ fi
 
 _find_parent_virtualenv() {
     local dir="$PWD"
-    while true; do
-        if [[ -f "$dir/.venv/bin/activate" ]]; then
-            echo "$dir/.venv"
+    while [[ -n $dir ]]; do
+        if [[ -f "$dir/$1/bin/activate" ]]; then
+            echo "$dir/$1"
             return 0
         fi
-        [[ $dir == $HOME || $dir == "/" ]] && return 1
-        dir="$(dirname "$dir")"
+        dir="${dir%/*}" # faster than dir=$(dirname "$dir") because it avoids a subshell
     done
+    return 1
 }
 
 # Add the ability to cd up several directories using additional dots after cd ..
 # For example, cd ... goes up two directories
 cd() {
     if [[ $1 == ..+(.) ]]; then # requires extglob to be enabled
-        # Length of the argument (which is all .s)
-        local n=${#1}
-        local ups=""
-        local i=1
-        # Build a string like ../, ../../, ../../../
-        while [ $i -lt $n ]; do
-            ups="../$ups"
-            i=$((i + 1))
-        done
-        builtin cd "$ups" # Use builtin to prevent infinite recursion
+        # Use builtin to prevent infinite recursion
+        # printf '../%.0s' generates ../ for space separated value that follows. ${#1} is the length of $1
+        builtin cd $(printf "../%.0s" $(seq 2 ${#1}))
     else
         builtin cd "$@"
     fi
     # Post cd hooks
 
     # Auto-activate Python venvs in current or parent directories
-    local found_venv=$(_find_parent_virtualenv)
+    local found_venv=$(_find_parent_virtualenv ".venv")
     if [[ -n $found_venv ]]; then
         # Activate if not already active or different env
         if [[ -z $VIRTUAL_ENV || $VIRTUAL_ENV != "$found_venv" ]]; then
             source "$found_venv/bin/activate"
         fi
-    else
-        # No venv found upward; deactivate if we left current venv's project tree
-        if [[ -n $VIRTUAL_ENV ]]; then
-            local venv_parent
-            venv_parent="$(dirname "$VIRTUAL_ENV")"
-            if [[ $PWD != "$venv_parent"* ]]; then
-                deactivate
-            fi
-        fi
+    elif [[ -n $VIRTUAL_ENV ]]; then
+        deactivate
     fi
 }
 
