@@ -38,7 +38,7 @@
       ./../../../modules/home-manager/nodejs.nix
       ./../../../modules/home-manager/python.nix
       ./../../../modules/home-manager/speedtest-cli.nix
-      ./../../../modules/home-manager/ssh.nix
+      # ./../../../modules/home-manager/ssh.nix
       ./../../../modules/home-manager/tmux
       ./../../../modules/home-manager/tree.nix
     ];
