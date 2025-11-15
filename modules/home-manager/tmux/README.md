@@ -63,4 +63,4 @@ This shows the current memory usage with a CPU icon before it (the memory icon i
 
 ##### 3.4 Battery
 This shows the current battery percentage with a battery icon before it. It can be toggled with `tmux.prompt.info.battery.enable` and is enabled by default. Colors can be customized with `tmux.prompt.info.battery.color` (default "#000") and `tmux.prompt.info.battery.background` (default "#E599DF").
-The icon is a filled battery, filled to the % the battery is currently charged to in increments of 10. If the laptop is plugged in it will display a lightning bolt next to it. If it is fully charged and plugged in it will show a plug icon instead.
+The icon is a filled battery, filled to the % the battery is currently charged to in increments of 10. If the laptop is plugged in and charging it will display a lightning bolt next to it. If it is fully charged and plugged in, or plugged in not charging it will show a plug icon instead.

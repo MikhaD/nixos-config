@@ -57,6 +57,7 @@ Each section can be individually enabled/disabled and customized:
 - `prompt.section.directory.color`: hex color of the directory section text (default is "#000").
 - `prompt.section.directory.background`: hex background color of the directory section (default is "#FFF").
 - `prompt.section.directory.precedence`: sorting priority this section in the prompt (default is 1).
+- `prompt.section.directory.icons`: a map of directory names to icons to use when in their sub directories. Any icons specified in this map will be merged with the default set of icons.
 
 #### Git Branch Section
 - `prompt.section.gitBranch.enable`: show the current git branch and commits ahead/behind (default is true).
@@ -97,6 +98,7 @@ Each section can be individually enabled/disabled and customized:
 
 ## Extra Functionality
 - cd accepts any number of `.`s after `..` to go up additional directories (e.g. `cd ...` goes up 2 directories, `cd ....` goes up 3, etc).
+- using cd to change directory into a dir with a python virtual environment (.venv) will automatically activate the venv. Leaving the directory will deactivate it. Changing into a subdir of a venv dir will also activate the venv in the parent dir if it was not already active.
 
 ## Prompt Customization
 The bash prompt has 6 sections. If a section is not applicable, it is omitted. The sections are as follows:
@@ -144,6 +146,7 @@ The following aliases are included by default:
 | `cls` | `clear` | Clear the terminal |
 | `wifi` | `nmcli device wifi show-password` | Print the current wifi SSID, password and a QR code to join it |
 | `myip` | `echo $(curl -s ifconfig.me)` | Print public IP address |
+| `version` | `echo $(source /etc/os-release && echo $VENDOR_NAME $VERSION_ID) / $(uname -sr)` | Print OS version and kernel version |
 
 ## Extra Resources
 - [Color codes & how to use them](https://en.wikipedia.org/wiki/ANSI_escape_code#Colors)

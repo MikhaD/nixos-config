@@ -218,6 +218,7 @@ in {
         cls = "clear"; #                            Clear screen using cls like windows powershell
         wifi = "nmcli device wifi show-password"; # Print the wifi password & QR code to join
         myip = "echo $(curl -s ifconfig.me)"; #     Get my public IP address (echo needed to print with newline)
+        version = "echo $(source /etc/os-release && echo $VENDOR_NAME $VERSION_ID) / $(uname -sr)"; # TODO: replace with customized fastfetch at some point
       };
 
       # All options: https://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html
