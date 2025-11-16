@@ -146,7 +146,6 @@ The following aliases are included by default:
 | `cls` | `clear` | Clear the terminal |
 | `wifi` | `nmcli device wifi show-password` | Print the current wifi SSID, password and a QR code to join it |
 | `myip` | `echo $(curl -s ifconfig.me)` | Print public IP address |
-| `version` | `echo $(source /etc/os-release && echo $VENDOR_NAME $VERSION_ID) / $(uname -sr)` | Print OS version and kernel version |
 
 ## Extra Resources
 - [Color codes & how to use them](https://en.wikipedia.org/wiki/ANSI_escape_code#Colors)

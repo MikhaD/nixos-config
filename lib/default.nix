@@ -58,4 +58,17 @@
   Create a bash color option that converts hex to "R;G;B".
   */
   mkBashColorOption = default: description: (mkHexColorOption default description) // {apply = hexToRGB;};
+
+  /**
+  Repeat a string n times.
+  */
+  repeat = n: str: lib.concatStrings (builtins.genList (_: str) n);
+
+  /**
+  Pad a string to the minimum width by adding fill characters to the right.
+  */
+  padRight = width: fill: s: let
+    len = builtins.stringLength s;
+  in
+    s + (repeat (lib.max 0 (width - len)) fill);
 }

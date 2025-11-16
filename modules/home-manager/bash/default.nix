@@ -89,7 +89,7 @@ in {
           distroIcon = utils.mkEnableOptionTrue "the distro icon in the bash prompt";
           user = utils.mkEnableOptionTrue "the user in the bash prompt";
           host = lib.mkEnableOption "the host section in the bash prompt";
-          color = utils.mkBashColorOption "#7ED9D9" "Hex color of the system section in the bash prompt.";
+          color = utils.mkBashColorOption "#16A085" "Hex color of the system section in the bash prompt.";
           background = utils.mkBashColorOption "#666" "Hex background color of the system section in the bash prompt.";
           precedence = mkPrecedenceOption 0;
         };
@@ -218,7 +218,6 @@ in {
         cls = "clear"; #                            Clear screen using cls like windows powershell
         wifi = "nmcli device wifi show-password"; # Print the wifi password & QR code to join
         myip = "echo $(curl -s ifconfig.me)"; #     Get my public IP address (echo needed to print with newline)
-        version = "echo $(source /etc/os-release && echo $VENDOR_NAME $VERSION_ID) / $(uname -sr)"; # TODO: replace with customized fastfetch at some point
       };
 
       # All options: https://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html
