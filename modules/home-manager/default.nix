@@ -3,12 +3,10 @@
   config,
   details,
   inputs,
-  # pkgs,
-  myUtils,
+  myLib,
   ...
 }: let
   cfg = config.home-config;
-  # utils = inputs.self.utils.${pkgs.stdenv.hostPlatform.system};
 in {
   imports = [
     inputs.home-manager.nixosModules.home-manager
@@ -42,8 +40,7 @@ in {
       useUserPackages = true;
       useGlobalPkgs = true;
       extraSpecialArgs = {
-        inherit details inputs;
-        utils = myUtils;
+        inherit details inputs myLib;
       };
       users.${details.username} =
         lib.recursiveUpdate {

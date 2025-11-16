@@ -1,4 +1,4 @@
-{utils, ...}: {
+{myLib, ...}: {
   programs.fastfetch = {
     enable = true;
     settings = {
@@ -19,9 +19,9 @@
         colors = {
           hardware = "#16A085";
           software = "#3DAEE9";
-          state = "#C55FED";
+          state = "#D670D6";
         };
-        pad = utils.padRight 9 " ";
+        pad = myLib.padRight 9 " ";
       in [
         # ---------------------------------- Hardware ----------------------------------
         {
@@ -122,7 +122,7 @@
         # ---------------------------------- State ----------------------------------
         {
           type = "custom";
-          format = "├──{$1}{#bold_white}{#${utils.hexToRGB colors.state}} State {#}{$1}───┤";
+          format = "├──{$1}{#bold_white}{#${colors.state}} State {#}{$1}───┤";
         }
         {
           key = pad "WiFi";

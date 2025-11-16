@@ -35,14 +35,14 @@
       "x86_64-linux"
       "aarch64-linux"
     ];
-    myUtils = import ./lib {inherit (inputs.nixpkgs) lib;};
+    myLib = import ./lib {inherit (inputs.nixpkgs) lib;};
   in {
     nixosConfigurations =
       builtins.readDir ./hosts/nixos
       |> builtins.mapAttrs (
         hostname: _:
           inputs.nixpkgs.lib.nixosSystem {
-            specialArgs = {inherit details inputs hostname myUtils;};
+            specialArgs = {inherit details inputs hostname myLib;};
             modules = [
               ./modules/base.nix
               (./. + "/hosts/nixos/${hostname}/configuration.nix")
@@ -51,7 +51,7 @@
       );
     nixOnDroidConfigurations.default = inputs.nix-on-droid.lib.nixOnDroidConfiguration {
       pkgs = import inputs.nixpkgs {system = "aarch64-linux";};
-      extraSpecialArgs = {inherit details inputs myUtils;};
+      extraSpecialArgs = {inherit details inputs myLib;};
       modules = [
         ./hosts/nix-on-droid/phone/configuration.nix
       ];

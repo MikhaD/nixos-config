@@ -1,7 +1,7 @@
 {
   config,
   lib,
-  utils,
+  myLib,
   ...
 }: let
   cfg = config.bash;
@@ -62,39 +62,39 @@
   };
 in {
   options.bash = {
-    enable = utils.mkEnableOptionTrue "bash as the default shell";
+    enable = myLib.mkEnableOptionTrue "bash as the default shell";
     cursor = {
       shape = lib.mkOption {
         type = lib.types.enum ["block" "underline" "bar"];
         default = "bar";
         description = "Shape of the bash cursor.";
       };
-      blink = utils.mkEnableOptionTrue "cursor blinking";
+      blink = myLib.mkEnableOptionTrue "cursor blinking";
     };
     prompt = {
       indicator = {
         ssh = {
-          enable = utils.mkEnableOptionTrue "an indicator in the bash prompt when connected via SSH";
-          color = utils.mkBashColorOption "#3DAEE9" "Hex color of the SSH indicator in the bash prompt.";
+          enable = myLib.mkEnableOptionTrue "an indicator in the bash prompt when connected via SSH";
+          color = myLib.mkBashColorOption "#3DAEE9" "Hex color of the SSH indicator in the bash prompt.";
         };
         nixShell = {
-          enable = utils.mkEnableOptionTrue "a   before the bash prompt when inside a nix-shell";
-          color = utils.mkBashColorOption "#7EB7E2" "Hex color of the nix-shell indicator in the bash prompt.";
-          pureColor = utils.mkBashColorOption "#9FE27E" "Hex color of the 󰌪 next to the nix shell icon indicating that it is a pure shell.";
+          enable = myLib.mkEnableOptionTrue "a   before the bash prompt when inside a nix-shell";
+          color = myLib.mkBashColorOption "#7EB7E2" "Hex color of the nix-shell indicator in the bash prompt.";
+          pureColor = myLib.mkBashColorOption "#9FE27E" "Hex color of the 󰌪 next to the nix shell icon indicating that it is a pure shell.";
         };
       };
       section = {
         system = {
-          enable = utils.mkEnableOptionTrue "system information in the bash prompt";
-          distroIcon = utils.mkEnableOptionTrue "the distro icon in the bash prompt";
-          user = utils.mkEnableOptionTrue "the user in the bash prompt";
+          enable = myLib.mkEnableOptionTrue "system information in the bash prompt";
+          distroIcon = myLib.mkEnableOptionTrue "the distro icon in the bash prompt";
+          user = myLib.mkEnableOptionTrue "the user in the bash prompt";
           host = lib.mkEnableOption "the host section in the bash prompt";
-          color = utils.mkBashColorOption "#16A085" "Hex color of the system section in the bash prompt.";
-          background = utils.mkBashColorOption "#666" "Hex background color of the system section in the bash prompt.";
+          color = myLib.mkBashColorOption "#16A085" "Hex color of the system section in the bash prompt.";
+          background = myLib.mkBashColorOption "#666" "Hex background color of the system section in the bash prompt.";
           precedence = mkPrecedenceOption 0;
         };
         directory = {
-          enable = utils.mkEnableOptionTrue "the current directory in the bash prompt";
+          enable = myLib.mkEnableOptionTrue "the current directory in the bash prompt";
           abridged = lib.mkOption {
             type = lib.types.bool;
             default = true;
@@ -108,8 +108,8 @@ in {
               - Print ~/<icon>/…/directory if we are more than 2 subdirectories deep in home and the home subdirectory has an icon
             '';
           };
-          color = utils.mkBashColorOption "#000" "Hex color of the directory section in the bash prompt.";
-          background = utils.mkBashColorOption "#FFF" "Hex background color of the directory section in the bash prompt.";
+          color = myLib.mkBashColorOption "#000" "Hex color of the directory section in the bash prompt.";
+          background = myLib.mkBashColorOption "#FFF" "Hex background color of the directory section in the bash prompt.";
           icons = lib.mkOption {
             type = lib.types.attrsOf lib.types.str;
             default = dirIcons;
@@ -121,35 +121,35 @@ in {
           precedence = mkPrecedenceOption 1;
         };
         gitBranch = {
-          enable = utils.mkEnableOptionTrue "the current git branch and commits ahead/behind in the bash prompt";
-          statusSummary = utils.mkEnableOptionTrue "a summary of the current git status (modified/untracked files) next to the branch name in the bash prompt. This is automatically disabled if gitStatus is enabled to avoid redundancy";
-          color = utils.mkBashColorOption "#000" "Hex color of the git branch section in the bash prompt.";
-          background = utils.mkBashColorOption "#1497B8" "Hex background color of the git branch section in the bash prompt.";
+          enable = myLib.mkEnableOptionTrue "the current git branch and commits ahead/behind in the bash prompt";
+          statusSummary = myLib.mkEnableOptionTrue "a summary of the current git status (modified/untracked files) next to the branch name in the bash prompt. This is automatically disabled if gitStatus is enabled to avoid redundancy";
+          color = myLib.mkBashColorOption "#000" "Hex color of the git branch section in the bash prompt.";
+          background = myLib.mkBashColorOption "#1497B8" "Hex background color of the git branch section in the bash prompt.";
           # private options:
           command = mkCommandOption ''\$(_parse_git_branch)'';
           precedence = mkPrecedenceOption 2;
         };
         gitStatus = {
-          enable = utils.mkEnableOptionTrue "the current git status (modified/untracked files) in the bash prompt";
-          color = utils.mkBashColorOption "#000" "Hex color of the git status section in the bash prompt.";
-          background = utils.mkBashColorOption "#1481B8" "Hex background color of the git status section in the bash prompt.";
+          enable = myLib.mkEnableOptionTrue "the current git status (modified/untracked files) in the bash prompt";
+          color = myLib.mkBashColorOption "#000" "Hex color of the git status section in the bash prompt.";
+          background = myLib.mkBashColorOption "#1481B8" "Hex background color of the git status section in the bash prompt.";
           # private options:
           command = mkCommandOption ''\$(_parse_git_status)'';
           precedence = mkPrecedenceOption 3;
         };
         timer = {
-          enable = utils.mkEnableOptionTrue "a timer for how long the last command took to execute, along with its exit status in the bash prompt";
+          enable = myLib.mkEnableOptionTrue "a timer for how long the last command took to execute, along with its exit status in the bash prompt";
           success = {
-            color = utils.mkBashColorOption "#000" "Hex color of the timer when the last command succeeded.";
-            background = utils.mkBashColorOption "#14B879" "Hex background color of the timer when the last command succeeded.";
+            color = myLib.mkBashColorOption "#000" "Hex color of the timer when the last command succeeded.";
+            background = myLib.mkBashColorOption "#14B879" "Hex background color of the timer when the last command succeeded.";
           };
           failure = {
-            color = utils.mkBashColorOption "#FFF" "Hex color of the timer when the last command failed.";
-            background = utils.mkBashColorOption "#CD3131" "Hex background color of the timer when the last command failed.";
+            color = myLib.mkBashColorOption "#FFF" "Hex color of the timer when the last command failed.";
+            background = myLib.mkBashColorOption "#CD3131" "Hex background color of the timer when the last command failed.";
           };
           warning = {
-            color = utils.mkBashColorOption "#000" "Hex color of the timer when the last command took a long time to execute.";
-            background = utils.mkBashColorOption "#CCA633" "Hex background color of the timer when the last action was an interrupt (Ctrl + C).";
+            color = myLib.mkBashColorOption "#000" "Hex color of the timer when the last command took a long time to execute.";
+            background = myLib.mkBashColorOption "#CCA633" "Hex background color of the timer when the last action was an interrupt (Ctrl + C).";
           };
           color = lib.mkOption {
             type = lib.types.str;
@@ -170,9 +170,9 @@ in {
           precedence = mkPrecedenceOption 4;
         };
         privilege = {
-          enable = utils.mkEnableOptionTrue "the privilege symbol section in the bash prompt (# is root, $ is not root)";
-          color = utils.mkBashColorOption "#FFF" "Hex color of the root indicator in the bash prompt.";
-          background = utils.mkBashColorOption "#666" "Hex background color of the root indicator in the bash prompt.";
+          enable = myLib.mkEnableOptionTrue "the privilege symbol section in the bash prompt (# is root, $ is not root)";
+          color = myLib.mkBashColorOption "#FFF" "Hex color of the root indicator in the bash prompt.";
+          background = myLib.mkBashColorOption "#666" "Hex background color of the root indicator in the bash prompt.";
           # private options:
           command = mkCommandOption ''\\$'';
           precedence = mkPrecedenceOption 5;

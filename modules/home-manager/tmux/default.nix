@@ -2,21 +2,21 @@
   config,
   lib,
   pkgs,
-  utils,
+  myLib,
   ...
 }: let
   cfg = config.tmux;
 in {
   options.tmux = {
-    enable = utils.mkEnableOptionTrue "Tmux";
+    enable = myLib.mkEnableOptionTrue "Tmux";
     prefix = lib.mkOption {
       type = lib.types.str;
       default = "C-b";
       description = "Set tmux prefix key. Default is Ctrl + G.";
     };
     selection = {
-      background = utils.mkHexColorOption "#99CCE6" "Set the background color of the cursor selection.";
-      color = utils.mkHexColorOption "#000" "Set the color of the text in a selection.";
+      background = myLib.mkHexColorOption "#99CCE6" "Set the background color of the cursor selection.";
+      color = myLib.mkHexColorOption "#000" "Set the color of the text in a selection.";
     };
     message = {
       duration = lib.mkOption {
@@ -24,34 +24,34 @@ in {
         default = 4000; # original default is 750
         description = "Set the duration (in milliseconds) for which tmux messages are displayed.";
       };
-      color = utils.mkHexColorOption "#000" "Set the color of tmux messages.";
-      background = utils.mkHexColorOption "#D9AD8C" "Set the background color of tmux messages.";
+      color = myLib.mkHexColorOption "#000" "Set the color of tmux messages.";
+      background = myLib.mkHexColorOption "#D9AD8C" "Set the background color of tmux messages.";
     };
     prompt = {
-      color = utils.mkHexColorOption "#000" "Set the text color of the session pill and active tab.";
-      background = utils.mkHexColorOption "#11D116" "Set the background color of the session pill and active tab.";
+      color = myLib.mkHexColorOption "#000" "Set the text color of the session pill and active tab.";
+      background = myLib.mkHexColorOption "#11D116" "Set the background color of the session pill and active tab.";
       info = lib.mkOption {
         type = lib.types.either lib.types.bool (lib.types.submodule {
           options = {
             host = {
-              enable = utils.mkEnableOptionTrue "the host info section in the tmux status bar.";
-              color = utils.mkHexColorOption "#000" "Set the color of the host indicator.";
-              background = utils.mkHexColorOption "#99CCE6" "Set the background color of the host indicator.";
+              enable = myLib.mkEnableOptionTrue "the host info section in the tmux status bar.";
+              color = myLib.mkHexColorOption "#000" "Set the color of the host indicator.";
+              background = myLib.mkHexColorOption "#99CCE6" "Set the background color of the host indicator.";
             };
             disk = {
-              enable = utils.mkEnableOptionTrue "the disk usage info section in the tmux status bar";
-              color = utils.mkHexColorOption "#000" "Set the color of the disk indicator.";
-              background = utils.mkHexColorOption "#999FE5" "Set the background color of the disk indicator.";
+              enable = myLib.mkEnableOptionTrue "the disk usage info section in the tmux status bar";
+              color = myLib.mkHexColorOption "#000" "Set the color of the disk indicator.";
+              background = myLib.mkHexColorOption "#999FE5" "Set the background color of the disk indicator.";
             };
             memory = {
-              enable = utils.mkEnableOptionTrue "the memory usage info section in the tmux status bar";
-              color = utils.mkHexColorOption "#000" "Set the color of the memory indicator.";
-              background = utils.mkHexColorOption "#BF99E5" "Set the background color of the memory indicator.";
+              enable = myLib.mkEnableOptionTrue "the memory usage info section in the tmux status bar";
+              color = myLib.mkHexColorOption "#000" "Set the color of the memory indicator.";
+              background = myLib.mkHexColorOption "#BF99E5" "Set the background color of the memory indicator.";
             };
             battery = {
-              enable = utils.mkEnableOptionTrue "the battery status info section in the tmux status bar";
-              color = utils.mkHexColorOption "#000" "Set the color of the battery indicator.";
-              background = utils.mkHexColorOption "#E599DF" "Set the background color of the battery indicator.";
+              enable = myLib.mkEnableOptionTrue "the battery status info section in the tmux status bar";
+              color = myLib.mkHexColorOption "#000" "Set the color of the battery indicator.";
+              background = myLib.mkHexColorOption "#E599DF" "Set the background color of the battery indicator.";
             };
           };
         });

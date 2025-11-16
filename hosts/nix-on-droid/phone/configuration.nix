@@ -3,7 +3,7 @@
   details,
   inputs,
   pkgs,
-  myUtils,
+  myLib,
   ...
 }: {
   imports = [
@@ -27,8 +27,7 @@
     useUserPackages = true;
     useGlobalPkgs = true;
     extraSpecialArgs = {
-      inherit details inputs;
-      utils = myUtils;
+      inherit details inputs myLib;
     };
     config = {
       imports = [
