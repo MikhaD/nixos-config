@@ -1,4 +1,7 @@
 {myLib, ...}: {
+  programs.bash.shellAliases = {
+    neofetch = "fastfetch";
+  };
   programs.fastfetch = {
     enable = true;
     settings = {
@@ -7,6 +10,10 @@
         padding.top = 4;
       };
       display = {
+        size = {
+          ndigits = 1;
+          binaryPrefix = "si";
+        };
         key = {
           type = "both";
           paddingLeft = 2;
