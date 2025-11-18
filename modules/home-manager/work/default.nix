@@ -19,7 +19,7 @@
   };
 
   programs.bash.shellAliases = {
-    work = "cd ~/Documents/work/quicklysign-python3 && nix develop";
+    work = "cd ~/Documents/work/quicklysign-python3; git add flake.*; nix develop; git restore --staged flake.*";
   };
 
   home.packages = with pkgs; [

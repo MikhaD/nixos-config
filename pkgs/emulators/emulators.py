@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-VERSION = "1.1.1"
+VERSION="<REPLACED IN INSTALL PHASE>"
 
 import argparse
 import copy

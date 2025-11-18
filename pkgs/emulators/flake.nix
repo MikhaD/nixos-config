@@ -1,7 +1,6 @@
 {
-  description = "Python program to start and run emulators in tmux";
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     cloud-tasks-emulator = {
       url = "github:aertje/cloud-tasks-emulator/v1.2.0";
       flake = false;
@@ -12,6 +11,7 @@
     };
   };
   outputs = inputs: let
+    version = "1.1.2";
     forAllSystems = inputs.nixpkgs.lib.genAttrs [
       "x86_64-linux"
       # "aarch64-linux"
@@ -91,7 +91,7 @@
       # https://nixos.org/manual/nixpkgs/unstable/#buildpythonapplication-function
       default = pkgs.python3Packages.buildPythonApplication {
         pname = "emulators";
-        version = "1.1.1";
+        inherit version;
         src = ./.;
         format = "other";
         propagatedBuildInputs = [
@@ -110,7 +110,8 @@
         installPhase = ''
           runHook preInstall
           install -D emulators.py $out/bin/emulators
-          install -D emulators-completions.sh $out/share/bash-completion/completions/emulators
+          sed -i '2s/.*/VERSION="${version}"/' $out/bin/emulators
+          install -D emulators.completions.sh $out/share/bash-completion/completions/emulators
           runHook postInstall
         '';
         meta = meta system;
