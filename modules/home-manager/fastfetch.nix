@@ -50,7 +50,7 @@
         {
           key = pad "CPU"; # Find a way to combine this with CPU usage
           type = "cpu";
-          format = "{name}";
+          format = "{name} {temperature}";
           temp = true;
           keyColor = colors.hardware;
         }
@@ -74,6 +74,7 @@
         {
           key = pad "Battery";
           type = "battery";
+          temp = true;
           keyColor = colors.hardware;
         }
         {
