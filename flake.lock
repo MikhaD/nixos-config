@@ -34,6 +34,22 @@
         "type": "github"
       }
     },
+    "e": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "path": "./pkgs/e",
+        "type": "path"
+      },
+      "original": {
+        "path": "./pkgs/e",
+        "type": "path"
+      },
+      "parent": []
+    },
     "emulators": {
       "inputs": {
         "cloud-tasks-emulator": "cloud-tasks-emulator",
@@ -233,6 +249,7 @@
     },
     "root": {
       "inputs": {
+        "e": "e",
         "emulators": "emulators",
         "home-manager": "home-manager",
         "nix-index-database": "nix-index-database",

@@ -31,6 +31,7 @@
       ./../../../modules/home-manager/bat.nix
       ./../../../modules/home-manager/chromium.nix
       ./../../../modules/home-manager/dig.nix
+      ./../../../modules/home-manager/e.nix
       ./../../../modules/home-manager/fastfetch.nix
       ./../../../modules/home-manager/firefox.nix
       ./../../../modules/home-manager/fzf.nix
