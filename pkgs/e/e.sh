@@ -15,6 +15,8 @@ case $1 in
 		echo "  -h, --help     Show this help message and exit."
 		echo "  -q, --quiet    Do not write anything to stdout. Exit immediately with zero status if the variable is set."
 		echo "  -v, --version  Show the version of e and exit."
+		echo
+		echo "e version $VERSION"
 		;;
 	-q|--quiet)
 		if [[ -z $2 ]]; then

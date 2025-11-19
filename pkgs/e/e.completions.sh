@@ -7,7 +7,7 @@ _e_completions() {
 		COMPREPLY=($(compgen -W "--help --quiet --version" -- "${COMP_WORDS[COMP_CWORD]}"))
 		COMPREPLY+=($MATCH_VARS)
 		return
-	elif [[ $COMP_CWORD -eq 2 && ( "${COMP_WORDS[1]}" == "-q" || "${COMP_WORDS[1]}" == "--quiet" ) ]]; then
+	elif [[ $COMP_CWORD -eq 2 && (${COMP_WORDS[1]} == "-q" || ${COMP_WORDS[1]} == "--quiet") ]]; then
 		COMPREPLY=($MATCH_VARS)
 		return
 	fi

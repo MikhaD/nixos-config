@@ -3,10 +3,10 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
   outputs = inputs: let
-    version = "1.0.0";
+    version = "1.0.1";
     forAllSystems = inputs.nixpkgs.lib.genAttrs [
       "x86_64-linux"
-      # "aarch64-linux"
+      "aarch64-linux"
     ];
     meta = system: {
       description = "Program to print the value of the specified environment variable";
