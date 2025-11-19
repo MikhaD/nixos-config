@@ -4,6 +4,6 @@
   ...
 }: {
   home.packages = [
-    inputs.e.packages.${pkgs.stdenv.system}.default
+    inputs.myApps.packages.${pkgs.stdenv.system}.e
   ];
 }

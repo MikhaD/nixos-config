@@ -1,4 +1,9 @@
-- Instructions on creating new derivations
+# My Modules
+
+- [e](./e/README.md): Utility to print the value of the specified environment variable (with case insensitive bash completions).
+- [tat](./tat/README.md): Utility to improve navigation between tmux sessions.
+
+<!-- - Instructions on creating new derivations
 
 ## Useful info
 `$src` and `$out` are special variables available during the build, accessible within the different phases.
@@ -89,4 +94,4 @@ $version: Package version
 $name: Usually ${pname}-${version}
 Phase Control:
 $prePhase, $postPhase: Hooks run before/after each phase
-$phases: List of phases to run
+$phases: List of phases to run -->

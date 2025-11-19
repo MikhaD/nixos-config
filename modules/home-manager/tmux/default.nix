@@ -1,6 +1,7 @@
 {
   config,
   hostname,
+  inputs,
   lib,
   myLib,
   pkgs,
@@ -78,7 +79,7 @@ in {
     tat = lib.mkOption {
       type = lib.types.bool;
       default = true;
-      description = "Install the 'tat' (tmux attach or create) helper script. This requires that fzf be installed.";
+      description = "Install the 'tat' (Tmux ATtach) helper application.";
     };
   };
   config = let
@@ -142,9 +143,7 @@ in {
         ++ lib.optional pInf.disk.enable (pkgs.writeShellScriptBin "_tmux-disk-fraction" (builtins.readFile ./scripts/disk-fraction.sh))
         ++ lib.optional pInf.memory.enable (pkgs.writeShellScriptBin "_tmux-memory-fraction" (builtins.readFile ./scripts/memory-fraction.sh))
         ++ lib.optional pInf.battery.enable (pkgs.writeShellScriptBin "_tmux-battery-icon" (builtins.readFile ./scripts/battery-icon.sh))
-        ++ lib.optional cfg.tat (pkgs.writeShellScriptBin "tat" (builtins.readFile ./scripts/tat/tat.sh));
-
-      bash.completions = lib.mkIf cfg.tat {tat = ./scripts/tat/tat.completions.sh;};
+        ++ lib.optional cfg.tat (inputs.myApps.packages.${pkgs.stdenv.system}.tat);
 
       bash.extra = let
         sshOnly = str:

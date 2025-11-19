@@ -72,14 +72,7 @@ This shows the current battery percentage with a battery icon before it. It can 
 The icon is a filled battery, filled to the % the battery is currently charged to in increments of 10. If the laptop is plugged in and charging it will display a lightning bolt next to it. If it is fully charged and plugged in, or plugged in not charging it will show a plug icon instead.
 
 ## Tmux Attach (tat)
-This module includes a script called Tmux ATtach (tat) improves navigation between tmux sessions.
-- Use without arguments to enter tmux session selection menu if in tmux and there are multiple sessions.
-	- If not in tmux and there are multiple sessions present a fzf menu to select a session to attach to.
-	- If not in tmux and there is only one session attach to that session.
-	- If in tmux and there is only one session do nothing.
+`tat` is an application that improves navigation between tmux sessions.
 
-### Options
-| Flag            | Description                                                                                               |
-|-----------------|-----------------------------------------------------------------------------------------------------------|
-| `-h` , `--help` | Show help message and exit.                                                                               |
-| `-n` , `--new`  | Create a tmux session with the given session name if no session exists, else attach to the given session. |
+
+See the [readme](https://github.com/MikhaD/nix-config/tree/main/pkgs/tat) for more information.

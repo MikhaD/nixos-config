@@ -11,7 +11,7 @@ count=$(tmux ls 2> /dev/null | wc -l)
 if [[ $1 == "-h" || $1 == "--help" ]]; then
 	echo "Usage: tat [-n] [-h] [<session name>]"
 	echo
-	echo "Tmux ATtach (tat) script to improve navigation between tmux sessions."
+	echo "Tmux ATtach (tat) is an application to improve navigation between tmux sessions."
 	echo "Use without arguments to enter tmux session selection menu if in tmux and there are multiple sessions."
 	echo "- If not in tmux and there are multiple sessions present a fzf menu to select a session to attach to."
 	echo "- If not in tmux and there is only one session attach to that session."
@@ -21,6 +21,11 @@ if [[ $1 == "-h" || $1 == "--help" ]]; then
 	echo "  -h, --help          Show this help message and exit."
 	echo "  -n, --new           Create a tmux session with the given session name if no session exists, else attach to"
 	echo "                      the given session."
+	echo
+	echo "tat version $VERSION"
+	exit 0
+elif [[ $1 == "-v" || $1 == "--version" ]]; then
+	echo "tat version $VERSION"
 	exit 0
 fi
 [[ $count -eq 0 ]] && exit 1

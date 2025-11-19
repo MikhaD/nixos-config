@@ -26,6 +26,11 @@ This configuration contains several mini applications that can be installed usin
 - [emulators](pkgs/emulators/README.md): A script to launch work emulators with the correct environment variables set. Several other applications are made available in this flake as well.
 
 ## Useful command reference
+Evaluate the value of a configuration option:
+```sh
+# example
+nix eval .#nixosConfigurations.laptop.config.home-manager.users.mikha.bash.completions --json
+```
 Update flake inputs (must be run in the same dir as the flake.nix):
 ```sh
 nix flake update

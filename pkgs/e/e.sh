@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 VERSION="<REPLACED IN INSTALL PHASE>"
+
 usage="usage: e [-h] [-q] [-v] <environment variable name>"
 if [[ -z $1 ]]; then # check if the value of $1 exists as an environment variable
 	echo $usage

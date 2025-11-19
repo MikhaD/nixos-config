@@ -15,8 +15,8 @@
     nix-on-droid.inputs.nixpkgs.follows = "nixpkgs";
     nix-on-droid.inputs.home-manager.follows = "home-manager";
 
-    e.url = "path:./pkgs/e";
-    e.inputs.nixpkgs.follows = "nixpkgs";
+    myApps.url = "path:./pkgs";
+    myApps.inputs.nixpkgs.follows = "nixpkgs";
 
     # Secrets I don't want in a public repo, but are not secret enough that they must be hidden from the global nix store
     secrets.url = "git+ssh://git@github.com/MikhaD/nix-secrets.git?shallow=1";

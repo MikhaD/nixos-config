@@ -95,6 +95,9 @@ Each section can be individually enabled/disabled and customized:
 ### Extra Lines
 - `bash.extra`: list of extra lines appended to the end of the generated bashrc (after all module content). Each item becomes its own line.
 
+### Completion scripts
+- `bash.completions`: attribute set of completion script paths. Each key is the name of the completion script, and the value is the path to the script. These scripts get added to `$XDG_DATA_HOME/bash-completion/completions/` and are automatically sourced.
+
 ## Extra Functionality
 - cd accepts any number of `.`s after `..` to go up additional directories (e.g. `cd ...` goes up 2 directories, `cd ....` goes up 3, etc).
 - using cd to change directory into a dir with a python virtual environment (.venv) will automatically activate the venv. Leaving the directory will deactivate it. Changing into a subdir of a venv dir will also activate the venv in the parent dir if it was not already active.

@@ -34,22 +34,6 @@
         "type": "github"
       }
     },
-    "e": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "path": "./pkgs/e",
-        "type": "path"
-      },
-      "original": {
-        "path": "./pkgs/e",
-        "type": "path"
-      },
-      "parent": []
-    },
     "emulators": {
       "inputs": {
         "cloud-tasks-emulator": "cloud-tasks-emulator",
@@ -87,6 +71,22 @@
         "repo": "home-manager",
         "type": "github"
       }
+    },
+    "myApps": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "path": "./pkgs",
+        "type": "path"
+      },
+      "original": {
+        "path": "./pkgs",
+        "type": "path"
+      },
+      "parent": []
     },
     "nix-formatter-pack": {
       "inputs": {
@@ -249,9 +249,9 @@
     },
     "root": {
       "inputs": {
-        "e": "e",
         "emulators": "emulators",
         "home-manager": "home-manager",
+        "myApps": "myApps",
         "nix-index-database": "nix-index-database",
         "nix-on-droid": "nix-on-droid",
         "nixpkgs": "nixpkgs",

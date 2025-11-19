@@ -4,14 +4,11 @@ _e_completions() {
 	fi
 	local MATCH_VARS=$(printenv | cut -d= -f1 | grep -i "^${COMP_WORDS[COMP_CWORD]}.*")
 	if [[ $COMP_CWORD -eq 1 ]]; then
-		COMPREPLY=($(compgen -W "--help --quiet --version" -- "${COMP_WORDS[COMP_CWORD]}"))
+		COMPREPLY=($(compgen -W "--help --quiet --version" -- "${COMP_WORDS[1]}"))
 		COMPREPLY+=($MATCH_VARS)
-		return
 	elif [[ $COMP_CWORD -eq 2 && (${COMP_WORDS[1]} == "-q" || ${COMP_WORDS[1]} == "--quiet") ]]; then
 		COMPREPLY=($MATCH_VARS)
-		return
 	fi
-	COMPREPLY=()
 }
 
 complete -F _e_completions e
