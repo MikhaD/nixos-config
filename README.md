@@ -14,12 +14,18 @@ Several modules (listed below), have their own readme files with more informatio
 
 ## Opinions
 This configuration expects and enforces several rules and patterns:
-- This configuration repository must be located at `/home/<username>/nix/flake.nix` (configurable in the flake details).
-- The /etc/nixos directory must not contain any .nix or .lock files except for a symlink to the flake.nix file in this repository.
+<!-- - This configuration repository must be located at `/home/<username>/nix/flake.nix` (configurable in the flake details). -->
+<!-- - The /etc/nixos directory must not contain any .nix or .lock files except for a symlink to the flake.nix file in this repository. -->
+- The default shell is assumed to be bash.
 - System modules can install packages in home manager via `home-config.packages`.
 - All modules can set options on the user via `default-user.extra`.
 
-## Useful nix command reference
+## Mini applications
+This configuration contains several mini applications that can be installed using flakes.
+- [e](pkgs/e/README.md): A simple tool to get environment variable values with completions.
+- [emulators](pkgs/emulators/README.md): A script to launch work emulators with the correct environment variables set. Several other applications are made available in this flake as well.
+
+## Useful command reference
 Update flake inputs (must be run in the same dir as the flake.nix):
 ```sh
 nix flake update
@@ -93,6 +99,7 @@ prefix with a space to prevent your password from being stored in your shell his
 - [Nix concepts](https://zero-to-nix.com/concepts/)
 - [Great intro to flakes & their outputs](https://youtu.be/RoMArT8UCKM)
 - [How to install NixOS on a flashdrive](https://www.reddit.com/r/NixOS/comments/160t87r/how_to_install_nixos_onto_a_flash_drive/)
+- [Bash completions](https://opensource.com/article/18/3/creating-bash-completion-script)
 <details>
 	<summary>How to use a custom version of the Linux kernel</summary>
 
@@ -132,3 +139,5 @@ boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_6_17.override {
   - Use unused timer.success, timer.failure, timer.warning, gitBranch.statusSummary, directory.abridged
   - Remove functions from bashrc that are not used when sections are toggled off
   - Update readme with new prompt section & examples
+  - Update all readmes with changes to the modules they describe (talk about python env stuff somewhere)
+  - Create formal system for adding cd hooks

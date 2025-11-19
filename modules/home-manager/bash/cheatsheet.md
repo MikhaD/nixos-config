@@ -120,3 +120,9 @@ https://bashcommands.com/bash-declare
 
 ### Arrays
 
+# TODO
+- single vs double quotes
+- here documents
+- variable expansion and substitution
+- arrays
+- loops

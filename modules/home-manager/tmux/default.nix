@@ -59,6 +59,26 @@ in {
         description = "Configure what info to show in the tmux status bar. Can be a boolean to enable/disable all info.";
       };
     };
+    autoAttach = {
+      enable = lib.mkEnableOption "automatically attach to a tmux session when starting a terminal";
+      sshOnly = lib.mkEnableOption "auto attach only when connecting over SSH";
+      defaultSessionName = lib.mkOption {
+        type = lib.types.str;
+        default = "default";
+        description = "The name of the tmux session to attach to or create.";
+      };
+    };
+    motd = lib.mkOption {
+      type = lib.types.str;
+      default = "";
+      description = "Set a custom message of the day (MOTD) to display when starting a new tmux session.";
+      example = "Remember that the tmux meta key is Ctrl + B";
+    };
+    tat = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Install the 'tat' (tmux attach or create) helper script. This requires that fzf be installed.";
+    };
   };
   config = let
     # Normalize prompt.info to always be an attribute set
@@ -120,6 +140,24 @@ in {
         []
         ++ lib.optional pInf.disk.enable (pkgs.writeShellScriptBin "_tmux-disk-fraction" (builtins.readFile ./scripts/disk-fraction.sh))
         ++ lib.optional pInf.memory.enable (pkgs.writeShellScriptBin "_tmux-memory-fraction" (builtins.readFile ./scripts/memory-fraction.sh))
-        ++ lib.optional pInf.battery.enable (pkgs.writeShellScriptBin "_tmux-battery-icon" (builtins.readFile ./scripts/battery-icon.sh));
+        ++ lib.optional pInf.battery.enable (pkgs.writeShellScriptBin "_tmux-battery-icon" (builtins.readFile ./scripts/battery-icon.sh))
+        ++ lib.optional cfg.tat (pkgs.writeShellScriptBin "tat" (builtins.readFile ./scripts/tat/tat.sh));
+
+      bash.completions.tat = ./scripts/tat/tat.completions.sh;
+
+      bash.extra = let
+        sshOnly = str:
+          if cfg.autoAttach.sshOnly
+          then str
+          else "";
+      in
+        []
+        ++ lib.optional cfg.autoAttach.enable ''
+          # Automatically attach to a tmux session if one exists, or create a new one
+          ${sshOnly "# check SSH_TTY to only do this for SSH sessions"}
+          # check $TMUX to avoid nesting tmux sessions
+          ${sshOnly " [[ -n $SSH_TTY ]] &&"} [[ -z $TMUX ]] && tmux new -As "${cfg.autoAttach.defaultSessionName}"
+        ''
+        ++ lib.optional (cfg.motd != "") "[[ -n $TMUX ]] && echo '${cfg.motd}'";
     };
 }

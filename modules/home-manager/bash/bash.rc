@@ -17,9 +17,7 @@ bind '"\e[1;3C": "cd -\n"'              # Use Alt+→ to go to the previous dire
 bind '"\es": "\C-asudo \C-e"'           # Use Alt+s to prepend sudo to the current command
 bind '"\C-l": clear-display'            # Use Ctrl+L to clear the screen (override the default clear-screen, which does just scrolls the screen up)
 bind '"\C-r": "source ~/nix/modules/home-manager/bash/bash.rc\n"'     # Use Ctrl+R to reload the bashrc file from my nix configuration
-if [[ -n $TMUX ]]; then
-    bind '"\C-w": "tmux detach &> /dev/null\n"' # Use Ctrl+W to detach from the current tmux session
-fi
+
 # bind "set editing-mode vi"              # Use vi keybindings in the terminal (seems to prevent the use of the up and down arrow keys)
 # bind "set show-all-if-ambiguous on"     # print out all matching files/directories if there are multiple possibilities
 # bind "set colored-stats on"             # show directories in a different color when show-all-if-ambiguous is enabled

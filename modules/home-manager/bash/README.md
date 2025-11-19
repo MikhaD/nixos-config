@@ -24,7 +24,6 @@ This module configures bash. Importing it into home manager will enable bash wit
 | <kbd>Alt</kbd> + <kbd>→</kbd> | Go to the previous directory (`cd -`) |
 | <kbd>Alt</kbd> + <kbd>S</kbd> | Prepend `sudo` to the current command |
 | <kbd>Ctrl</kbd> + <kbd>R</kbd> | Reload the bashrc file from `~/nix/modules/home-manager/bash/bash.rc` |
-| <kbd>Ctrl</kbd> + <kbd>W</kbd> | Detach from the current tmux session if there is one |
 
 ## Custom nix options
 

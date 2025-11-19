@@ -201,6 +201,11 @@ in {
       default = [];
       description = "Extra lines to add to the end of the bash profile (~/.bashrc), concatenated with \\n.";
     };
+    completions = lib.mkOption {
+      type = lib.types.attrsOf lib.types.path;
+      default = {};
+      description = "Additional bash completion scripts to be placed in the XDG data directory for bash completions.";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -232,6 +237,7 @@ in {
         "no_empty_cmd_completion" # Do not perform command completion on an empty command line
         "autocd" #                  Change to a directory just by typing its name
       ];
+
       # Placed in ~/.bashrc
       initExtra = let
         dirIconsFn = ''
@@ -314,5 +320,11 @@ in {
           ]
           ++ cfg.extra);
     };
+    xdg.dataFile =
+      lib.mapAttrs' (name: value: {
+        name = "bash-completion/completions/${name}";
+        value.source = value;
+      })
+      cfg.completions;
   };
 }

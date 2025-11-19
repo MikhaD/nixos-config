@@ -19,6 +19,7 @@ This module configures tmux. Importing it into home manager will enable tmux wit
 | <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Tab</kbd> | Switch to the previous window |
 | <kbd>Prefix</kbd> + <kbd>\|</kbd> | Split the window vertically (Replaces <kbd>Prefix</kbd> + <kbd>%</kbd>) |
 | <kbd>Prefix</kbd> + <kbd>-</kbd> | Split the window horizontally (Replaces <kbd>Prefix</kbd> + <kbd>"</kbd>) |
+| <kbd>Ctrl</kbd> + <kbd>w</kbd> | Detach from the current tmux session |
 
 ## Custom nix options
 - `prefix`: change the prefix key (default is <kbd>Ctrl + B</kbd>).
