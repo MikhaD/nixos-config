@@ -22,6 +22,10 @@ This module configures tmux. Importing it into home manager will enable tmux wit
 | <kbd>Ctrl</kbd> + <kbd>w</kbd> | Detach from the current tmux session |
 
 ## Custom nix options
+- `autoAttach.enable`: automatically attach to a tmux session called `autoAttach.defaultSessionName` when starting a terminal. If no session exists, a new one will be created with the name specified by `autoAttach.defaultSessionName`.
+- `autoAttach.defaultSessionName`: the name of the tmux session to attach to or create (default is the hostname of the machine).
+- `autoAttach.sshOnly`: only auto attach when connecting over SSH (default is false).
+- `motd`: set a custom message to display at the top of new tmux windows.
 - `prefix`: change the prefix key (default is <kbd>Ctrl + B</kbd>).
 - `selection.background`: change the background color of selected text in copy mode (default is "#99CCE6").
 - `selection.color`: change the foreground color of selected text in copy mode (default is "#000").
@@ -31,6 +35,7 @@ This module configures tmux. Importing it into home manager will enable tmux wit
 - `prompt.color`: change the text color of the session pill and active tab (default is "#000").
 - `prompt.background`: change the background color of the session pill and active tab (default is the classic tmux green).
 - `prompt.info`: toggle system info in the status bar. See [status bar customization](#status-bar-customization) for details.
+- `tat`: enable Tmux ATtach (tat) script for easier session management. See [Tmux Attach (tat)](#tmux-attach-tat) for details.
 
 ## Status Bar Customization
 The status bar has been placed at the top of the window with an empty line below it and has 3 general sections.
@@ -65,3 +70,16 @@ This shows the current memory usage with a CPU icon before it (the memory icon i
 ##### 3.4 Battery
 This shows the current battery percentage with a battery icon before it. It can be toggled with `tmux.prompt.info.battery.enable` and is enabled by default. Colors can be customized with `tmux.prompt.info.battery.color` (default "#000") and `tmux.prompt.info.battery.background` (default "#E599DF").
 The icon is a filled battery, filled to the % the battery is currently charged to in increments of 10. If the laptop is plugged in and charging it will display a lightning bolt next to it. If it is fully charged and plugged in, or plugged in not charging it will show a plug icon instead.
+
+## Tmux Attach (tat)
+This module includes a script called Tmux ATtach (tat) improves navigation between tmux sessions.
+- Use without arguments to enter tmux session selection menu if in tmux and there are multiple sessions.
+	- If not in tmux and there are multiple sessions present a fzf menu to select a session to attach to.
+	- If not in tmux and there is only one session attach to that session.
+	- If in tmux and there is only one session do nothing.
+
+### Options
+| Flag            | Description                                                                                               |
+|-----------------|-----------------------------------------------------------------------------------------------------------|
+| `-h` , `--help` | Show help message and exit.                                                                               |
+| `-n` , `--new`  | Create a tmux session with the given session name if no session exists, else attach to the given session. |

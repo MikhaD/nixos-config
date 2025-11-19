@@ -45,25 +45,14 @@
     ];
     extra = {
       tmux = {
+        autoAttach.enable = true;
+        motd = " Tmux meta key is Ctrl + G";
         prefix = "C-g";
         prompt = {
           background = "#99CCE6";
           info.host.enable = false;
         };
       };
-
-      # Start new tmux session on login if not already inside tmux, or attach to existing
-      programs.bash.profileExtra = ''
-        if [ -z "$TMUX" ]; then
-          if ! tmux has-session -t "${hostname}" 2>/dev/null; then
-            tmux new-session -s "${hostname}"
-          else
-           tmux attach-session -t "${hostname}"
-          fi
-        else
-          echo "Tmux meta key is Ctrl + G"
-        fi
-      '';
     };
   };
 

@@ -1,22 +1,29 @@
 {
   config,
+  hostname,
   lib,
-  pkgs,
   myLib,
+  pkgs,
   ...
 }: let
   cfg = config.tmux;
 in {
   options.tmux = {
-    enable = myLib.mkEnableOptionTrue "Tmux";
-    prefix = lib.mkOption {
-      type = lib.types.str;
-      default = "C-b";
-      description = "Set tmux prefix key. Default is Ctrl + G.";
+    autoAttach = {
+      enable = lib.mkEnableOption "automatically attach to a tmux session when starting a terminal";
+      sshOnly = lib.mkEnableOption "auto attach only when connecting over SSH";
+      defaultSessionName = lib.mkOption {
+        type = lib.types.str;
+        default = hostname;
+        description = "The name of the tmux session to attach to or create.";
+      };
     };
-    selection = {
-      background = myLib.mkHexColorOption "#99CCE6" "Set the background color of the cursor selection.";
-      color = myLib.mkHexColorOption "#000" "Set the color of the text in a selection.";
+    enable = myLib.mkEnableOptionTrue "Tmux";
+    motd = lib.mkOption {
+      type = lib.types.str;
+      default = "";
+      description = "Set a custom message of the day (MOTD) to display when starting a new tmux session.";
+      example = "Remember that the tmux meta key is Ctrl + B";
     };
     message = {
       duration = lib.mkOption {
@@ -26,6 +33,11 @@ in {
       };
       color = myLib.mkHexColorOption "#000" "Set the color of tmux messages.";
       background = myLib.mkHexColorOption "#D9AD8C" "Set the background color of tmux messages.";
+    };
+    prefix = lib.mkOption {
+      type = lib.types.str;
+      default = "C-b";
+      description = "Set tmux prefix key. Default is Ctrl + G.";
     };
     prompt = {
       color = myLib.mkHexColorOption "#000" "Set the text color of the session pill and active tab.";
@@ -59,20 +71,9 @@ in {
         description = "Configure what info to show in the tmux status bar. Can be a boolean to enable/disable all info.";
       };
     };
-    autoAttach = {
-      enable = lib.mkEnableOption "automatically attach to a tmux session when starting a terminal";
-      sshOnly = lib.mkEnableOption "auto attach only when connecting over SSH";
-      defaultSessionName = lib.mkOption {
-        type = lib.types.str;
-        default = "default";
-        description = "The name of the tmux session to attach to or create.";
-      };
-    };
-    motd = lib.mkOption {
-      type = lib.types.str;
-      default = "";
-      description = "Set a custom message of the day (MOTD) to display when starting a new tmux session.";
-      example = "Remember that the tmux meta key is Ctrl + B";
+    selection = {
+      background = myLib.mkHexColorOption "#99CCE6" "Set the background color of the cursor selection.";
+      color = myLib.mkHexColorOption "#000" "Set the color of the text in a selection.";
     };
     tat = lib.mkOption {
       type = lib.types.bool;
@@ -143,7 +144,7 @@ in {
         ++ lib.optional pInf.battery.enable (pkgs.writeShellScriptBin "_tmux-battery-icon" (builtins.readFile ./scripts/battery-icon.sh))
         ++ lib.optional cfg.tat (pkgs.writeShellScriptBin "tat" (builtins.readFile ./scripts/tat/tat.sh));
 
-      bash.completions.tat = ./scripts/tat/tat.completions.sh;
+      bash.completions = lib.mkIf cfg.tat {tat = ./scripts/tat/tat.completions.sh;};
 
       bash.extra = let
         sshOnly = str:

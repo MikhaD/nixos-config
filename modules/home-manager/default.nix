@@ -1,8 +1,9 @@
 {
-  lib,
   config,
   details,
+  hostname,
   inputs,
+  lib,
   myLib,
   ...
 }: let
@@ -40,7 +41,7 @@ in {
       useUserPackages = true;
       useGlobalPkgs = true;
       extraSpecialArgs = {
-        inherit details inputs myLib;
+        inherit details hostname inputs myLib;
       };
       users.${details.username} =
         lib.recursiveUpdate {

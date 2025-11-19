@@ -1,9 +1,10 @@
 # available options: https://nix-community.github.io/nix-on-droid/nix-on-droid-options.html
 {
   details,
+  hostname,
   inputs,
-  pkgs,
   myLib,
+  pkgs,
   ...
 }: {
   imports = [
@@ -27,7 +28,7 @@
     useUserPackages = true;
     useGlobalPkgs = true;
     extraSpecialArgs = {
-      inherit details inputs myLib;
+      inherit details hostname inputs myLib;
     };
     config = {
       imports = [
