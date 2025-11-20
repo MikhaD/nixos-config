@@ -105,6 +105,7 @@ prefix with a space to prevent your password from being stored in your shell his
 - [Great intro to flakes & their outputs](https://youtu.be/RoMArT8UCKM)
 - [How to install NixOS on a flashdrive](https://www.reddit.com/r/NixOS/comments/160t87r/how_to_install_nixos_onto_a_flash_drive/)
 - [Bash completions](https://opensource.com/article/18/3/creating-bash-completion-script)
+- [Latest kernel versions](https://www.linuxlookup.com/linux_kernel)
 <details>
 	<summary>How to use a custom version of the Linux kernel</summary>
 
@@ -128,12 +129,11 @@ boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_6_17.override {
 ## TODO
 - Tmux nix options to enable or disable attaching / creating specific session when a new shell is opened
 - Make custom cd ... functionality work when there are directories after the ... (e.g. `cd .../some/other/dirs`)
-- Set up sops for secrets management
+<!-- - Set up sops for secrets management -->
 - Move SSH to home manager
 - Move Firefox profiles to home manager
 - Move Obsidian vault to home manager
 - Move Firefox search engines to home manager
-- Rofi README
 - Consider switching to a stand alone home manager config instead of including it in the nixos config to make rebuilding faster (nh home switch)
 - Look into nix VMs. Do they have access to the host file system?
 - Overhaul work emulators script bash completions
@@ -144,5 +144,5 @@ boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_6_17.override {
   - Use unused timer.success, timer.failure, timer.warning, gitBranch.statusSummary, directory.abridged
   - Remove functions from bashrc that are not used when sections are toggled off
   - Update readme with new prompt section & examples
-  - Update all readmes with changes to the modules they describe (talk about python env stuff somewhere)
   - Create formal system for adding cd hooks
+- Try alacritty. Need to see if it is possible to fix badly sized powerline icons.
