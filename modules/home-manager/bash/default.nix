@@ -87,9 +87,9 @@ in {
         system = {
           enable = myLib.mkEnableOptionTrue "system information in the bash prompt";
           distroIcon = myLib.mkEnableOptionTrue "the distro icon in the bash prompt";
-          user = myLib.mkEnableOptionTrue "the user in the bash prompt";
+          user = lib.mkEnableOption "the user in the bash prompt";
           host = lib.mkEnableOption "the host section in the bash prompt";
-          color = myLib.mkBashColorOption "#16A085" "Hex color of the system section in the bash prompt.";
+          color = myLib.mkBashColorOption "#7ED9D9" "Hex color of the system section in the bash prompt.";
           background = myLib.mkBashColorOption "#666" "Hex background color of the system section in the bash prompt.";
           precedence = mkPrecedenceOption 0;
         };
@@ -276,7 +276,7 @@ in {
                   ++ lib.optional ss.user ''\u''
                   ++ lib.optional (ss.host && ss.user) ''@''
                   ++ lib.optional ss.host ''\h''
-                  ++ [" "]
+                  ++ lib.optional (ss.user || ss.host) [" "]
                 );
               };
           };

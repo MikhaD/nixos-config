@@ -50,7 +50,7 @@
         {
           key = pad "CPU"; # Find a way to combine this with CPU usage
           type = "cpu";
-          format = "{name} {temperature}";
+          format = "{name} - {temperature}";
           temp = true;
           keyColor = colors.hardware;
         }
@@ -131,6 +131,12 @@
         {
           type = "custom";
           format = "├──{$1}{#bold_white}{#${colors.state}} State {#}{$1}───┤";
+        }
+        {
+          type = "title";
+          keyColor = colors.state;
+          key = pad "Session";
+          format = "{user-name}@{host-name}";
         }
         {
           key = pad "WiFi";
