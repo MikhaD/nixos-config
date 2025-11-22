@@ -2,6 +2,7 @@
   config,
   lib,
   myLib,
+  pkgs,
   ...
 }: let
   cfg = config.bash;
@@ -196,15 +197,16 @@ in {
         };
       };
     };
-    extra = lib.mkOption {
-      type = lib.types.listOf lib.types.str;
-      default = [];
-      description = "Extra lines to add to the end of the bash profile (~/.bashrc), concatenated with \\n.";
-    };
+    dedupHistoryOnStartup = myLib.mkEnableOptionTrue "oneshot service that removes duplicate entries from the bash history file on startup. The latest entry is kept.";
     completions = lib.mkOption {
       type = lib.types.attrsOf lib.types.path;
       default = {};
       description = "Additional bash completion scripts to be placed in the XDG data directory for bash completions.";
+    };
+    extra = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [];
+      description = "Extra lines to add to the end of the bash profile (~/.bashrc), concatenated with \\n.";
     };
   };
 
@@ -326,5 +328,21 @@ in {
         value.source = value;
       })
       cfg.completions;
+
+    systemd.user.services = lib.mkIf cfg.dedupHistoryOnStartup {
+      dedup-bash-history = {
+        Unit.Description = "Deduplicate bash history on startup";
+        Install.WantedBy = ["default.target"];
+        Service = {
+          Type = "oneshot";
+          ExecStart = "${pkgs.writeShellScript "dedup-bash-history" ''
+            set -euo pipefail
+            TEMP_FILE=$(mktemp)
+            tac "${config.programs.bash.historyFile}" | awk '!seen[$0]++' | tac > "$TEMP_FILE"
+            mv "$TEMP_FILE" "${config.programs.bash.historyFile}"
+          ''}";
+        };
+      };
+    };
   };
 }
