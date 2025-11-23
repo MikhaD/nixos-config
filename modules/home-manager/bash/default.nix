@@ -197,7 +197,10 @@ in {
         };
       };
     };
-    dedupHistoryOnStartup = myLib.mkEnableOptionTrue "oneshot service that removes duplicate entries from the bash history file on startup. The latest entry is kept.";
+    history = {
+      dedupOnStartup = myLib.mkEnableOptionTrue "oneshot service that removes duplicate entries from the bash history file on startup. The latest entry is kept";
+      enableRetcon = myLib.mkEnableOptionTrue "the retcon command that lets you select lines to delete from your bash history using fzf";
+    };
     completions = lib.mkOption {
       type = lib.types.attrsOf lib.types.path;
       default = {};
@@ -218,8 +221,8 @@ in {
       enable = true;
       historyFile = "${config.xdg.stateHome}/bash_history";
       historyControl = ["ignoreboth" "erasedups"]; # Ignore commands with leading whitespace; add each line only once, erasing prev occurrences
-      historySize = 2000; #                          Number of commands saved per session
-      historyFileSize = 8000; #                      Number of lines stored in the history file
+      historySize = 8190; #                          Number of commands saved per session
+      historyFileSize = 8190; #                      Number of lines stored in the history file
 
       shellAliases = {
         cls = "clear"; #                            Clear screen using cls like windows powershell
@@ -329,7 +332,12 @@ in {
       })
       cfg.completions;
 
-    systemd.user.services = lib.mkIf cfg.dedupHistoryOnStartup {
+    home.packages =
+      []
+      ++ lib.optional cfg.history.enableRetcon (pkgs.writeShellScriptBin "retcon" ''
+        cat ${config.programs.bash.historyFile} | awk '{printf "%sd\037%s\n", NR, $0}' | ${pkgs.fzf} --border=rounded --highlight-line --with-nth=2 --delimiter='\x1f' --multi --reverse | cut -f1 -d $'\x1f' | sed -i -f - ${config.programs.bash.historyFile}
+      '');
+    systemd.user.services = lib.mkIf cfg.history.dedupOnStartup {
       dedup-bash-history = {
         Unit.Description = "Deduplicate bash history on startup";
         Install.WantedBy = ["default.target"];
