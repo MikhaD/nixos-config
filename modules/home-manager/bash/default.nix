@@ -335,7 +335,30 @@ in {
     home.packages =
       []
       ++ lib.optional cfg.history.enableRetcon (pkgs.writeShellScriptBin "retcon" ''
-        cat ${config.programs.bash.historyFile} | awk '{printf "%sd\037%s\n", NR, $0}' | ${pkgs.fzf} --border=rounded --highlight-line --with-nth=2 --delimiter='\x1f' --multi --reverse | cut -f1 -d $'\x1f' | sed -i -f - ${config.programs.bash.historyFile}
+        set -eo pipefail
+        if [[ $1 == "--help" || $1 == "-h" ]]; then
+          echo "Usage: retcon [-h] [-r]"
+          echo
+          echo "Interactively remove entries from your bash history using fzf (starting from the end)."
+          echo
+          echo "options:"
+          echo "  -h, --help    Show this help message and exit"
+          echo "  -r, --reverse Reverse the order of the history entries (most recent first)"
+          exit 0
+        fi
+        LINES=$(nl -ba -w1 -s$'d\x1f' "${config.programs.bash.historyFile}")
+        if [[ $1 == "--reverse" || $1 == "-r" ]]; then
+          LINES=$(tac <<< "$LINES")
+        fi
+        CUTS=$(fzf --multi --delimiter='\x1f' --with-nth=2 <<< "$LINES" | cut -f1 -d $'\x1f')
+
+        if [[ -z $CUTS ]]; then
+          exit 0
+        fi
+
+        sed -i -e "$CUTS" "${config.programs.bash.historyFile}"
+        TOTAL=$(wc -w <<< "$CUTS")
+        echo "Removed $TOTAL line$([[ $TOTAL -ne 1 ]] && echo s)"
       '');
     systemd.user.services = lib.mkIf cfg.history.dedupOnStartup {
       dedup-bash-history = {

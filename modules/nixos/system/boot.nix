@@ -21,3 +21,5 @@
   };
   systemd.services.NetworkManager-wait-online.wantedBy = lib.mkForce []; # Don't wait for network manager to establish a connection during boot
 }
+# take a look at this at some point: https://github.com/alex-bartleynees/nix-config/blob/0cc3c3332a7c27ea135a1f1ba30a58c9d3843d99/modules/silent-boot.nix
+

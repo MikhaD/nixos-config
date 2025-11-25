@@ -1,9 +1,9 @@
 {...}: {
   programs.obsidian = {
     enable = true;
-    # vaults.Notes = {
-    #   target = "Documents/notes";
-    #   settings.communityPlugins = []; # Throws error if not set
+    # vaults.DnD = {
+    #   target = "Documents/dnd/notes";
+    #   # settings.communityPlugins = []; # Throws error if not set
     # };
     defaultSettings = {
       app = {
@@ -29,19 +29,20 @@
           "theme"
         ];
       };
-      communityPlugins = [
-        "table-editor-obsidian"
-        "obsidian-checklist-plugin"
-        "obsidian-html-tags-autocomplete"
-        "url-into-selection"
-        "hotkeysplus-obsidian"
-        "obsidian-excalidraw-plugin"
-        "obsidian-kanban"
-        "obsidian-jupyter"
-        "table-inserter"
-        "obsidian-table-generator"
-        "hot-reload"
-      ];
+      # https://github.com/nix-community/home-manager/pull/6487#issuecomment-2667166722
+      # communityPlugins = [
+      #   "table-editor-obsidian"
+      #   "obsidian-checklist-plugin"
+      #   "obsidian-html-tags-autocomplete"
+      #   "url-into-selection"
+      #   "hotkeysplus-obsidian"
+      #   "obsidian-excalidraw-plugin"
+      #   "obsidian-kanban"
+      #   "obsidian-jupyter"
+      #   "table-inserter"
+      #   "obsidian-table-generator"
+      #   "hot-reload"
+      # ];
       hotkeys = {
         "command-palette:open" = [
           {
