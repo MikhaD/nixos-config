@@ -74,6 +74,7 @@
     curl
     exfat # Allow me to format drives as exfat (broad OS compatibility)
     figlet
+    shfmt
     #################### Desktop Applications ####################
     bruno
     # code-cursor
