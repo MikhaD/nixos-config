@@ -1,8 +1,5 @@
 {
   inputs = {
-    emulators.url = "path:./pkgs/emulators";
-    emulators.inputs.nixpkgs.follows = "nixpkgs";
-
     flake-parts.url = "github:hercules-ci/flake-parts";
 
     home-manager.url = "github:nix-community/home-manager";
@@ -37,6 +34,7 @@
     };
     myLib = import ./lib {inherit (inputs.nixpkgs) lib;};
   in
+    # Generate a nixos system for each host in hosts/nixos
     inputs.flake-parts.lib.mkFlake {inherit inputs;} {
       systems = ["x86_64-linux" "aarch64-linux"];
       flake = {

@@ -9,11 +9,6 @@
   ...
 }: {
   options.base = {
-    warnAboutFlakeLocation = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "Log warnings on build and boot if the flake is not located at the location specified in details.flakePath, and symlink it to /etc/nixos/flake.nix.";
-    };
     languageServer.enable = lib.mkOption {
       type = lib.types.bool;
       default = true;
@@ -44,26 +39,5 @@
     environment.systemPackages =
       []
       ++ lib.optional config.base.languageServer.enable pkgs.nixd;
-
-    # ! HAVING THIS ENABLED PREVENTS ALL REVISIONS FROM BOOTING
-    system.activationScripts = lib.mkIf config.base.warnAboutFlakeLocation {
-      linkConfig.text = ''
-        FLAKE_PATH=${details.flakePath}/flake.nix
-        if [[ ! -f $FLAKE_PATH ]]; then
-          echo -e "\e[33mWARNING:\e[0m Flake should be located at $FLAKE_PATH"
-          exit 0
-        fi
-        if find /etc/nixos -maxdepth 1 -type f | grep -qE "\.(nix|lock)"; then
-          echo "\e[33mWARNING:\e[0m /etc/nixos must not contain any .nix or .lock files."
-          exit 0
-        else
-          if [[ -L /etc/nixos/flake.nix ]]; then
-            rm /etc/nixos/flake.nix
-          fi
-          echo "Creating symlink for $FLAKE_PATH in /etc/nixos"
-          ln -s $FLAKE_PATH /etc/nixos/flake.nix
-        fi
-      '';
-    };
   };
 }

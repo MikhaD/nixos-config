@@ -146,3 +146,5 @@ boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_6_17.override {
   - Update readme with new prompt section & examples
   - Create formal system for adding cd hooks
 - Try alacritty. Need to see if it is possible to fix badly sized powerline icons.
+- Start using stylix
+- Switch to dendretic configuration pattern

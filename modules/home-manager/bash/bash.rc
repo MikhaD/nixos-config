@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 #    ▗▄▄▖ ▗▄▄▄▖ ▗▄▖ ▗▄▄▄ ▗▖   ▗▄▄▄▖▗▖  ▗▖▗▄▄▄▖
 #    ▐▌ ▐▌▐▌   ▐▌ ▐▌▐▌  █▐▌     █  ▐▛▚▖▐▌▐▌
 #    ▐▛▀▚▖▐▛▀▀▘▐▛▀▜▌▐▌  █▐▌     █  ▐▌ ▝▜▌▐▛▀▀▘
@@ -28,14 +29,14 @@ bind '"\C-r": "source ~/nix/modules/home-manager/bash/bash.rc\n"'     # Use Ctrl
 #    ▐▌   ▐▌     █      ▐▌ ▐▌▐▌  ▐▌▐▛▀▀▘▐▛▀▚▖▐▌   ▐▛▀▜▌ ▐▌  ▝▀▚▖
 #    ▝▚▄▄▖▐▙▄▄▖▗▄█▄▖    ▝▚▄▞▘ ▝▚▞▘ ▐▙▄▄▖▐▌ ▐▌▐▙▄▄▖▐▌ ▐▌ ▐▌ ▗▄▄▞▘
 
-_find_parent_virtualenv() {
+_find_parent_venv() {
     local dir="$PWD"
     while [[ -n $dir ]]; do
         if [[ -f "$dir/$1/bin/activate" ]]; then
             echo "$dir/$1"
             return 0
         fi
-        dir="${dir%/*}" # faster than dir=$(dirname "$dir") because it avoids a subshell
+        dir="${dir%/*}" # faster than dir=$(dirname "$dir") because it avoids a sub-shell
     done
     return 1
 }
@@ -46,17 +47,18 @@ cd() {
     if [[ $1 == ..+(.) ]]; then # requires extglob to be enabled
         # Use builtin to prevent infinite recursion
         # printf '../%.0s' generates ../ for space separated value that follows. ${#1} is the length of $1
-        builtin cd $(printf "../%.0s" $(seq 2 ${#1}))
+        builtin cd "$(printf "../%.0s" $(seq 2 ${#1}))" || return
     else
-        builtin cd "$@"
+        builtin cd "$@" || return
     fi
     # Post cd hooks
 
     # Auto-activate Python venvs in current or parent directories
-    local found_venv=$(_find_parent_virtualenv ".venv")
+    local found_venv=$(_find_parent_venv ".venv")
     if [[ -n $found_venv ]]; then
         # Activate if not already active or different env
         if [[ -z $VIRTUAL_ENV || $VIRTUAL_ENV != "$found_venv" ]]; then
+            # shellcheck disable=SC1091
             source "$found_venv/bin/activate"
         fi
     elif [[ -n $VIRTUAL_ENV ]]; then
@@ -89,13 +91,13 @@ _parse_git_status() {
     while IFS="" read -r line; do
         local status=${line:0:2}
         case $status in
-            M*|*M) ((statuses[0] += 1)) ;;       # Modified  * / 
-            A*|*A) ((statuses[1] += 1)) ;;       # Added     + / 
-            D*|*D) ((statuses[2] += 1)) ;;       # Deleted   - / 
-            R*|*R) ((statuses[3] += 1)) ;;       # Renamed   󰫿 / 
-            C*|*C) ((statuses[4] += 1)) ;;       # Copied    󰫰 / 
-            U*|*U|AA|DD) ((statuses[5] += 1)) ;; # Unmerged  ! / 󱈸 (conflicts)
-            \?\?) ((statuses[6] += 1)) ;;        # Untracked ? / 
+            M*|*M) ((statuses[0] += 1)) ;; # Modified  * / 
+            A*|*A) ((statuses[1] += 1)) ;; # Added     + / 
+            D*|*D) ((statuses[2] += 1)) ;; # Deleted   - / 
+            R*|*R) ((statuses[3] += 1)) ;; # Renamed   󰫿 / 
+            C*|*C) ((statuses[4] += 1)) ;; # Copied    󰫰 / 
+            U*|*U) ((statuses[5] += 1)) ;; # Unmerged  ! / 󱈸 (conflicts)
+            \?\?) ((statuses[6] += 1)) ;; #  Untracked ? / 
         esac
     done < <(git status -s --porcelain)
     # Array only has indices where values were assigned, & ! before array ref gets indices
@@ -124,16 +126,16 @@ _parse_git_branch() {
         else
             echo " $commit_hash "
         fi
-    elif git rev-parse @{u} &> /dev/null; then # Check if branch has upstream
+    elif git rev-parse "@{u}" &> /dev/null; then # Check if branch has upstream
         # Get ahead/behind status
         local status=$(git status -sb --porcelain)
         local ahead_behind=""
         if [[ $status =~ \[ahead\ [0-9]+ ]]; then
-            local ahead_count=$(echo $status | grep -oP '(?<=\[ahead )\d+')
+            local ahead_count=$(echo "$status" | grep -oP '(?<=\[ahead )\d+')
             ahead_behind="↑$ahead_count"
         fi
         if [[ $status =~ behind\ [0-9]+\] ]]; then
-            local behind_count=$(echo $status | grep -oP '(?<=behind )\d+(?=\])')
+            local behind_count=$(echo "$status" | grep -oP '(?<=behind )\d+(?=\])')
             ahead_behind="$ahead_behind↓$behind_count"
         fi
         echo " $branch $ahead_behind"
@@ -154,10 +156,11 @@ _parse_directory() {
     local directory=$(basename "$PWD")
     local parent_dir=$(basename "$(dirname "$PWD")")
     if [[ $PWD == "$HOME"* ]]; then # if we are in a subdirectory of a subdirectory of home
-        if [[ $PWD = $HOME ]]; then
+        if [[ $PWD = "$HOME" ]]; then
             echo "~ "
             return
         elif [[ $PWD = "$HOME/$directory" ]]; then # if we are in a subdirectory of home
+            # shellcheck disable=SC2088
             echo "~/$directory "
             return
         fi
@@ -165,11 +168,14 @@ _parse_directory() {
         local icon="${DIR_ICONS[$home_subdir]} "
         if [[ -n $icon ]]; then # if the parent directory has an icon
             if [[ $PWD = "$HOME/$parent_dir/$directory" ]]; then
+                # shellcheck disable=SC2088
                 echo "~/$icon/$directory "
             else
+                # shellcheck disable=SC2088
                 echo "~/$icon/…/$directory "
             fi
         else
+            # shellcheck disable=SC2088
             echo "~/…/$directory "
         fi
     else # if we are in a subdirectory of root
@@ -249,7 +255,7 @@ nix_shell() {
 # Timer for measuring the time it takes to run a command
 _timer_start() {
     [[ -n $COMP_LINE ]] && return # do nothing if completing
-    [[ $BASH_COMMAND = $PROMPT_COMMAND ]] && return
+    [[ $BASH_COMMAND = "$PROMPT_COMMAND" ]] && return
     timer=$(date +%s%3N)
 }
 
