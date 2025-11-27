@@ -5,7 +5,7 @@
   outputs = inputs: let
     versions = {
       e = "1.0.2";
-      tat = "1.0.1";
+      tat = "1.0.2";
     };
     forAllSystems = inputs.nixpkgs.lib.genAttrs [
       "x86_64-linux"

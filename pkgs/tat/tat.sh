@@ -7,7 +7,6 @@ list_tmux_sessions_for_fzf() {
     done
 }
 
-count=$(tmux ls 2> /dev/null | wc -l)
 if [[ $1 == "-h" || $1 == "--help" ]]; then
 	echo "Usage: tat [-n] [-h] [<session name>]"
 	echo
@@ -21,6 +20,7 @@ if [[ $1 == "-h" || $1 == "--help" ]]; then
 	echo "  -h, --help          Show this help message and exit."
 	echo "  -n, --new           Create a tmux session with the given session name if no session exists, else attach to"
 	echo "                      the given session."
+	echo "  -v, --version       Show the version number and exit."
 	echo
 	echo "tat version $VERSION"
 	exit 0
@@ -28,24 +28,23 @@ elif [[ $1 == "-v" || $1 == "--version" ]]; then
 	echo "tat version $VERSION"
 	exit 0
 fi
-[[ $count -eq 0 ]] && exit 1
 if [[ -n $1 ]]; then
 	if [[ $1 == "-n" || $1 == "--new" ]]; then
-		tmux new-session -d -t "$2"
+		tmux new-session -d -s "$2"
 		shift
 	fi
-	if tmux has-session -t $1 &> /dev/null; then
+	if tmux has-session -t "$1" &> /dev/null; then
 		if [[ -z $TMUX ]]; then
-			tmux attach-session -t $1 &> /dev/null
+			tmux attach-session -t "$1" &> /dev/null
 		else
-			tmux switch-client -t $1 &> /dev/null
+			tmux switch-client -t "$1" &> /dev/null
 		fi
 		exit $?
 	else
 		exit 1
 	fi
 fi
-if [[ $count -eq 1 ]]; then
+if [[ $(tmux ls 2> /dev/null | wc -l) -eq 1 ]]; then
 	if [[ -z $TMUX ]]; then
 		tmux attach-session
 	fi
