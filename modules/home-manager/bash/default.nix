@@ -227,7 +227,7 @@ in {
       shellAliases = {
         cls = "clear"; #                            Clear screen using cls like windows powershell
         wifi = "nmcli device wifi show-password"; # Print the wifi password & QR code to join
-        myip = "echo $(curl -s ifconfig.me)"; #     Get my public IP address (echo needed to print with newline)
+        myip = "echo $(${lib.getExe pkgs.curl} -s ifconfig.me)"; #     Get my public IP address (echo needed to print with newline)
       };
 
       # All options: https://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html

@@ -12,10 +12,4 @@
       pager = "less -r -F --mouse --wheel-lines=3";
     };
   };
-  home.sessionVariables = {
-    # Use bat as the man pages pager (`--plain` disables decorations like line numbers, git markers & file name header)
-    # col -bx is used to remove backspaces that are used for bold/underline
-    MANPAGER = "sh -c 'col -bx | bat --language man --plain'";
-    MANROFFOPT = "-c"; # Tell man to produce cleaner output (i.e. don't use bold/underline)
-  };
 }
