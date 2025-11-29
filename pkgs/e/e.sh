@@ -3,12 +3,12 @@ VERSION="<REPLACED IN INSTALL PHASE>"
 
 usage="usage: e [-h] [-q] [-v] <environment variable name>"
 if [[ -z $1 ]]; then # check if the value of $1 exists as an environment variable
-	echo $usage
+	echo "$usage"
 	exit 1
 fi
 case $1 in
 	-h|--help)
-		echo $usage
+		echo "$usage"
 		echo
 		echo "Print the value of the specified environment variable. If the variable is not set, exit with a non-zero status."
 		echo
@@ -21,7 +21,7 @@ case $1 in
 		;;
 	-q|--quiet)
 		if [[ -z $2 ]]; then
-			echo $usage
+			echo "$usage"
 			exit 1
 		fi
 		[[ -v $2 ]]

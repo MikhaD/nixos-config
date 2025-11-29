@@ -1,6 +1,7 @@
 # My Modules
 
 - [e](./e/README.md): Utility to print the value of the specified environment variable (with case insensitive bash completions).
+- [retcon](./retcon/README.md): Utility to search and bulk delete commands from your bash history using fzf.
 - [tat](./tat/README.md): Utility to improve navigation between tmux sessions.
 
 <!-- - Instructions on creating new derivations

@@ -8,7 +8,7 @@ list_tmux_sessions_for_fzf() {
 }
 
 if [[ $1 == "-h" || $1 == "--help" ]]; then
-	echo "Usage: tat [-n] [-h] [<session name>]"
+	echo "usage: tat [-n] [-h] [<session name>]"
 	echo
 	echo "Tmux ATtach (tat) is an application to improve navigation between tmux sessions."
 	echo "Use without arguments to enter tmux session selection menu if in tmux and there are multiple sessions."
@@ -17,10 +17,10 @@ if [[ $1 == "-h" || $1 == "--help" ]]; then
 	echo "- If in tmux and there is only one session do nothing."
 	echo
 	echo "options:"
-	echo "  -h, --help          Show this help message and exit."
-	echo "  -n, --new           Create a tmux session with the given session name if no session exists, else attach to"
-	echo "                      the given session."
-	echo "  -v, --version       Show the version number and exit."
+	echo "  -h, --help    Show this help message and exit."
+	echo "  -n, --new     Create a tmux session with the given session name if no session exists, else attach to the"
+	echo "                given session."
+	echo "  -v, --version Show the version number and exit."
 	echo
 	echo "tat version $VERSION"
 	exit 0
@@ -51,7 +51,7 @@ if [[ $(tmux ls 2> /dev/null | wc -l) -eq 1 ]]; then
 	exit 0
 	else
 	if [[ -z $TMUX ]]; then
-		session=$(list_tmux_sessions_for_fzf | fzf --info-command='echo -e "$FZF_INFO Select Tmux Session"')
+		session=$(list_tmux_sessions_for_fzf | fzf --info-command='echo "$FZF_INFO Select Tmux Session"')
 		if [[ -z $session ]]; then
 			exit 1
 		fi

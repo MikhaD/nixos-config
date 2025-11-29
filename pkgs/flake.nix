@@ -4,8 +4,9 @@
   };
   outputs = inputs: let
     versions = {
-      e = "1.0.2";
-      tat = "1.0.2";
+      e = "1.0.3";
+      tat = "1.0.3";
+      retcon = "1.0.0";
     };
     forAllSystems = inputs.nixpkgs.lib.genAttrs [
       "x86_64-linux"
@@ -33,6 +34,27 @@
           platforms = [system];
         };
       };
+      retcon = pkgs.stdenv.mkDerivation {
+        pname = "retcon";
+        version = versions.retcon;
+        src = ./retcon;
+        nativeBuildInputs = [pkgs.makeWrapper];
+        buildInputs = [pkgs.fzf];
+        installPhase = ''
+          runHook preInstall
+          install -D retcon.sh $out/bin/retcon
+          sed -i '2s/.*/VERSION="${versions.retcon}"/' $out/bin/retcon
+          wrapProgram $out/bin/retcon --prefix PATH : "${pkgs.fzf}/bin"
+          install -D retcon.completions.sh $out/share/bash-completion/completions/retcon
+          runHook postInstall
+        '';
+        meta = {
+          description = "Utility to search and bulk delete commands from your bash history using fzf.";
+          homepage = "https://github.com/MikhaD/nixos-config/tree/main/pkgs/retcon/";
+          mainProgram = "retcon";
+          platforms = [system];
+        };
+      };
       tat = pkgs.stdenv.mkDerivation {
         pname = "tat";
         version = versions.tat;
@@ -47,6 +69,12 @@
           install -D tat.completions.sh $out/share/bash-completion/completions/tat
           runHook postInstall
         '';
+        meta = {
+          description = "Utility to improve navigation between tmux sessions.";
+          homepage = "https://github.com/MikhaD/nixos-config/tree/main/pkgs/tat/";
+          mainProgram = "tat";
+          platforms = [system];
+        };
       };
     });
     apps = forAllSystems (system: {
