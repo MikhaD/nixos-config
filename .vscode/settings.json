@@ -3,6 +3,7 @@
 		"extglob",
 		"retcon",
 		"stylix",
+		"termux",
 		"venv"
 	]
 }

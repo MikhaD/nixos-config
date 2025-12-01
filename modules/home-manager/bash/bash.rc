@@ -278,7 +278,7 @@ _timer_stop() {
     ((M > 0)) && result+="${M}m "
     ((S > 0)) && result+="${S}s "
     result+="${MS}ms"
-    echo $result
+    echo "$result"
 }
 
 # Function that runs just before the prompt is displayed

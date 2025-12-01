@@ -35,6 +35,10 @@ Update flake inputs (must be run in the same dir as the flake.nix):
 ```sh
 nix flake update
 ```
+Enter nix devShell defined in a flake and use nix-output-monitor to watch build progress (run in the same dir as the flake.nix):
+```sh
+nom develop
+```
 Delete all old revisions and garbage collect nix store
 ```sh
 # If your system imports the nh home manager module
@@ -56,6 +60,11 @@ nix flake check .
 Format all nix files in the repo (run in the same dir as the flake.nix):
 ```sh
 nix fmt .
+```
+### Install
+Install this configuration on a new NixOS system:
+```sh
+nix-shell -p git --command "nix run --experimental-features 'nix-command flakes pipe-operators' github:MikhaD/nixos-config"
 ```
 ### Repl
 Open a nix repl with the flake loaded

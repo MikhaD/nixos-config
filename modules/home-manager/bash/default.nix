@@ -289,7 +289,7 @@ in {
         sections = lib.mapAttrsToList (_: v: {inherit (v) background color command precedence;}) enabledSections |> lib.sort (a: b: a.precedence < b.precedence);
 
         # create array of colors for enabled prompt sections (49 resets background, 39 resets foreground, 0 resets all)
-        components = lib.concatStringsSep "" (
+        prompt = lib.concatStringsSep "" (
           [''PS1="'']
           ++ lib.optional cfg.prompt.indicator.ssh.enable "$(ssh_session)"
           ++ lib.optional cfg.prompt.indicator.nixShell.enable "$(nix_shell)"
@@ -310,8 +310,9 @@ in {
         lib.concatStringsSep "\n" ([
             dirIconsFn
             (lib.readFile ./bash.rc)
+            # (lib.optionalString cfg.prompt.section.timer.enable '''')
             ''
-              ${components}
+              ${prompt}
 
               unset distro_icon ssh_session nix_shell
 
