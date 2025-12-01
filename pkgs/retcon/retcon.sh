@@ -31,7 +31,6 @@ case $1 in
 	LINES=$(nl -ba -w1 -s$'d\x1f' "$HISTFILE" | tac)
 	;;
 	"")
-	echo $XDG_STATE_HOME
 	LINES=$(nl -ba -w1 -s$'d\x1f' "$HISTFILE")
 	;;
 	*)

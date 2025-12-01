@@ -6,7 +6,7 @@
     versions = {
       e = "1.0.3";
       tat = "1.0.3";
-      retcon = "1.0.0";
+      retcon = "1.0.1";
     };
     forAllSystems = inputs.nixpkgs.lib.genAttrs [
       "x86_64-linux"
