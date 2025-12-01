@@ -18,47 +18,47 @@
     ./../../../modules/nixos/services/pipewire.nix
     ./../../../modules/nixos/services/thermald.nix
 
-    ./../../../modules/home-manager
+    # ./../../../modules/home-manager
     ./../../../modules/nixos/system/user.nix
   ];
 
   default-user.enable = true;
 
-  home-config = {
-    enable = true;
-    modules = [
-      ./../../../modules/home-manager/bash
-      ./../../../modules/home-manager/bat.nix
-      ./../../../modules/home-manager/chromium.nix
-      ./../../../modules/home-manager/dig.nix
-      ./../../../modules/home-manager/e.nix
-      ./../../../modules/home-manager/fastfetch.nix
-      ./../../../modules/home-manager/firefox.nix
-      ./../../../modules/home-manager/fzf.nix
-      ./../../../modules/home-manager/git.nix
-      ./../../../modules/home-manager/grep.nix
-      ./../../../modules/home-manager/jq.nix
-      ./../../../modules/home-manager/neovim.nix
-      ./../../../modules/home-manager/nh
-      ./../../../modules/home-manager/nodejs.nix
-      ./../../../modules/home-manager/obs.nix
-      ./../../../modules/home-manager/obsidian
-      ./../../../modules/home-manager/python.nix
-      ./../../../modules/home-manager/tree.nix
-      ./../../../modules/home-manager/lsd.nix
-      ./../../../modules/home-manager/ssh.nix
-      ./../../../modules/home-manager/tmux
-      # ./../../../modules/home-manager/ulauncher
-      ./../../../modules/home-manager/wl-clipboard.nix
-      ./../../../modules/home-manager/xdg.nix
+  # home-config = {
+  #   enable = true;
+  #   modules = [
+  #     ./../../../modules/home-manager/bash
+  #     ./../../../modules/home-manager/bat.nix
+  #     ./../../../modules/home-manager/chromium.nix
+  #     ./../../../modules/home-manager/dig.nix
+  #     ./../../../modules/home-manager/e.nix
+  #     ./../../../modules/home-manager/fastfetch.nix
+  #     ./../../../modules/home-manager/firefox.nix
+  #     ./../../../modules/home-manager/fzf.nix
+  #     ./../../../modules/home-manager/git.nix
+  #     ./../../../modules/home-manager/grep.nix
+  #     ./../../../modules/home-manager/jq.nix
+  #     ./../../../modules/home-manager/neovim.nix
+  #     ./../../../modules/home-manager/nh
+  #     ./../../../modules/home-manager/nodejs.nix
+  #     ./../../../modules/home-manager/obs.nix
+  #     ./../../../modules/home-manager/obsidian
+  #     ./../../../modules/home-manager/python.nix
+  #     ./../../../modules/home-manager/tree.nix
+  #     ./../../../modules/home-manager/lsd.nix
+  #     ./../../../modules/home-manager/ssh.nix
+  #     ./../../../modules/home-manager/tmux
+  #     # ./../../../modules/home-manager/ulauncher
+  #     ./../../../modules/home-manager/wl-clipboard.nix
+  #     ./../../../modules/home-manager/xdg.nix
 
-      ./../../../modules/home-manager/work
-    ];
-    sessionVariables = {
-      # BOTO_CONFIG = "${config.xdg.configHome}/botorc"; # Removes .boto from ~
-      # ANDROID_USER_HOME = "${config.xdg.dataHome}/android"; # Removes .android/ from ~
-    };
-  };
+  #     ./../../../modules/home-manager/work
+  #   ];
+  #   sessionVariables = {
+  #     # BOTO_CONFIG = "${config.xdg.configHome}/botorc"; # Removes .boto from ~
+  #     # ANDROID_USER_HOME = "${config.xdg.dataHome}/android"; # Removes .android/ from ~
+  #   };
+  # };
 
   # https://github.com/Mic92/envfs
   # services.envfs.enable = true;

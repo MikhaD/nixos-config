@@ -50,17 +50,26 @@
                 ];
               }
           );
-        homeConfigurations =
+        # generate a home-manager configuration for each host in hosts/nixos
+        homeConfigurations = let
+          pkgs = import inputs.nixpkgs {system = "x86_64-linux";};
+        in
           builtins.readDir ./hosts/nixos
-          |> builtins.mapAttrs (
-            hostname: _:
-              inputs.home-manager.lib.homeManagerConfiguration {
-                pkgs = import inputs.nixpkgs {system = "x86_64-linux";};
-                specialArgs = {inherit details inputs hostname myLib;};
+          |> pkgs.lib.filterAttrs (hostname: _: builtins.pathExists (./. + "/hosts/nixos/${hostname}/home.nix"))
+          |> pkgs.lib.mapAttrs' (
+            hostname: _: {
+              name = "${details.username}@${hostname}";
+              value = inputs.home-manager.lib.homeManagerConfiguration {
+                pkgs = import inputs.nixpkgs {
+                  system = "x86_64-linux";
+                  config.allowUnfree = true;
+                };
+                extraSpecialArgs = {inherit details inputs hostname myLib;};
                 modules = [
                   (./. + "/hosts/nixos/${hostname}/home.nix")
                 ];
-              }
+              };
+            }
           );
         nixOnDroidConfigurations.default = inputs.nix-on-droid.lib.nixOnDroidConfiguration {
           pkgs = import inputs.nixpkgs {system = "aarch64-linux";};
