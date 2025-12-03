@@ -17,7 +17,6 @@
 
   environment.packages = with pkgs; [
     coreutils
-    curl
     findutils
     gawk
     gnused
@@ -36,6 +35,7 @@
         inputs.nix-index-database.homeModules.nix-index
         ./../../../modules/home-manager/bash
         ./../../../modules/home-manager/bat.nix
+        ./../../../modules/home-manager/curl.nix
         ./../../../modules/home-manager/dig.nix
         ./../../../modules/home-manager/e.nix
         ./../../../modules/home-manager/fastfetch.nix

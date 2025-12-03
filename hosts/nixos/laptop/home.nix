@@ -7,6 +7,7 @@
     ./../../../modules/home-manager/bash
     ./../../../modules/home-manager/bat.nix
     ./../../../modules/home-manager/chromium.nix
+    ./../../../modules/home-manager/curl.nix
     ./../../../modules/home-manager/dig.nix
     ./../../../modules/home-manager/e.nix
     ./../../../modules/home-manager/fastfetch.nix
