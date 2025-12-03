@@ -5,6 +5,7 @@
     ./../../../modules/nixos/programs/ssh.nix
 
     ./../../../modules/nixos/desktop-environments/kde.nix
+    # ./../../../modules/nixos/desktop-environments/hyprland.nix
     ./../../../modules/nixos/system/bluetooth.nix
     ./../../../modules/nixos/system/boot.nix
     ./../../../modules/nixos/system/fonts.nix
@@ -68,30 +69,6 @@
   environment.variables = {
     GTK_USE_PORTAL = 1;
   };
-
-  environment.systemPackages = with pkgs; [
-    ########################## CLI Tools #########################
-    curl
-    exfat # Allow me to format drives as exfat (broad OS compatibility)
-    figlet
-    shfmt
-    #################### Desktop Applications ####################
-    bruno
-    # code-cursor
-    freecad
-    libreoffice-qt
-    pinta
-    quickgui
-    scrcpy
-    # stremio # depends on insecure library
-    vscode
-    ################ Required for kickstart.nvim #################
-    gnumake
-    gcc
-    lua
-    ripgrep
-    unzip
-  ];
 
   system.stateVersion = "24.05"; # DO NOT CHANGE
 }

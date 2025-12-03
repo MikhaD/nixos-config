@@ -1,6 +1,7 @@
 {
   config,
   details,
+  pkgs,
   ...
 }: {
   imports = [
@@ -45,6 +46,29 @@
       BOTO_CONFIG = "${config.xdg.configHome}/botorc"; # Removes .boto from ~
       # ANDROID_USER_HOME = "${config.xdg.dataHome}/android"; # Removes .android/ from ~
     };
+
+    packages = with pkgs; [
+      ########################## CLI Tools #########################
+      exfat # Allow me to format drives as exfat (broad OS compatibility)
+      figlet
+      shfmt
+      #################### Desktop Applications ####################
+      bruno
+      # code-cursor
+      freecad
+      libreoffice-qt
+      pinta
+      quickgui
+      scrcpy
+      # stremio # depends on insecure library
+      vscode
+      ################ Required for kickstart.nvim #################
+      gnumake
+      gcc
+      lua
+      ripgrep
+      unzip
+    ];
 
     # You can update Home Manager without changing this value. See
     # the Home Manager release notes for a list of state version
