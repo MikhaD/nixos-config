@@ -16,6 +16,7 @@
     ./../../../modules/home-manager/fzf.nix
     ./../../../modules/home-manager/git.nix
     ./../../../modules/home-manager/grep.nix
+    ./../../../modules/home-manager/just.nix
     ./../../../modules/home-manager/jq.nix
     ./../../../modules/home-manager/man.nix
     ./../../../modules/home-manager/neovim.nix
