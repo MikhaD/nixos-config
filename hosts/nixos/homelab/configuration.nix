@@ -2,7 +2,7 @@
   imports = [
     ./hardware-configuration.nix
     ./../../../modules/home-manager
-
+    ./../../../modules/nixos/programs/ssh.nix
     ./../../../modules/nixos/services/adguardhome.nix
     # ./../../../modules/nixos/services/caddy
     # ./../../../modules/nixos/services/cloudflared.nix
