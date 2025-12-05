@@ -146,10 +146,7 @@ in {
         ++ lib.optional cfg.tat (inputs.myApps.packages.${pkgs.stdenv.system}.tat);
 
       bash.extra = let
-        sshOnly = str:
-          if cfg.autoAttach.sshOnly
-          then str
-          else "";
+        sshOnly = lib.optionalString cfg.autoAttach.sshOnly;
       in
         []
         ++ lib.optional cfg.autoAttach.enable ''
