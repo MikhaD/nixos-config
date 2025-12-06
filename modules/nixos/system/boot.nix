@@ -7,7 +7,7 @@
   boot = {
     kernelParams = ["quiet"];
     # https://www.linuxlookup.com/linux_kernel (latest kernel versions)
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
     loader = {
       systemd-boot = {
         enable = true;

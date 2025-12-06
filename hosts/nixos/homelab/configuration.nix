@@ -1,4 +1,4 @@
-{...}: {
+{pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
     ./../../../modules/home-manager
@@ -57,6 +57,8 @@
       };
     };
   };
+
+  boot.kernelPackages = pkgs.linuxPackages_hardened;
 
   system.stateVersion = "25.05"; # DO NOT CHANGE
 }
