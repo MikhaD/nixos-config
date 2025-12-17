@@ -50,7 +50,7 @@
                 ];
               }
           );
-        # generate a home-manager configuration for each host in hosts/nixos
+        # generate a home-manager configuration for each host in hosts/nixos that contains a home.nix
         homeConfigurations = let
           pkgs = import inputs.nixpkgs {system = "x86_64-linux";};
         in
