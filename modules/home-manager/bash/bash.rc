@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+
+# Warn if the user is running a version of bash older than 5.3
+if [[ ${BASH_VERSINFO[0]} -lt 5 || ( ${BASH_VERSINFO[0]} -eq 5 && ${BASH_VERSINFO[1]} -lt 3 ) ]]; then
+    echo -e "\e[31mWARNING: You are using bash version ${BASH_VERSION}. This config requires bash 5.3 or newer.\e[0m"
+fi
+
 #    ▗▄▄▖ ▗▄▄▄▖ ▗▄▖ ▗▄▄▄ ▗▖   ▗▄▄▄▖▗▖  ▗▖▗▄▄▄▖
 #    ▐▌ ▐▌▐▌   ▐▌ ▐▌▐▌  █▐▌     █  ▐▛▚▖▐▌▐▌
 #    ▐▛▀▚▖▐▛▀▀▘▐▛▀▜▌▐▌  █▐▌     █  ▐▌ ▝▜▌▐▛▀▀▘
@@ -47,14 +53,14 @@ cd() {
     if [[ $1 == ..+(.) ]]; then # requires extglob to be enabled
         # Use builtin to prevent infinite recursion
         # printf '../%.0s' generates ../ for space separated value that follows. ${#1} is the length of $1
-        builtin cd "$(printf "../%.0s" $(seq 2 ${#1}))" || return
+        builtin cd "${ printf "../%.0s" ${ seq 2 ${#1}; }; }" || return
     else
         builtin cd "$@" || return
     fi
     # Post cd hooks
 
     # Auto-activate Python venvs in current or parent directories
-    local found_venv=$(_find_parent_venv ".venv")
+    local found_venv=${ _find_parent_venv ".venv"; }
     if [[ -n $found_venv ]]; then
         # Activate if not already active or different env
         if [[ -z $VIRTUAL_ENV || $VIRTUAL_ENV != "$found_venv" ]]; then
@@ -83,7 +89,7 @@ nix-shell() {
 _parse_git_status() {
     echo -n " "
     if ! git rev-parse --is-inside-work-tree &> /dev/null; then return; fi
-    local short=$([[ $1 == "-s" || $1 == "--short" ]] && echo true || echo false)
+    local short=${ [[ $1 == "-s" || $1 == "--short" ]] && echo true || echo false; }
     declare -a statuses
     declare -a icons=("" "" "" "" "" "󱈸" "")
     declare -a short_icons=("*" "+" "-" "󰫿" "󰫰" "!" "?")
@@ -114,13 +120,13 @@ _parse_git_status() {
 _parse_git_branch() {
     echo -n " "
     # Get branch name if in git repo
-    local branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+    local branch=${ git rev-parse --abbrev-ref HEAD 2>/dev/null; }
     if [[ -z $branch ]]; then return; fi
 
     # Check if in a detached HEAD state
     if [[ $branch == "HEAD" ]]; then
         # Get current commit hash
-        local commit_hash=$(git rev-parse --short HEAD 2>/dev/null)
+        local commit_hash=${ git rev-parse --short HEAD 2>/dev/null; }
         if [[ $commit_hash == "" ]]; then
             echo "  "
         else
@@ -128,14 +134,14 @@ _parse_git_branch() {
         fi
     elif git rev-parse "@{u}" &> /dev/null; then # Check if branch has upstream
         # Get ahead/behind status
-        local status=$(git status -sb --porcelain)
+        local status=${ git status -sb --porcelain; }
         local ahead_behind=""
         if [[ $status =~ \[ahead\ [0-9]+ ]]; then
-            local ahead_count=$(echo "$status" | grep -oP '(?<=\[ahead )\d+')
+            local ahead_count=${ echo "$status" | grep -oP '(?<=\[ahead )\d+'; }
             ahead_behind="↑$ahead_count"
         fi
         if [[ $status =~ behind\ [0-9]+\] ]]; then
-            local behind_count=$(echo "$status" | grep -oP '(?<=behind )\d+(?=\])')
+            local behind_count=${ echo "$status" | grep -oP '(?<=behind )\d+(?=\])'; }
             ahead_behind="$ahead_behind↓$behind_count"
         fi
         echo " $branch $ahead_behind"
@@ -153,8 +159,8 @@ _parse_git_branch() {
 # Print ~/<icon>/…/directory if we are more than 2 subdirectories deep in home and the home subdirectory has an icon
 _parse_directory() {
     echo -n " "
-    local directory=$(basename "$PWD")
-    local parent_dir=$(basename "$(dirname "$PWD")")
+    local directory=${PWD##*/} # same as basename "$PWD"
+    local parent_dir=${ basename "${PWD%/*}"; }
     if [[ $PWD == "$HOME"* ]]; then # if we are in a subdirectory of a subdirectory of home
         if [[ $PWD = "$HOME" ]]; then
             echo "~ "
@@ -164,7 +170,7 @@ _parse_directory() {
             echo "~/$directory "
             return
         fi
-        local home_subdir=$(echo ${PWD#$HOME/} | cut -d "/" -f 1)
+        local home_subdir=${ echo "${PWD#"$HOME"/}" | cut -d "/" -f 1; } # get first subdirectory after home
         local icon="${DIR_ICONS[$home_subdir]} "
         if [[ -n $icon ]]; then # if the parent directory has an icon
             if [[ $PWD = "$HOME/$parent_dir/$directory" ]]; then
@@ -183,7 +189,7 @@ _parse_directory() {
             echo "$PWD "
             return
         fi
-        local subdir=$(echo $PWD | cut -d "/" -f 2)
+        local subdir=${ echo "$PWD" | cut -d "/" -f 2; } # get root subdirectory
         local icon="${DIR_ICONS[$subdir]} "
         if [[ -n $icon ]]; then # if the parent directory has an icon
             if [[ $PWD = "/$parent_dir/$directory" ]]; then
@@ -198,12 +204,12 @@ _parse_directory() {
 }
 
 distro_icon() {
-    case "$(uname -s)" in
+    case "${ uname -s; }" in
         Linux*)
             if [[ -d /system && -d /data ]]; then
                 local distro="termux"
             elif [[ -e "/etc/os-release" ]]; then
-                local distro=$(source /etc/os-release && echo $ID)
+                local distro=$(source /etc/os-release && echo "$ID")
             else
                 local distro="linux"
             fi
@@ -247,7 +253,7 @@ ssh_session() {
 # Function that displays  before the prompt if we are in a nix shell, or  󰌪 if we are in a pure nix shell (pure: no system software included)
 nix_shell() {
     if [[ -n $IN_NIX_SHELL ]]; then
-        local pure=$(test "$IN_NIX_SHELL" = "pure" && echo "󰌪 ")
+        local pure=${ test "$IN_NIX_SHELL" = "pure" && echo "󰌪 "; }
         echo "\[\e[38;2;126;183;226m\] \[\e[38;2;159;226;126m\]$pure\[\e[0m\]"
     fi
 }
@@ -256,23 +262,24 @@ nix_shell() {
 _timer_start() {
     [[ -n $COMP_LINE ]] && return # do nothing if completing
     [[ $BASH_COMMAND = "$PROMPT_COMMAND" ]] && return
-    timer=$(date +%s%3N)
+    timer=${ date +%s%3N; }
 }
 
 # Stop the timer and print the time it took to run the command in a human readable format
 _timer_stop() {
-    local end_time=$(date +%s%3N)
+    local end_time=${ date +%s%3N; }
     if [[ -z $timer ]]; then
         echo "-"
         return
     fi
-    local T=$((end_time - timer))
-    local MS=$((T % 1000))
-    local S=$((T / 1000 % 60))
-    local M=$((T / 1000 / 60 % 60))
-    local H=$((T / 1000 / 60 / 60 % 24))
-    local D=$((T / 1000 / 60 / 60 / 24))
-    local result=""
+    local T MS S M H D result
+    ((T = end_time - timer))
+    ((MS = T % 1000))
+    ((S = T / 1000 % 60))
+    ((M = T / 1000 / 60 % 60))
+    ((H = T / 1000 / 60 / 60 % 24))
+    ((D = T / 1000 / 60 / 60 / 24))
+
     ((D > 0)) && result+="${D}d "
     ((H > 0)) && result+="${H}h "
     ((M > 0)) && result+="${M}m "
@@ -284,7 +291,7 @@ _timer_stop() {
 # Function that runs just before the prompt is displayed
 _prompt_command() {
     local exit_code=$?
-    _DURATION="  $(_timer_stop) "
+    _DURATION="  ${ _timer_stop; } "
     unset timer
     if [[ $exit_code -eq 0 ]]; then
         _EXIT_BG="20;184;121" # green
