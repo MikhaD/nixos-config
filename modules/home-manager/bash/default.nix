@@ -228,7 +228,7 @@ in {
       shellAliases = {
         cls = "clear"; #                            Clear screen using cls like windows powershell
         wifi = "nmcli device wifi show-password"; # Print the wifi password & QR code to join
-        myip = "echo $(${lib.getExe pkgs.curl} -s ifconfig.me)"; #     Get my public IP address (echo needed to print with newline)
+        myip = "echo \${ ${lib.getExe pkgs.curl} -s ifconfig.me; }"; #     Get my public IP address (echo needed to print with newline)
       };
 
       # All options: https://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html
@@ -277,7 +277,7 @@ in {
               // {
                 command = lib.concatStringsSep "" (
                   [''\[\e[48;2;${ss.background}m\]'']
-                  ++ lib.optional ss.distroIcon "$(distro_icon)"
+                  ++ lib.optional ss.distroIcon "\${ distro_icon; }"
                   ++ [''\[\e[1;38;2;${ss.color}m\]'']
                   ++ lib.optional ss.user ''\u''
                   ++ lib.optional (ss.host && ss.user) ''@''
@@ -291,8 +291,8 @@ in {
         # create array of colors for enabled prompt sections (49 resets background, 39 resets foreground, 0 resets all)
         prompt = lib.concatStringsSep "" (
           [''PS1="'']
-          ++ lib.optional cfg.prompt.indicator.ssh.enable "$(ssh_session)"
-          ++ lib.optional cfg.prompt.indicator.nixShell.enable "$(nix_shell)"
+          ++ lib.optional cfg.prompt.indicator.ssh.enable "\${ ssh_session; }"
+          ++ lib.optional cfg.prompt.indicator.nixShell.enable "\${ nix_shell; }"
           ++ ["\"\n"]
           ++ lib.optional (lib.length sections > 0) ''PS1+="\[\e[38;2;${(lib.elemAt sections 0).background}m\]${cfg.prompt.icons.start}"''
           ++ (lib.imap1 (i: s:
@@ -344,7 +344,7 @@ in {
           Type = "oneshot";
           ExecStart = "${pkgs.writeShellScript "dedup-bash-history" ''
             set -euo pipefail
-            TEMP_FILE=$(mktemp)
+            TEMP_FILE=''${ mktemp; }
             tac "${config.programs.bash.historyFile}" | awk '!seen[$0]++' | tac > "$TEMP_FILE"
             mv "$TEMP_FILE" "${config.programs.bash.historyFile}"
           ''}";
