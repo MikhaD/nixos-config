@@ -72,6 +72,79 @@ cd() {
     fi
 }
 
+# man() {
+#     # TODO: Account for things like test that are both builtins and executables - I want the man page of the exe in that case
+#     # TODO: Maybe use help -m instead of --help for builtins. Learn more about help first.
+
+#     # TODO: Account for man parameters or multiple arguments
+#     declare -A types
+#     while IFS= read -r line; do
+#         if [[ $line == "$1 is aliased to "* ]]; then
+#             types["alias"]=true
+#         elif [[ $line == "$1 is a function" ]]; then
+#             types["function"]=true
+#         elif [[ $line == "$1 is a shell builtin" ]]; then
+#             types["builtin"]=true
+#         elif [[ $line == "$1 is /"* || $line == "$1 is ./"* ]]; then
+#             types["executable"]=true
+#         fi
+#     done < <(type -a "$1")
+
+#     if [[ -v types["alias"] ]]; then
+#         local alias_exp=${ alias $1; }
+#         local start_index=$((${#1} + 8)) # 8 is length of "alias x='"
+#         bat --language man --plain <<< $'\nALIAS'
+# 		bat -l bash -f --plain <<< "${alias_exp:$start_index:-1}" | xargs -I % echo "    $1='%'"
+#     fi
+#     if [[ -v types["function"] ]]; then
+#         if [[ -v types["builtin"] || -v types["executable"] ]]; then
+#             bat --language man --plain <<< $'\nWRAPPER\x20FUNCTION' # if I use literal space instead of \x20 syntax highlighting in IDE breaks
+#         else
+#             bat --language man --plain <<< $'\nFUNCTION'
+#         fi
+#         bat -l bash -f --plain < <(declare -f "$1" | awk '{print "    " $0}')
+#     fi
+#     if [[ -v types["builtin"] ]]; then
+#         col -bx < <(echo; help -m "$1") | bat --language man --plain
+#     elif [[ -v types["executable"] ]]; then
+#         # if [[ ! -v types["alias"] && ! -v types["function"] ]]; then
+#         command man "$@" 2> /dev/null
+#         if [[ $? -ne 0 ]]; then
+#             "$1" --help 2> /dev/null
+#             if [[ $? -eq 0 ]]; then
+#                 echo
+#                 echo -e "\e[31mNOTE: This is an executable that does not have a man page.\e[0m"
+#                 echo -e "\e[31m      You are seeing the text from \e[0m$1 --help\e[31m thanks to my man wrapper function.\e[0m"
+#             else
+#                 echo -e "\e[31mNOTE: This executable does not have a man page or help text.\e[0m"
+#             fi
+#         fi
+#     fi
+# 		# NOTES
+# 		# EOF
+#         # echo -e "        \e[31mAliases do not have man pages or help text. You are seeing this pseudo man page\e[0m"
+#         # echo -e "        \e[31mthanks to my man wrapper function. Run \e[0malias $1\e[31m to see the alias definition.\e[0m"
+#     return
+#     if [[ ${ type -t $1; } == "builtin" ]]; then
+#         help -m "$1" | col -bx | bat --language man --plain
+#         if [[ $? -eq 0 ]]; then
+#             echo
+#             echo -e "\e[31mNOTE: This is a builtin command which means it does not have a man page.\e[0m"
+#             echo -e "\e[31m      You are seeing the text from $1 --help thanks to my man wrapper function.\e[0m"
+#         fi
+#         return
+#     fi
+#     command man "$@" 2> /dev/null
+#     if [[ $? -ne 0 ]]; then
+#         "$1" --help
+#         if [[ $? -eq 0 ]]; then
+#             echo
+#             echo -e "\e[31mNOTE: This is a function or executable that does not have a man page.\e[0m"
+#             echo -e "\e[31m      You are seeing the text from $1 --help thanks to my man wrapper function.\e[0m"
+#         fi
+#     fi
+# }
+
 # If nix-shell is run without --run, --command or --pure then automatically start an interactive bash shell (so .bashrc is sourced)
 nix-shell() {
     if [[ " $* " == *" --run "* || " $* " == *" --command "* || " $* " == *" --pure "* ]]; then
@@ -241,21 +314,6 @@ distro_icon() {
     local color="${distro_colors[$distro]:-0;0;0}"
     unset distro_icons distro_colors
     echo "\[\e[38;2;${color}m\]${icon}"
-}
-
-# Function that displays 󰢹 before the prompt if the terminal is being accessed via SSH
-ssh_session() {
-    if [[ -n $SSH_CLIENT ]]; then
-        echo "\[\e[94m\]󰢹 \[\e[0m\]";
-    fi
-}
-
-# Function that displays  before the prompt if we are in a nix shell, or  󰌪 if we are in a pure nix shell (pure: no system software included)
-nix_shell() {
-    if [[ -n $IN_NIX_SHELL ]]; then
-        local pure=${ test "$IN_NIX_SHELL" = "pure" && echo "󰌪 "; }
-        echo "\[\e[38;2;126;183;226m\] \[\e[38;2;159;226;126m\]$pure\[\e[0m\]"
-    fi
 }
 
 # Timer for measuring the time it takes to run a command

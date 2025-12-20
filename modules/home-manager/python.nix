@@ -20,7 +20,7 @@
   # This is only relevant when there is a .venv folder in the directory that a new shell is started in, which, in my case, is mainly relevant for tmux sessions.
   bash.extra = [
     ''
-      if [[ -f ./.venv/bin/activate ]]; then
+      if [[ -f ./.venv/bin/activate && -z $VIRTUAL_ENV ]]; then
         source ./.venv/bin/activate
       fi
     ''

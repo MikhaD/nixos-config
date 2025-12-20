@@ -80,7 +80,7 @@ in {
           color = myLib.mkBashColorOption "#3DAEE9" "Hex color of the SSH indicator in the bash prompt.";
         };
         nixShell = {
-          enable = myLib.mkEnableOptionTrue "a   before the bash prompt when inside a nix-shell";
+          enable = myLib.mkEnableOptionTrue "a   before the bash prompt when inside a nix-shell, followed by a 󰌪 if it is a pure nix shell";
           color = myLib.mkBashColorOption "#7EB7E2" "Hex color of the nix-shell indicator in the bash prompt.";
           pureColor = myLib.mkBashColorOption "#9FE27E" "Hex color of the 󰌪 next to the nix shell icon indicating that it is a pure shell.";
         };
@@ -291,8 +291,9 @@ in {
         # create array of colors for enabled prompt sections (49 resets background, 39 resets foreground, 0 resets all)
         prompt = lib.concatStringsSep "" (
           [''PS1="'']
-          ++ lib.optional cfg.prompt.indicator.ssh.enable "\${ ssh_session; }"
-          ++ lib.optional cfg.prompt.indicator.nixShell.enable "\${ nix_shell; }"
+          ++ lib.optional cfg.prompt.indicator.ssh.enable ''\[\e[38;2;${cfg.prompt.indicator.ssh.color}m\]''${SSH_CLIENT:+󰢹 }\[\e[0m\]''
+          # Function that displays  before the prompt if we are in a nix shell, or  󰌪 if we are in a pure nix shell (pure: no system software included)
+          ++ lib.optional cfg.prompt.indicator.nixShell.enable ''\[\e[38;2;${cfg.prompt.indicator.nixShell.color}m\]\''${IN_NIX_SHELL:+ }\[\e[38;2;${cfg.prompt.indicator.nixShell.pureColor}m\]\''${ [[ \$IN_NIX_SHELL == "pure" ]] && echo \"󰌪 \"; }\[\e[0m\]''
           ++ ["\"\n"]
           ++ lib.optional (lib.length sections > 0) ''PS1+="\[\e[38;2;${(lib.elemAt sections 0).background}m\]${cfg.prompt.icons.start}"''
           ++ (lib.imap1 (i: s:
