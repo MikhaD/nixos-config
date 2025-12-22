@@ -20,6 +20,9 @@
     # Secrets I don't want in a public repo, but are not secret enough that they must be hidden from the global nix store
     secrets.url = "git+ssh://git@github.com/MikhaD/nix-secrets.git?shallow=1";
 
+    # stylix.url = "github:nix-community/stylix";
+    # stylix.inputs.nixpkgs.follows = "nixpkgs";
+
     # ulauncher6.url = "github:Ulauncher/Ulauncher/v6.0.0-beta27";
     # ulauncher6.inputs.nixpkgs.follows = "nixpkgs";
   };
@@ -46,6 +49,7 @@
                 specialArgs = {inherit details inputs hostname myLib;};
                 modules = [
                   ./modules/base.nix
+                  # inputs.stylix.nixosModules.stylix # Home manager module is apparently bundled in nixos one
                   (./. + "/hosts/nixos/${hostname}/configuration.nix")
                 ];
               }
@@ -75,6 +79,7 @@
           pkgs = import inputs.nixpkgs {system = "aarch64-linux";};
           extraSpecialArgs = {inherit details inputs myLib;};
           modules = [
+            # inputs.stylix.nixOnDroidModules.stylix
             ./hosts/nix-on-droid/phone/configuration.nix
           ];
         };

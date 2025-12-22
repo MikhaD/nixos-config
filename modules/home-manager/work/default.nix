@@ -26,7 +26,7 @@
     # inputs.emulators.packages.${stdenv.hostPlatform.system}.default
     # google-cloud-sql-proxy
     # jetbrains.idea-ultimate
-    jetbrains.pycharm-professional
+    jetbrains.pycharm
     # pgloader
     stdenv.cc.cc.lib
   ];
