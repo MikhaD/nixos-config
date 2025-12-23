@@ -28,6 +28,7 @@
       init.defaultBranch = "main";
       core.autocrlf = "input";
       color.ui = "auto";
+      tag.gpgSign = false;
       advice = {
         addIgnoredFile = false;
         detachedHead = false;
