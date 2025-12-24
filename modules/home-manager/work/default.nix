@@ -15,11 +15,11 @@
     GOPATH = "${config.xdg.dataHome}/go"; # Removes go/ from ~
     # TODO: Bad practice, Should be in a nix-env for the thing that needs it (here at the moment to get nix shell created poetry installs to work in pycharm)
     # https://discourse.nixos.org/t/what-package-provides-libstdc-so-6/18707/2
-    LD_LIBRARY_PATH = "${pkgs.stdenv.cc.cc.lib}/lib";
+    # LD_LIBRARY_PATH = "${pkgs.stdenv.cc.cc.lib}/lib";
   };
 
   programs.bash.shellAliases = {
-    work = "cd ~/Documents/work/quicklysign-python3; git add flake.*; nix develop; git restore --staged flake.*";
+    work = "cd ~/Documents/work/quicklysign-python3; nix develop";
   };
 
   home.packages = with pkgs; [
@@ -28,6 +28,6 @@
     # jetbrains.idea-ultimate
     jetbrains.pycharm
     # pgloader
-    stdenv.cc.cc.lib
+    # stdenv.cc.cc.lib
   ];
 }
