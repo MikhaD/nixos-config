@@ -44,12 +44,13 @@ if [[ -n $1 ]]; then
 		exit 1
 	fi
 fi
-if [[ $(tmux ls 2> /dev/null | wc -l) -eq 1 ]]; then
+sessions=$(tmux ls 2> /dev/null | wc -l)
+if [[ $sessions -eq 1 ]]; then
 	if [[ -z $TMUX ]]; then
 		tmux attach-session
 	fi
 	exit 0
-	else
+elif [[ $sessions -ne 0 ]]; then
 	if [[ -z $TMUX ]]; then
 		session=$(list_tmux_sessions_for_fzf | fzf --info-command='echo "$FZF_INFO Select Tmux Session"')
 		if [[ -z $session ]]; then
@@ -59,4 +60,6 @@ if [[ $(tmux ls 2> /dev/null | wc -l) -eq 1 ]]; then
 	else
 		tmux choose-tree
 	fi
+else
+	exit 1
 fi
