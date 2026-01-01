@@ -49,7 +49,7 @@ if [[ $sessions -eq 1 ]]; then
 	if [[ -z $TMUX ]]; then
 		tmux attach-session
 	fi
-	exit 0
+	exit 1
 elif [[ $sessions -ne 0 ]]; then
 	if [[ -z $TMUX ]]; then
 		session=$(list_tmux_sessions_for_fzf | fzf --info-command='echo "$FZF_INFO Select Tmux Session"')
