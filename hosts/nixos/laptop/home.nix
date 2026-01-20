@@ -8,6 +8,7 @@
     ./../../../modules/home-manager/bash
     ./../../../modules/home-manager/bat.nix
     ./../../../modules/home-manager/chromium.nix
+    ./../../../modules/home-manager/claude.nix
     ./../../../modules/home-manager/curl.nix
     ./../../../modules/home-manager/dig.nix
     ./../../../modules/home-manager/e.nix
@@ -61,7 +62,6 @@
       pinta
       quickgui
       scrcpy
-      # stremio # depends on insecure library
       vscode
       ################ Required for kickstart.nvim #################
       gnumake
