@@ -67,7 +67,7 @@ cd() {
             # shellcheck disable=SC1091
             source "$found_venv/bin/activate"
         fi
-    elif [[ -n $VIRTUAL_ENV ]]; then
+    elif [[ -n $VIRTUAL_ENV ]] && type -t deactivate &> /dev/null; then
         deactivate
     fi
 }
