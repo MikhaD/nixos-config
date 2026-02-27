@@ -20,6 +20,9 @@
     # Secrets I don't want in a public repo, but are not secret enough that they must be hidden from the global nix store
     secrets.url = "git+ssh://git@github.com/MikhaD/nix-secrets.git?shallow=1";
 
+    serena.url = "github:oraios/serena";
+    serena.inputs.nixpkgs.follows = "nixpkgs";
+
     # stylix.url = "github:nix-community/stylix";
     # stylix.inputs.nixpkgs.follows = "nixpkgs";
 
