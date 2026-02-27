@@ -23,7 +23,7 @@
   };
 
   home.packages = with pkgs; [
-    # inputs.emulators.packages.${stdenv.hostPlatform.system}.default
+    # inputs.emulators.packages.${stdenv.system}.default
     # google-cloud-sql-proxy
     # jetbrains.idea-ultimate
     jetbrains.pycharm
