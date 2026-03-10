@@ -57,7 +57,7 @@
       #################### Desktop Applications ####################
       bruno
       # code-cursor
-      freecad
+      # freecad # errors in the latest version
       libreoffice-qt
       pinta
       quickgui
