@@ -16,6 +16,11 @@
       default = false;
       description = "Whether to enable autologin for the default user.";
     };
+    extraGroups = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [];
+      description = "Additional groups to add the default user to.";
+    };
   };
 
   config = lib.mkIf config.default-user.enable {
@@ -23,7 +28,7 @@
       lib.recursiveUpdate {
         isNormalUser = true;
         description = details.fullName;
-        extraGroups = ["networkmanager" "wheel" "podman"];
+        extraGroups = ["networkmanager" "wheel"] ++ config.default-user.extraGroups;
       }
       config.default-user.extra;
     services.getty.autologinUser =

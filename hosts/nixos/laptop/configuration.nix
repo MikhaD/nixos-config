@@ -11,9 +11,9 @@
     ./../../../modules/nixos/system/fonts.nix
     ./../../../modules/nixos/system/nvidia.nix
     ./../../../modules/nixos/programs/nix-ld.nix
-    ./../../../modules/nixos/programs/podman.nix
     ./../../../modules/nixos/programs/steam.nix
     ./../../../modules/nixos/system/store.nix
+    ./../../../modules/nixos/programs/virtualisation.nix
 
     ./../../../modules/nixos/services/keyd
     ./../../../modules/nixos/services/pipewire.nix
