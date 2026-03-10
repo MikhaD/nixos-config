@@ -13,7 +13,7 @@
   };
 
   programs.bash.shellAliases = {
-    py = "python"; # I am used to using py to run the python interpreter from windows
+    py = "python3"; # I am used to using py to run the python interpreter from windows
   };
 
   # if a .venv directory exists in the current directory, activate it.

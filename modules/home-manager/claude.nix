@@ -1,4 +1,10 @@
-{inputs,lib,pkgs, ...}: {
+{
+  config,
+  inputs,
+  lib,
+  pkgs,
+  ...
+}: {
   programs.claude-code = {
     enable = true;
     mcpServers = {
@@ -14,6 +20,8 @@
           "start-mcp-server"
           "--context=claude-code"
           "--project-from-cwd"
+          "--open-web-dashboard"
+          "False"
         ];
       };
     };
@@ -21,6 +29,7 @@
 
   home.sessionVariables = {
     # Avoid sending all tool descriptions to Claude upon startup, thus saving tokens. Instead, Claude will search for tools as needed (but there are no guarantees that it will search optimally, of course).
-    ENABLE_TOOL_SEARCH = "true";
+    # ENABLE_TOOL_SEARCH = "true";
+    SERENA_HOME = "${config.xdg.configHome}/serena"; # Removes .serena from ~
   };
 }
