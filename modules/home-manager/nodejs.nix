@@ -4,7 +4,7 @@
   ...
 }: {
   home.packages = with pkgs; [
-    nodePackages_latest.nodejs
+    nodejs_latest
   ];
   home.sessionVariables = {
     NPM_CONFIG_USERCONFIG = "${config.xdg.configHome}/npmrc"; # Removes .npmrc from ~
