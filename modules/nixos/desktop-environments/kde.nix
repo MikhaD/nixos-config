@@ -1,6 +1,6 @@
 {...}: {
   # Enable the KDE Plasma Desktop Environment.
-  services.displayManager.sddm.enable = true;
+  services.displayManager.plasma-login-manager.enable = true;
   services.desktopManager.plasma6.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
