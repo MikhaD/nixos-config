@@ -54,6 +54,7 @@ in {
             sessionVariables =
               {
                 LESSHISTFILE = "${config.home-manager.users.${details.username}.xdg.stateHome}/lesshst"; # Removes .lesshst from ~
+                CUDA_CACHE_PATH = "${config.home-manager.users.${details.username}.xdg.cacheHome}/nv"; # Removes .nv/ from ~
               }
               // cfg.sessionVariables;
 
