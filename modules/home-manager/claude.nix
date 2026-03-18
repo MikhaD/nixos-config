@@ -14,9 +14,7 @@
       };
       serena = {
         type = "stdio";
-        # need to use getExe' because serena flake does not specify a meta property
-        # command = lib.getExe inputs.serena.packages.${pkgs.stdenv.system}.default;
-        command = lib.getExe' inputs.serena.packages.${pkgs.stdenv.system}.default "serena";
+        command = lib.getExe inputs.serena.packages.${pkgs.stdenv.system}.default;
         args = [
           "start-mcp-server"
           "--context=claude-code"
