@@ -12,4 +12,10 @@ This module configures the keyd service for system-wide keyboard remapping. Impo
 | <kbd>F23</kbd> | <kbd>Ctrl</kbd> | F23 is mouse button 6 on my mouse, which is on the side of the mouse where my thumb rests. |
 | <kbd>F24</kbd> | <kbd>Shift</kbd> | F24 is mouse button 5 on my mouse, which is on the side of the mouse above where my thumb rests. |
 
-![Mouse buttons](../../../../.assets/readme-images/mouse-buttons.png)
+<div align="center">
+  <img src="../../../../.assets/readme-images/mouse-buttons.png" alt="Key mapping" width="400"/>
+</div>
+
+## Resources
+- https://wiki.nixos.org/wiki/Keyd
+- https://man.archlinux.org/man/extra/keyd/keyd.1.en

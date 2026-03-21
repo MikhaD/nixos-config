@@ -1,7 +1,5 @@
 {...}: {
   # Run sudo keyd monitor to find the names of keys by pressing them
-  # https://wiki.nixos.org/wiki/Keyd
-  # https://man.archlinux.org/man/extra/keyd/keyd.1.en
   services.keyd = {
     enable = true;
     keyboards = {
