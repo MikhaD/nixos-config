@@ -56,8 +56,7 @@
       shfmt
       #################### Desktop Applications ####################
       bruno
-      # code-cursor
-      # freecad # errors in the latest version
+      freecad
       libreoffice-qt
       pinta
       quickgui
