@@ -14,6 +14,7 @@
         logg = "log --oneline --graph --all --decorate";
         sb = "status -sb";
         ss = "status -s";
+        checkoutt = "!git checkout $(git branch --format='%(refname:short)' | fzf --reverse)";
       };
       push.autoSetupRemote = true;
       fetch = {
