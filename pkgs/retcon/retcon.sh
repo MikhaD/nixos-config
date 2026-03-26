@@ -9,15 +9,17 @@ else
 	HISTFILE="${HISTFILE:-~/.bash_history}"
 fi
 
+FZF_LAYOUT="default"
+
 case $1 in
 	-h|--help)
 	echo "usage: retcon [-h] [-r] [-v]"
 	echo
-	echo "Interactively remove entries from your bash history using fzf (starting from the end)."
+	echo "Interactively remove entries from your bash history using fzf (most recent first)."
 	echo
 	echo "options:"
 	echo "  -h, --help    Show this help message and exit."
-	echo "  -r, --reverse Display the history entries in reverse (most recent first)."
+	echo "  -r, --reverse Display the history entries in reverse (least recent first)."
 	echo "  -v, --version Show the version number and exit."
 	echo
 	echo "retcon version $VERSION"
@@ -28,10 +30,11 @@ case $1 in
 	exit 0
 	;;
 	-r|--reverse)
-	LINES=$(nl -ba -w1 -s$'d\x1f' "$HISTFILE" | tac)
+	LINES=$(nl -ba -w1 -s$'d\x1f' "$HISTFILE")
+	FZF_LAYOUT="reverse"
 	;;
 	"")
-	LINES=$(nl -ba -w1 -s$'d\x1f' "$HISTFILE")
+	LINES=$(nl -ba -w1 -s$'d\x1f' "$HISTFILE" | tac)
 	;;
 	*)
 	echo "Unknown option: $1"
@@ -40,7 +43,7 @@ case $1 in
 	;;
 esac
 
-CUTS=$(fzf --multi --delimiter='\x1f' --with-nth=2 <<< "$LINES" | cut -f1 -d $'\x1f')
+CUTS=$(fzf --multi --layout=$FZF_LAYOUT --delimiter='\x1f' --with-nth=2 <<< "$LINES" | cut -f1 -d $'\x1f')
 
 [[ -z $CUTS ]] && exit 0
 
