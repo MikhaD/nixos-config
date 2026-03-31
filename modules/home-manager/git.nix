@@ -15,6 +15,7 @@
         sb = "status -sb";
         ss = "status -s";
         checkoutt = "!git checkout $(git branch --format='%(refname:short)' | fzf --reverse)";
+        del = "!git branch -D $(git branch --format='%(refname:short)' | fzf --reverse --multi)";
       };
       push.autoSetupRemote = true;
       fetch = {
