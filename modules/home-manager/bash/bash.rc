@@ -24,6 +24,7 @@ bind '"\e[1;3C": "cd -\n"'              # Use Alt+→ to go to the previous dire
 bind '"\es": "\C-asudo \C-e"'           # Use Alt+s to prepend sudo to the current command
 bind '"\C-l": clear-display'            # Use Ctrl+L to clear the screen (override the default clear-screen, which does just scrolls the screen up)
 bind '"\C-r": "source ~/nix/modules/home-manager/bash/bash.rc\n"'     # Use Ctrl+R to reload the bashrc file from my nix configuration
+bind -x '"\ed": _toggle_git_divergence' # Use Alt+d to toggle showing git divergence from main branch (when not on the main branch) in the prompt
 
 # bind "set editing-mode vi"              # Use vi keybindings in the terminal (seems to prevent the use of the up and down arrow keys)
 # bind "set show-all-if-ambiguous on"     # print out all matching files/directories if there are multiple possibilities
@@ -204,36 +205,63 @@ _parse_git_status() {
     echo ""
 }
 
+SHOW_GIT_DIVERGENCE=1
+_toggle_git_divergence() {
+    if (( SHOW_GIT_DIVERGENCE != 1 )); then
+        SHOW_GIT_DIVERGENCE=1
+    else
+        SHOW_GIT_DIVERGENCE=0
+    fi
+}
+
 _parse_git_branch() {
+    # Other arrow symbols: ↑↓ 🡑🡓 🠕🠗 🠑🠓
     echo -n " "
     # Get branch name if in git repo
     local branch=${ git rev-parse --abbrev-ref HEAD 2>/dev/null; }
     if [[ -z $branch ]]; then return; fi
+
+    local start=""
 
     # Check if in a detached HEAD state
     if [[ $branch == "HEAD" ]]; then
         # Get current commit hash
         local commit_hash=${ git rev-parse --short HEAD 2>/dev/null; }
         if [[ $commit_hash == "" ]]; then
-            echo "  "
+            echo "$start  "
         else
             echo " $commit_hash "
         fi
-    elif git rev-parse "@{u}" &> /dev/null; then # Check if branch has upstream
-        # Get ahead/behind status
-        local status=${ git status -sb --porcelain; }
-        local ahead_behind=""
-        if [[ $status =~ \[ahead\ [0-9]+ ]]; then
-            local ahead_count=${ echo "$status" | grep -oP '(?<=\[ahead )\d+'; }
-            ahead_behind="↑$ahead_count"
-        fi
-        if [[ $status =~ behind\ [0-9]+\] ]]; then
-            local behind_count=${ echo "$status" | grep -oP '(?<=behind )\d+(?=\])'; }
-            ahead_behind="$ahead_behind↓$behind_count"
-        fi
-        echo " $branch $ahead_behind"
     else
-        echo " $branch 󱄁 "
+        local main_branch=${ git config --get init.defaultBranch || echo "master"; }
+        if [[ $SHOW_GIT_DIVERGENCE == 1 && $branch != "$main_branch" ]]; then
+            local main_ahead=${ git rev-list --count "$branch".."$main_branch"; }
+            local main_behind=${ git rev-list --count "$main_branch".."$branch"; }
+            if (( main_ahead > 0 )); then
+                start="$start ↧$main_ahead"
+            fi
+            if (( main_behind > 0 )); then
+                if (( main_ahead == 0 )); then
+                    start="$start "
+                fi
+                start="$start↥$main_behind"
+            fi
+        fi
+        start="$start $branch"
+        if git rev-parse "@{u}" &> /dev/null; then # Check if branch has upstream
+            # Get ahead/behind status
+            local status=${ git status -sb --porcelain; }
+            local ahead_behind=""
+            if [[ $status =~ \[ahead\ [0-9]+ ]]; then
+                ahead_behind="↑${ echo "$status" | grep -oP '(?<=\[ahead )\d+'; }"
+            fi
+            if [[ $status =~ behind\ [0-9]+\] ]]; then
+                ahead_behind="$ahead_behind↓${ echo "$status" | grep -oP '(?<=behind )\d+(?=\])'; }"
+            fi
+            echo "$start $ahead_behind"
+        else
+            echo "$start 󱄁 "
+        fi
     fi
 }
 
