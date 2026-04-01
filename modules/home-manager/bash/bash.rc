@@ -233,18 +233,21 @@ _parse_git_branch() {
             echo " $commit_hash "
         fi
     else
-        local main_branch=${ git config --get init.defaultBranch || echo "master"; }
-        if [[ $SHOW_GIT_DIVERGENCE == 1 && $branch != "$main_branch" ]]; then
-            local main_ahead=${ git rev-list --count "$branch".."$main_branch"; }
-            local main_behind=${ git rev-list --count "$main_branch".."$branch"; }
-            if (( main_ahead > 0 )); then
-                start="$start ↧$main_ahead"
-            fi
-            if (( main_behind > 0 )); then
-                if (( main_ahead == 0 )); then
-                    start="$start "
+        if [[ $SHOW_GIT_DIVERGENCE == 1 ]]; then
+
+            local main_branch=${ git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || git config --get init.defaultBranch || echo "master"; }
+            if [[ $branch != "$main_branch" ]]; then
+                local main_ahead=${ git rev-list --count "$branch".."$main_branch"; }
+                local main_behind=${ git rev-list --count "$main_branch".."$branch"; }
+                if (( main_ahead > 0 )); then
+                    start="$start ↧$main_ahead"
                 fi
-                start="$start↥$main_behind"
+                if (( main_behind > 0 )); then
+                    if (( main_ahead == 0 )); then
+                        start="$start "
+                    fi
+                    start="$start↥$main_behind"
+                fi
             fi
         fi
         start="$start $branch"
