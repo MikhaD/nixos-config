@@ -236,7 +236,7 @@ _parse_git_branch() {
         if [[ $SHOW_GIT_DIVERGENCE == 1 ]]; then
 
             local main_branch=${ git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || git config --get init.defaultBranch || echo "master"; }
-            if [[ $branch != "$main_branch" ]]; then
+            if [[ $branch != ${ basename "$main_branch"; } ]]; then
                 local main_ahead=${ git rev-list --count "$branch".."$main_branch"; }
                 local main_behind=${ git rev-list --count "$main_branch".."$branch"; }
                 if (( main_ahead > 0 )); then
