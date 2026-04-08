@@ -11,6 +11,7 @@
     ./../../../modules/home-manager/claude.nix
     ./../../../modules/home-manager/curl.nix
     ./../../../modules/home-manager/dig.nix
+    ./../../../modules/home-manager/discord.nix
     ./../../../modules/home-manager/e.nix
     ./../../../modules/home-manager/fastfetch.nix
     ./../../../modules/home-manager/firefox.nix
