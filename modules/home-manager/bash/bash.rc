@@ -289,14 +289,14 @@ _parse_directory() {
             return
         fi
         local home_subdir=${ echo "${PWD#"$HOME"/}" | cut -d "/" -f 1; } # get first subdirectory after home
-        local icon="${DIR_ICONS[$home_subdir]} "
+        local icon="${DIR_ICONS[$home_subdir]}"
         if [[ -n $icon ]]; then # if the parent directory has an icon
             if [[ $PWD = "$HOME/$parent_dir/$directory" ]]; then
                 # shellcheck disable=SC2088
-                echo "~/$icon/$directory "
+                echo "~/$icon /$directory "
             else
                 # shellcheck disable=SC2088
-                echo "~/$icon/…/$directory "
+                echo "~/$icon /…/$directory "
             fi
         else
             # shellcheck disable=SC2088
@@ -308,12 +308,12 @@ _parse_directory() {
             return
         fi
         local subdir=${ echo "$PWD" | cut -d "/" -f 2; } # get root subdirectory
-        local icon="${DIR_ICONS[$subdir]} "
+        local icon="${DIR_ICONS[$subdir]}"
         if [[ -n $icon ]]; then # if the parent directory has an icon
             if [[ $PWD = "/$parent_dir/$directory" ]]; then
-                echo "/$icon/$directory "
+                echo "/$icon /$directory "
             else
-                echo "/$icon/…/$directory "
+                echo "/$icon /…/$directory "
             fi
         else
             echo "/…/$directory "
@@ -416,3 +416,7 @@ trap _timer_start DEBUG INT
 # PROMPT_COMMAND must be a single command so that it matches BASH_COMMAND in _timer_start, otherwise the timer will be
 # reset just before it is stopped because the DEBUG trap is triggered by PROMPT_COMMAND
 PROMPT_COMMAND="_prompt_command"
+
+#1497B8
+
+colors=("102;102;102" "255;255;255" "20;151;184" "20;129;184" "20;184;121" "102;102;102")
