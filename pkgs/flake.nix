@@ -31,6 +31,7 @@
           description = "Utility to print the value of the specified environment variable (with case insensitive bash completions).";
           homepage = "https://github.com/MikhaD/nixos-config/tree/main/pkgs/e/";
           mainProgram = "e";
+          license = pkgs.lib.licenses.mit;
           platforms = [system];
         };
       };
@@ -52,6 +53,7 @@
           description = "Utility to search and bulk delete commands from your bash history using fzf.";
           homepage = "https://github.com/MikhaD/nixos-config/tree/main/pkgs/retcon/";
           mainProgram = "retcon";
+          license = pkgs.lib.licenses.mit;
           platforms = [system];
         };
       };
@@ -73,6 +75,7 @@
           description = "Utility to improve navigation between tmux sessions.";
           homepage = "https://github.com/MikhaD/nixos-config/tree/main/pkgs/tat/";
           mainProgram = "tat";
+          license = pkgs.lib.licenses.mit;
           platforms = [system];
         };
       };

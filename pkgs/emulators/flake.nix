@@ -20,6 +20,7 @@
       description = "Python program to start, run & manage emulators in tmux";
       homepage = "https://github.com/MikhaD/nixos-config/tree/main/pkgs/emulators/";
       mainProgram = "emulators";
+      # license = inputs.nixpkgs.lib.licenses.mit;
       platforms = [system];
     };
   in {
