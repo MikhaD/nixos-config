@@ -7,6 +7,26 @@ import json
 import os
 import subprocess
 import sys
+import webbrowser
+
+
+class GlobalConfig:
+    """singleton class to hold global configuration loaded from file and command line arguments"""
+    _instance = None
+    container_tool = "podman"
+    dont_open_links = False
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(GlobalConfig, cls).__new__(cls)
+        return cls._instance
+
+    def set_if_exists(self, key: str, *values):
+        """Set an attribute on the GlobalConfig instance to the last non-None value in values, if any."""
+        key = key.replace("-", "_")
+        for value in values:
+            if value is not None:
+                setattr(self, key, value)
 
 
 class Logger:
@@ -91,8 +111,10 @@ class Tmux:
 class Emulator:
     logger = Logger()
 
-    def __init__(self, name, config: dict, container_tool: str):
+    def __init__(self, name, config: dict):
         self.name = name
+        self.post_run_link = config.get("post-run-link")
+        container_tool = GlobalConfig().container_tool
         if "container" in config:
             container = config["container"]
             name = container["name"]
@@ -124,6 +146,8 @@ class Emulator:
         if not session.has_window(self.name):
             session.new_window(self.name, self.command, self.dir)
             logger.log(self.name, prefix="STARTED: ")
+            if self.post_run_link and not GlobalConfig().dont_open_links:
+                webbrowser.open(self.post_run_link)
         else:
             logger.warn(f"{self.name} (already running)", prefix="SKIPPED: ")
 
@@ -167,6 +191,7 @@ def get_config(default: bool = False) -> dict:
             "container-tool": "podman",
             "quiet": False,
             "target-session": "emulators",
+            "dont-open-links": False,
         },
         "emulators": {
             "redis": {
@@ -187,7 +212,8 @@ def get_config(default: bool = False) -> dict:
                 "commands": ["cloud-tasks-emulator -host localhost -port 8123"]
             },
             "dsadmin": {
-                "commands": ["eval $(gcloud beta emulators datastore env-init)", "dsadmin"]
+                "commands": ["eval $(gcloud beta emulators datastore env-init)", "dsadmin"],
+                "post-run-link": "http://localhost:8080"
             },
             "postgres": {
                 "container": {
@@ -233,6 +259,7 @@ def main(version: str):
     parser.add_argument("--container-tool", "-c", type=str, choices=["docker", "podman"], help="Containerization tool to use for container emulators.", default=None)
     parser.add_argument("--quiet", "-q", action="store_true", help="Suppress non-error output for commands that do not explicitly print output.")
     parser.add_argument("--target-session", "-t", type=str, help="Name of the tmux session to add the emulator windows to (default: emulators).", default=None)
+    parser.add_argument("--dont-open-links", "-l", action="store_true", help="Ignore post-run-links after starting emulators that have them.")
     # Sub Commands
     sub_parsers = parser.add_subparsers(title="Sub commands", dest="command", required=True)
     start_parser = sub_parsers.add_parser("start", help="Start the specified emulators, or all emulators in the default preset if none are specified.")
@@ -266,8 +293,8 @@ def main(version: str):
     args = parser.parse_args()
     console = Logger(args.quiet or config["settings"].get("quiet", False))
 
-    if args.container_tool:
-        config["settings"]["container-tool"] = args.container_tool
+    GlobalConfig().set_if_exists("container_tool", config["settings"]["container-tool"], args.container_tool)
+    GlobalConfig().set_if_exists("dont_open_links", config["settings"]["dont-open-links"], args.dont_open_links or None)
 
     session_name = args.target_session if args.target_session else config["settings"]["target-session"]
     if (args.add_to_current_session or config["settings"].get("add-to-current-session")) and Tmux.in_session():
@@ -335,7 +362,7 @@ def main(version: str):
             emulator_names = emulator_names.difference(set(args.exclude))
 
             emulators = [
-                Emulator(name, config["emulators"][name], config["settings"]["container-tool"]) for name in emulator_names
+                Emulator(name, config["emulators"][name]) for name in emulator_names
             ]
 
             session = Tmux(session_name)

@@ -11,7 +11,7 @@
     };
   };
   outputs = inputs: let
-    version = "1.1.2";
+    version = "1.2.0";
     forAllSystems = inputs.nixpkgs.lib.genAttrs [
       "x86_64-linux"
       # "aarch64-linux"
