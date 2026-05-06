@@ -1,7 +1,12 @@
-{pkgs, ...}: {
+{
+  config,
+  pkgs,
+  ...
+}: {
   programs.firefox = {
     enable = true;
     package = pkgs.firefox-devedition; # Use firefox dev edition
+    configPath = "${config.xdg.configHome}/mozilla/firefox";
     # List of policies: https://mozilla.github.io/policy-templates/
     policies = {
       AutofillAddressEnabled = false;
