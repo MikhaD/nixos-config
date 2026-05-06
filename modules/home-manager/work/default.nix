@@ -3,9 +3,10 @@
   config,
   ...
 }: {
-  # imports = [
-  #   ./../terraform.nix
-  # ];
+  imports = [
+    #   ./../terraform.nix
+    ./../jiratui
+  ];
 
   home.sessionVariables = {
     MAVEN_OPTS = "-Duser.home=${config.xdg.dataHome}/maven"; # Removes .m2/ from ~
@@ -25,7 +26,7 @@
   home.packages = with pkgs; [
     # inputs.emulators.packages.${stdenv.system}.default
     # google-cloud-sql-proxy
-    # jetbrains.idea-ultimate
+    jetbrains.idea
     jetbrains.pycharm
     # pgloader
     # stdenv.cc.cc.lib
