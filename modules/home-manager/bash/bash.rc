@@ -37,7 +37,7 @@ bind -x '"\ed": _toggle_git_divergence' # Use Alt+d to toggle showing git diverg
 #    ▝▚▄▄▖▐▙▄▄▖▗▄█▄▖    ▝▚▄▞▘ ▝▚▞▘ ▐▙▄▄▖▐▌ ▐▌▐▙▄▄▖▐▌ ▐▌ ▐▌ ▗▄▄▞▘
 
 _find_parent_venv() {
-    local dir="$PWD"
+    declare dir="$PWD"
     while [[ -n $dir ]]; do
         if [[ -f "$dir/$1/bin/activate" ]]; then
             echo "$dir/$1"
@@ -61,7 +61,7 @@ cd() {
     # Post cd hooks
 
     # Auto-activate Python venvs in current or parent directories
-    local found_venv=${ _find_parent_venv ".venv"; }
+    declare -r found_venv=${ _find_parent_venv ".venv"; }
     if [[ -n $found_venv ]]; then
         # Activate if not already active or different env
         if [[ -z $VIRTUAL_ENV || $VIRTUAL_ENV != "$found_venv" ]]; then
@@ -92,8 +92,8 @@ cd() {
 #     done < <(type -a "$1")
 
 #     if [[ -v types["alias"] ]]; then
-#         local alias_exp=${ alias $1; }
-#         local start_index=$((${#1} + 8)) # 8 is length of "alias x='"
+#         declare -r alias_exp=${ alias $1; }
+#         declare -ri start_index=$((${#1} + 8)) # 8 is length of "alias x='"
 #         bat --language man --plain <<< $'\nALIAS'
 # 		bat -l bash -f --plain <<< "${alias_exp:$start_index:-1}" | xargs -I % echo "    $1='%'"
 #     fi
@@ -177,13 +177,13 @@ history() {
 _parse_git_status() {
     echo -n " "
     if ! git rev-parse --is-inside-work-tree &> /dev/null; then return; fi
-    local short=${ [[ $1 == "-s" || $1 == "--short" ]] && echo true || echo false; }
+    declare -r short=${ [[ $1 == "-s" || $1 == "--short" ]] && echo true || echo false; }
     declare -a statuses
-    declare -a icons=("" "" "" "" "" "󱈸" "")
-    declare -a short_icons=("*" "+" "-" "󰫿" "󰫰" "!" "?")
+    declare -ra icons=("" "" "" "" "" "󱈸" "")
+    declare -ra short_icons=("*" "+" "-" "󰫿" "󰫰" "!" "?")
 
     while IFS="" read -r line; do
-        local status=${line:0:2}
+        declare status=${line:0:2}
         case $status in
             M*|*M) ((statuses[0] += 1)) ;; # Modified  * / 
             A*|*A) ((statuses[1] += 1)) ;; # Added     + / 
@@ -218,15 +218,15 @@ _parse_git_branch() {
     # Other arrow symbols: ↑↓ 🡑🡓 🠕🠗 🠑🠓
     echo -n " "
     # Get branch name if in git repo
-    local branch=${ git rev-parse --abbrev-ref HEAD 2>/dev/null; }
+    declare -r branch=${ git rev-parse --abbrev-ref HEAD 2>/dev/null; }
     if [[ -z $branch ]]; then return; fi
 
-    local start=""
+    declare start=""
 
     # Check if in a detached HEAD state
     if [[ $branch == "HEAD" ]]; then
         # Get current commit hash
-        local commit_hash=${ git rev-parse --short HEAD 2>/dev/null; }
+        declare -r commit_hash=${ git rev-parse --short HEAD 2>/dev/null; }
         if [[ $commit_hash == "" ]]; then
             echo "$start  "
         else
@@ -235,10 +235,10 @@ _parse_git_branch() {
     else
         if [[ $SHOW_GIT_DIVERGENCE == 1 ]]; then
 
-            local main_branch=${ git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || git config --get init.defaultBranch || echo "master"; }
+            declare -r main_branch=${ git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || git config --get init.defaultBranch || echo "master"; }
             if [[ $branch != ${ basename "$main_branch"; } ]]; then
-                local main_ahead=${ git rev-list --count "$branch".."$main_branch"; }
-                local main_behind=${ git rev-list --count "$main_branch".."$branch"; }
+                declare -ri main_ahead=${ git rev-list --count "$branch".."$main_branch"; }
+                declare -ri main_behind=${ git rev-list --count "$main_branch".."$branch"; }
                 if (( main_ahead > 0 )); then
                     start="$start ↧$main_ahead"
                 fi
@@ -253,8 +253,8 @@ _parse_git_branch() {
         start="$start $branch"
         if git rev-parse "@{u}" &> /dev/null; then # Check if branch has upstream
             # Get ahead/behind status
-            local status=${ git status -sb --porcelain; }
-            local ahead_behind=""
+            declare -r status=${ git status -sb --porcelain; }
+            declare ahead_behind=""
             if [[ $status =~ \[ahead\ [0-9]+ ]]; then
                 ahead_behind="↑${ echo "$status" | grep -oP '(?<=\[ahead )\d+'; }"
             fi
@@ -277,8 +277,8 @@ _parse_git_branch() {
 # Print ~/<icon>/…/directory if we are more than 2 subdirectories deep in home and the home subdirectory has an icon
 _parse_directory() {
     echo -n " "
-    local directory=${PWD##*/} # same as basename "$PWD"
-    local parent_dir=${ basename "${PWD%/*}"; }
+    declare -r directory=${PWD##*/} # same as basename "$PWD"
+    declare -r parent_dir=${ basename "${PWD%/*}"; }
     if [[ $PWD == "$HOME"* ]]; then # if we are in a subdirectory of a subdirectory of home
         if [[ $PWD = "$HOME" ]]; then
             echo "~ "
@@ -288,8 +288,8 @@ _parse_directory() {
             echo "~/$directory "
             return
         fi
-        local home_subdir=${ echo "${PWD#"$HOME"/}" | cut -d "/" -f 1; } # get first subdirectory after home
-        local icon="${DIR_ICONS[$home_subdir]}"
+        declare -r home_subdir=${ echo "${PWD#"$HOME"/}" | cut -d "/" -f 1; } # get first subdirectory after home
+        declare -r icon="${DIR_ICONS[$home_subdir]}"
         if [[ -n $icon ]]; then # if the parent directory has an icon
             if [[ $PWD = "$HOME/$parent_dir/$directory" ]]; then
                 # shellcheck disable=SC2088
@@ -307,8 +307,8 @@ _parse_directory() {
             echo "$PWD "
             return
         fi
-        local subdir=${ echo "$PWD" | cut -d "/" -f 2; } # get root subdirectory
-        local icon="${DIR_ICONS[$subdir]}"
+        declare -r subdir=${ echo "$PWD" | cut -d "/" -f 2; } # get root subdirectory
+        declare -r icon="${DIR_ICONS[$subdir]}"
         if [[ -n $icon ]]; then # if the parent directory has an icon
             if [[ $PWD = "/$parent_dir/$directory" ]]; then
                 echo "/$icon /$directory "
@@ -325,21 +325,21 @@ distro_icon() {
     case "${ uname -s; }" in
         Linux*)
             if [[ -d /system && -d /data ]]; then
-                local distro="termux"
+                declare -r distro="termux"
             elif [[ -e "/etc/os-release" ]]; then
-                local distro=$(source /etc/os-release && echo "$ID")
+                declare -r distro=$(source /etc/os-release && echo "$ID")
             else
-                local distro="linux"
+                declare -r distro="linux"
             fi
             ;;
         CYGWIN*|MINGW*|MSYS*)
-            local distro="windows"
+            declare -r distro="windows"
             ;;
         *)
-            local distro="unknown"
+            declare -r distro="unknown"
             ;;
     esac
-    declare -A distro_icons=(
+    declare -rA distro_icons=(
         ["debian"]=" "
         ["ubuntu"]=" "
         ["nixos"]=" "
@@ -347,7 +347,7 @@ distro_icon() {
         ["windows"]=" "
         ["linux"]=" "
     )
-    declare -A distro_colors=(
+    declare -rA distro_colors=(
         ["debian"]="168;0;48"
         ["ubuntu"]="233;84;32"
         ["nixos"]="126;183;226"
@@ -355,9 +355,9 @@ distro_icon() {
         ["windows"]="0;173;239"
         ["linux"]="255;255;0"
     )
-    local icon="${distro_icons[$distro]}"
-    local color="${distro_colors[$distro]:-0;0;0}"
-    unset distro_icons distro_colors
+    declare -r icon="${distro_icons[$distro]}"
+    declare -r color="${distro_colors[$distro]:-0;0;0}"
+    # shellcheck disable=SC2028
     echo "\[\e[38;2;${color}m\]${icon}"
 }
 
@@ -365,17 +365,18 @@ distro_icon() {
 _timer_start() {
     [[ -n $COMP_LINE ]] && return # do nothing if completing
     [[ $BASH_COMMAND = "$PROMPT_COMMAND" ]] && return
-    timer=${ date +%s%3N; }
+    declare -ig timer=${ date +%s%3N; }
 }
 
 # Stop the timer and print the time it took to run the command in a human readable format
 _timer_stop() {
-    local end_time=${ date +%s%3N; }
+    declare -i end_time=${ date +%s%3N; }
     if [[ -z $timer ]]; then
         echo "-"
         return
     fi
-    local T MS S M H D result
+    declare -i T MS S M H D
+    declare result
     ((T = end_time - timer))
     ((MS = T % 1000))
     ((S = T / 1000 % 60))
@@ -393,7 +394,7 @@ _timer_stop() {
 
 # Function that runs just before the prompt is displayed
 _prompt_command() {
-    local exit_code=$?
+    declare -ri exit_code=$?
 
     # Add a newline if the previous command output did not end with one
 
@@ -406,10 +407,10 @@ _prompt_command() {
 
     _DURATION="  ${ _timer_stop; } "
     unset timer
-    if [[ $exit_code -eq 0 ]]; then
+    if (( exit_code == 0 )); then
         _EXIT_BG="20;184;121" # green
         _EXIT_FG="0;0;0"
-    elif [[ $exit_code -eq 130 ]]; then # 130 is the exit code for Ctrl+C
+    elif (( exit_code == 130 )); then # 130 is the exit code for Ctrl+C
         _EXIT_BG="204;166;51" # yellow
         _EXIT_FG="0;0;0"
     else
