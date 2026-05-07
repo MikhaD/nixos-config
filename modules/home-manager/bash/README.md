@@ -101,6 +101,7 @@ Each section can be individually enabled/disabled and customized:
 ## Extra Functionality
 - cd accepts any number of `.`s after `..` to go up additional directories (e.g. `cd ...` goes up 2 directories, `cd ....` goes up 3, etc).
 - using cd to change directory into a dir with a python virtual environment (.venv) will automatically activate the venv. Leaving the directory will deactivate it. Changing into a subdir of a venv dir will also activate the venv in the parent dir if it was not already active.
+- cd without any arguments will open a fzf selector to choose a directory in the current directory to cd into
 
 ## Prompt Customization
 The bash prompt has 6 sections. If a section is not applicable, it is omitted. The sections are as follows:

@@ -256,7 +256,7 @@ in {
       # Placed in ~/.bashrc
       initExtra = let
         dirIconsFn = ''
-          declare -A DIR_ICONS=(
+          declare -rA DIR_ICONS=(
           ${lib.mapAttrsToList (name: value: ''["${name}"]="${value}"'') cfg.prompt.section.directory.icons |> lib.concatStringsSep "\n"}
           )
         '';

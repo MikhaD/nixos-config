@@ -50,9 +50,19 @@ _find_parent_venv() {
 
 # Add the ability to cd up several directories using additional dots after cd ..
 # For example, cd ... goes up two directories
+# Add the ability to cd into a subdirectory using fzf if no arguments are given to cd
 cd() {
+    # Use builtin to prevent infinite recursion
+    if [[ $# -eq 0 ]]; then
+        declare -r LINES="${ find . -mindepth 1 -maxdepth 1 -xtype d | LC_ALL=C sort; }"
+        if [[ -z $LINES ]]; then
+            echo "No subdirectories found" >&2
+            return 127
+        fi
+        builtin cd "${ fzf --delimiter='/' --with-nth=2.. --preview="ls -A1 {}" --preview-window=right,25% <<< "$LINES"; }" || return
+        return
+    fi
     if [[ $1 == ..+(.) ]]; then # requires extglob to be enabled
-        # Use builtin to prevent infinite recursion
         # printf '../%.0s' generates ../ for space separated value that follows. ${#1} is the length of $1
         builtin cd "${ printf "../%.0s" ${ seq 2 ${#1}; }; }" || return
     else
