@@ -394,6 +394,16 @@ _timer_stop() {
 # Function that runs just before the prompt is displayed
 _prompt_command() {
     local exit_code=$?
+
+    # Add a newline if the previous command output did not end with one
+
+    # If the cursor is not at column 0, the previous command didn't end with a
+    # newline. Print one now so readline's prompt-width model (which always
+    # assumes the prompt starts at column 0) stays correct.
+    declare -i col
+    IFS=';' read -rsd 'R' -t 0.1 -p $'\e[6n' _ col
+    (( ${col:-1} > 1 )) && echo
+
     _DURATION="  ${ _timer_stop; } "
     unset timer
     if [[ $exit_code -eq 0 ]]; then
