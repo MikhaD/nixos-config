@@ -22,6 +22,7 @@
     ./../../../modules/home-manager/jq.nix
     ./../../../modules/home-manager/man.nix
     ./../../../modules/home-manager/neovim.nix
+    ./../../../modules/home-manager/command-not-found.nix
     ./../../../modules/home-manager/nh
     ./../../../modules/home-manager/nodejs.nix
     ./../../../modules/home-manager/nom.nix
