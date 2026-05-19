@@ -2,7 +2,8 @@
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
-    matchBlocks =
+    settings =
+      # Change to settings?
       {
         "*" = {
           addKeysToAgent = "yes";
