@@ -3,7 +3,6 @@
     enable = true;
     enableDefaultConfig = false;
     settings =
-      # Change to settings?
       {
         "*" = {
           addKeysToAgent = "yes";
