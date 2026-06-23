@@ -10,7 +10,7 @@ Several modules (listed below), have their own readme files with more informatio
 1. [Ulauncher](modules/home-manager/ulauncher/README.md)
 
 > [!Warning]
-> This config is a work in progress. There are many aspects of my system that are still configured imperatively, or omitted until I get nix-sops working.
+> This config is a work in progress. There are many aspects of my system that are still configured imperatively.
 
 ## Opinions
 This configuration expects and enforces several rules and patterns:
@@ -23,7 +23,9 @@ This configuration expects and enforces several rules and patterns:
 ## Mini applications
 This configuration contains several mini applications that can be installed using flakes.
 - [e](pkgs/e/README.md): A simple tool to get environment variable values with completions.
-- [emulators](pkgs/emulators/README.md): A script to launch work emulators with the correct environment variables set. Several other applications are made available in this flake as well.
+- [emulators](pkgs/emulators/README.md): A config based application to launch services in tmux tabs with the correct environment variables. Several other applications are made available in this flake as well.
+- [retcon](pkgs/reconfig/README.md): A utility to search and bulk delete commands from your bash history using fzf. History is sorted by most recent first by default.
+- [tat](pkgs/tat/README.md): Tmux ATtach is an application that improves navigation between tmux sessions.
 
 ## Useful command reference
 Evaluate the value of a configuration option:
