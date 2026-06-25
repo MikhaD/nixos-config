@@ -12,4 +12,8 @@
       };
     };
   };
+
+  # adguardhome gets a dynamic GID that doesn't exist in the build sandbox,
+  # causing logrotate's build-time config check to fail
+  services.logrotate.checkConfig = false;
 }

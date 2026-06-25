@@ -43,11 +43,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1782220169,
-        "narHash": "sha256-NxykfEdGQjop9m49Bk61pXpAduH8ICHgXC1N3Ph3Jp0=",
+        "lastModified": 1782358560,
+        "narHash": "sha256-vCcLh9pw3XO/+Lxk8r6xv6QnoCrTfGqiACcI7O637Wg=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "4b0b9474749820afac53ea30d4ccfef60aba5ce6",
+        "rev": "3a70e333f2950c302e875c44cfcfaff3f80f36bc",
         "type": "github"
       },
       "original": {
@@ -326,10 +326,10 @@
     },
     "secrets": {
       "locked": {
-        "lastModified": 1780599781,
-        "narHash": "sha256-kR6nL/Ecmk1hnG3Zqhn9pZ3uWm5cI5qM3dF7RlU4Nao=",
+        "lastModified": 1782376367,
+        "narHash": "sha256-Uxbg13Hw6fVwSE68bm/H4BEqbCFhWoWGYoljy0mnbQQ=",
         "ref": "refs/heads/main",
-        "rev": "909fccd12118a20491c22995f2d666e0b8775a7e",
+        "rev": "f69c42cfb6469c58273ed8910899aae587f34b5e",
         "shallow": true,
         "type": "git",
         "url": "ssh://git@github.com/MikhaD/nix-secrets.git"
@@ -351,11 +351,11 @@
         "uv2nix": "uv2nix"
       },
       "locked": {
-        "lastModified": 1782203614,
-        "narHash": "sha256-4sUmD0m/8i6HhHRGt5445CWkUegM0o2iG99MxAXPrNQ=",
+        "lastModified": 1782296041,
+        "narHash": "sha256-npjxccKniyX9S+FlQUCfUj85T6HKToVOLGKQ2hUYu7o=",
         "owner": "oraios",
         "repo": "serena",
-        "rev": "bd322fcb5e4e210b20d0b63b40400acd02656d93",
+        "rev": "a0435467b69feb17d59daf7364cd9dd94851f4f3",
         "type": "github"
       },
       "original": {

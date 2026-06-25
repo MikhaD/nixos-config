@@ -5,9 +5,10 @@
     ./../../../modules/nixos/programs/ssh.nix
     ./../../../modules/nixos/services/adguardhome.nix
     # ./../../../modules/nixos/services/caddy
-    # ./../../../modules/nixos/services/cloudflared.nix
+    ./../../../modules/nixos/services/cloudflared.nix
     ./../../../modules/nixos/services/sshd
     ./../../../modules/nixos/services/tlp.nix
+    ./../../../modules/nixos/programs/virtualisation.nix
     # ./../../../modules/nixos/services/vaultwarden.nix
     # ./../../../modules/nixos/services/nextcloud.nix
 
@@ -57,8 +58,6 @@
       };
     };
   };
-
-  boot.kernelPackages = pkgs.linuxPackages_hardened;
 
   system.stateVersion = "25.05"; # DO NOT CHANGE
 }
