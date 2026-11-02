@@ -5,7 +5,8 @@
 }: {
   imports = [
     #   ./../terraform.nix
-    ./../jiratui
+    # ./../jiratui
+    ./../ngrok.nix
   ];
 
   home.sessionVariables = {
