@@ -3,7 +3,12 @@
 
   virtualisation = {
     containers.enable = true;
-    docker.enable = true;
+    docker = {
+      enable = true;
+      daemon.settings = {
+        log-driver = "local";
+      };
+    };
     podman = {
       enable = true;
       # dockerCompat = true; # creates "docker" alias for podman
