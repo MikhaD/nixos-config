@@ -7,7 +7,7 @@
   imports = [
     ./../../../modules/home-manager/bash
     ./../../../modules/home-manager/bat.nix
-    ./../../../modules/home-manager/chromium.nix
+    # ./../../../modules/home-manager/chromium.nix
     ./../../../modules/home-manager/claude.nix
     ./../../../modules/home-manager/curl.nix
     ./../../../modules/home-manager/dig.nix
@@ -16,6 +16,7 @@
     ./../../../modules/home-manager/fastfetch.nix
     ./../../../modules/home-manager/firefox.nix
     ./../../../modules/home-manager/fzf.nix
+    ./../../../modules/home-manager/gh.nix
     ./../../../modules/home-manager/git.nix
     ./../../../modules/home-manager/grep.nix
     ./../../../modules/home-manager/just.nix
@@ -56,9 +57,10 @@
       exfat # Allow me to format drives as exfat (broad OS compatibility)
       figlet
       shfmt
+      cloudflared
       #################### Desktop Applications ####################
       bruno
-      freecad
+      # freecad # currently broken
       libreoffice-qt
       pinta
       quickgui
