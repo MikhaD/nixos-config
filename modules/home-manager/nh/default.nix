@@ -6,6 +6,6 @@
   };
 
   programs.bash.shellAliases = {
-    gc = "nh clean all --ask --keep 5 --optimise";
+    gc = "nh clean all --ask --keep 3 --optimise";
   };
 }
