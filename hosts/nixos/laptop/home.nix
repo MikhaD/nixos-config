@@ -54,7 +54,6 @@
 
     packages = with pkgs; [
       ########################## CLI Tools #########################
-      exfat # Allow me to format drives as exfat (broad OS compatibility)
       figlet
       shfmt
       cloudflared

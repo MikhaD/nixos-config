@@ -1,4 +1,4 @@
-{...}: {
+{pkgs, ...}: {
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.plasma-login-manager.enable = true;
   services.desktopManager.plasma6.enable = true;
@@ -7,4 +7,6 @@
   # services.xserver.libinput.enable = true;
   programs.kdeconnect.enable = true;
   programs.partition-manager.enable = true;
+  # System-wide so partition manager's root helper can find mkfs.exfat etc.
+  environment.systemPackages = [pkgs.exfatprogs];
 }
