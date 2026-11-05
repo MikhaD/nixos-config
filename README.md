@@ -108,6 +108,12 @@ prefix with a space to prevent your password from being stored in your shell his
  sops encrypt/decrypt -i <input file>
 ```
 
+## Create installation media
+```bash
+	# Replace /dev/sdX with your USB drive
+	sudo dd if=/path/to/nixos.iso of=/dev/sdX bs=4M status=progress && sync
+```
+
 ## Resources
 - [NixOS & Flakes book](https://nixos-and-flakes.thiscute.world/)
 - [Managing dotfiles with home manager](https://wiki.nixos.org/wiki/Home_Manager#Managing_your_dotfiles)
