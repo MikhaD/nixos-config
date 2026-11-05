@@ -1,4 +1,4 @@
-{...}: {
+{pkgs, ...}: {
   default-user.extraGroups = ["podman" "docker"];
 
   virtualisation = {
@@ -15,4 +15,6 @@
       defaultNetwork.settings.dns_enabled = true;
     };
   };
+
+  environment.systemPackages = [pkgs.lazydocker];
 }
